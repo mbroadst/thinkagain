@@ -7,7 +7,7 @@ TESTS = ./test/*.test.js ./test/**/*.test.js
 NPM_BIN = ./node_modules/.bin
 
 lint:
-	$(NPM_BIN)/eslint lib tests
+	$(NPM_BIN)/eslint lib test
 
 coverage:	lint
 	$(NPM_BIN)/istanbul cover $(NPM_BIN)/_mocha --report lcovonly -- --recursive -t 20000 --ui tdd $(TESTS)
