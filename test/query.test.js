@@ -1,10 +1,10 @@
-var config = require('./config.js');
-var thinky = require('../lib/thinky.js')(config);
+var config = require('./config');
+var thinky = require('../lib/thinky')(config);
 var r = thinky.r;
-var Document = require('../lib/document.js');
-var Errors = require('../lib/errors.js');
+var Document = require('../lib/document');
+var Errors = require('../lib/errors');
 
-var util = require('./util.js');
+var util = require('./util');
 var assert = require('assert');
 var Promise = require('bluebird');
 

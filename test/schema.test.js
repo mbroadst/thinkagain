@@ -1,10 +1,10 @@
-var config = require('./config.js');
-var thinky = require('../lib/thinky.js')(config);
+var config = require('./config');
+var thinky = require('../lib/thinky')(config);
 var r = thinky.r;
 var type = thinky.type;
 var Errors = thinky.Errors;
 
-var util = require('./util.js');
+var util = require('./util');
 var assert = require('assert');
 
 describe('schema', function(){

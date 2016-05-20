@@ -1,11 +1,11 @@
 'use strict';
-const config = require('./config.js'),
+const config = require('./config'),
 
-      thinky = require('../lib/thinky.js')(config),
+      thinky = require('../lib/thinky')(config),
       r = thinky.r,
       type = thinky.type,
 
-      util = require('./util.js'),
+      util = require('./util'),
       assert = require('assert'),
       Promise = require('bluebird'),
       Errors = thinky.Errors;

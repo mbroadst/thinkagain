@@ -1,194 +1,170 @@
-var config = require('./config.js');
-var thinky = require('../lib/thinky.js')(config);
-var r = thinky.r;
+'use strict';
+const config = require('./config'),
+      thinky = require('../lib/thinky')(config),
+      r = thinky.r,
 
-var util = require('./util.js');
-var assert = require('assert');
-var Promise = require('bluebird');
+      util = require('./util'),
+      assert = require('assert'),
+      Promise = require('bluebird');
 
-var modelNameSet = {};
+let modelNameSet = {};
 modelNameSet[util.s8()] = true;
 modelNameSet[util.s8()] = true;
-var modelNames = Object.keys(modelNameSet);
+let modelNames = Object.keys(modelNameSet);
 
-var cleanTables = function(done) {
-  var promises = [];
-  var name;
-  for(var name in modelNameSet) {
+let cleanTables = function(done) {
+  let promises = [];
+  for (let name in modelNameSet) {
     promises.push(r.table(name).delete().run());
   }
   Promise.settle(promises).finally(function() {
     // Add the links table
-    for(var model in thinky.models) {
+    for (let model in thinky.models) {
       modelNameSet[model] = true;
     }
     modelNames = Object.keys(modelNameSet);
     thinky._clean();
     done();
   });
-}
+};
 
-describe('Events', function(){
+describe('Events', function() {
   afterEach(cleanTables);
 
-  it('Add events on doc', function(done){
-    var Model = thinky.createModel(modelNames[0], {id: String}, {init: false})
-    var doc = new Model({});
-    doc.addListener("foo", done);
-    doc.emit("foo");
+  it('Add events on doc', function(done) {
+    let Model = thinky.createModel(modelNames[0], { id: String }, { init: false });
+    let doc = new Model({});
+    doc.addListener('foo', () => done());
+    doc.emit('foo');
   });
-  it('Events on model should be forward to documents', function(done){
-    var count = 0;
-    var Model = thinky.createModel(modelNames[0], {id: String}, {init: false})
-    Model.docOn("foo", function() {
+
+  it('Events on model should be forward to documents', function(done) {
+    let count = 0;
+    let Model = thinky.createModel(modelNames[0], { id: String }, { init: false });
+    Model.docOn('foo', () => {
       count++;
-      if (count === 2) {
-        done();
-      }
+      if (count === 2) done();
     });
-    var doc = new Model({});
-    doc.emit("foo");
-    doc.emit("foo");
+
+    let doc = new Model({});
+    doc.emit('foo');
+    doc.emit('foo');
   });
-  it('Doc should emit save when saved', function(done){
-    var count = 0;
-    var Model = thinky.createModel(modelNames[0], {id: String})
-    var doc = new Model({});
-    doc.once("saved", function() {
-      done();
-    });
+
+  it('Doc should emit save when saved', function(done) {
+    let Model = thinky.createModel(modelNames[0], { id: String });
+    let doc = new Model({});
+    doc.once('saved', () => done());
     doc.save();
   });
-  it('Doc should emit save when saved', function(done){
-    var count = 0;
-    var Model = thinky.createModel(modelNames[0], {id: String})
-    var doc = new Model({});
-    doc.once("deleted", function() {
-      done();
-    });
-    doc.save().then(function() {
-      doc.delete();
-    });
+
+  it('Doc should emit save when saved', function(done) {
+    let Model = thinky.createModel(modelNames[0], { id: String });
+    let doc = new Model({});
+    doc.once('deleted', () => done());
+    doc.save().then(() => doc.delete());
   });
-  it('Doc should emit save when deleted -- hasAndBelongsToMany', function(done){
-    var count = 0;
-    var Model = thinky.createModel(modelNames[0], {id: String})
+
+  it('Doc should emit save when deleted -- hasAndBelongsToMany', function(done) {
+    let Model = thinky.createModel(modelNames[0], { id: String });
     Model.hasAndBelongsToMany(Model, 'links', 'id', 'id');
 
-    var doc1 = new Model({});
-    var doc2 = new Model({});
+    let doc1 = new Model({});
+    let doc2 = new Model({});
     doc1.links = [doc2];
 
-    doc2.once("deleted", function() {
-      done();
-    });
-    doc1.saveAll({links: true}).then(function() {
-      assert.equal(doc2.isSaved(), true)
-      doc1.deleteAll({links: true}).then(function() {
-        assert.equal(doc2.isSaved(), false)
-      });
-    });
+    doc2.once('deleted', () => done());
+    doc1.saveAll({ links: true })
+      .then(() => {
+        assert.equal(doc2.isSaved(), true);
+        return doc1.deleteAll({ links: true });
+      })
+      .then(() => assert.equal(doc2.isSaved(), false));
   });
-  it('Doc should emit save when deleted -- hasMany', function(done){
-    var count = 0;
-    var Model = thinky.createModel(modelNames[0], {id: String, foreignKey: String})
+
+  it('Doc should emit save when deleted -- hasMany', function(done) {
+    let Model = thinky.createModel(modelNames[0], { id: String, foreignKey: String });
     Model.hasMany(Model, 'links', 'id', 'foreignKey');
 
-    var doc1 = new Model({});
-    var doc2 = new Model({});
+    let doc1 = new Model({});
+    let doc2 = new Model({});
     doc1.links = [doc2];
 
-    doc2.once("deleted", function() {
-      done();
-    });
-    doc1.saveAll({links: true}).then(function() {
-      assert.equal(doc2.isSaved(), true)
-      doc1.deleteAll({links: true}).then(function() {
-        assert.equal(doc2.isSaved(), false)
-      });
-    });
+    doc2.once('deleted', () => done());
+    doc1.saveAll({ links: true })
+      .then(() => {
+        assert.equal(doc2.isSaved(), true);
+        return doc1.deleteAll({ links: true });
+      })
+      .then(() => assert.equal(doc2.isSaved(), false));
   });
-  it('Test saving event', function(done){
-    var Model = thinky.createModel(modelNames[0], {id: Number})
-    var doc = new Model({});
-    doc.addListener("saving", function(doc) {
-      doc.id = 1;
-    });
-    doc.save().then(function() {
-      assert.equal(doc.id, 1);
-      Model.get(doc.id).run().then(function(result) {
-        assert.equal(result.id, 1);
-        done();
-      });
-    });
+
+  it('Test saving event', function() {
+    let Model = thinky.createModel(modelNames[0], { id: Number });
+    let doc = new Model({});
+    doc.addListener('saving', _doc => { _doc.id = 1; });
+    return doc.save()
+      .then(() => {
+        assert.equal(doc.id, 1);
+        return Model.get(doc.id).run();
+      })
+      .then(result => assert.equal(result.id, 1));
   });
-  it('Test saving event to validate a relation', function(done){
-    var Model = thinky.createModel(modelNames[0], {id: String})
-    var OtherModel = thinky.createModel(modelNames[1], {id: String, foreignKey: String})
+
+  it('Test saving event to validate a relation', function(done) {
+    let Model = thinky.createModel(modelNames[0], { id: String });
+    let OtherModel = thinky.createModel(modelNames[1], { id: String, foreignKey: String });
 
     Model.hasOne(OtherModel, 'joinedDoc', 'id', 'foreignKey');
-    var doc = new Model({});
-    doc.addListener("saving", function(doc) {
-      if (doc.joinedDoc == null) {
-        throw new Error("Relation must be defined.")
-      }
+    let doc = new Model({});
+    doc.addListener('saving', saveDoc => {
+      if (saveDoc.joinedDoc === undefined) throw new Error('Relation must be defined.');
     });
 
-    assert.throws(function() {
+    assert.throws(() => {
       doc.save();
-    }, function(error) {
-      return (error instanceof Error) && (error.message === "Relation must be defined.")
+    }, error => {
+      return (error instanceof Error) && (error.message === 'Relation must be defined.');
     });
 
-    var otherDoc = new OtherModel({});
+    let otherDoc = new OtherModel({});
     doc.joinedDoc = otherDoc;
-    doc.saveAll(function() {
-      done();
-    });
+    doc.saveAll(() => done());
   });
-  it('Test retrieved event', function(done){
-    var Model = thinky.createModel(modelNames[0], {id: Number})
-    var doc = new Model({id: 1});
 
-    Model.addListener("retrieved", function(doc) {
-      doc.id++;
-    });
+  it('Test retrieved event', function() {
+    let Model = thinky.createModel(modelNames[0], { id: Number });
+    let doc = new Model({ id: 1 });
 
-    doc.save().then(function() {
-      assert.equal(doc.id, 1);
-      Model.get(doc.id).run().then(function(result) {
-        assert.equal(result.id, 2);
-        done();
-      });
-    });
+    Model.addListener('retrieved', _doc => { _doc.id++; });
+    return doc.save()
+      .then(() => {
+        assert.equal(doc.id, 1);
+        return Model.get(doc.id).run();
+      })
+      .then(result => assert.equal(result.id, 2));
   });
-  it('Test retrieved event for joined documents', function(done){
-    var Model = thinky.createModel(modelNames[0], {id: String})
-    var OtherModel = thinky.createModel(modelNames[1], {id: String, foreignKey: String})
+
+  it('Test retrieved event for joined documents', function(done) {
+    let Model = thinky.createModel(modelNames[0], { id: String });
+    let OtherModel = thinky.createModel(modelNames[1], { id: String, foreignKey: String });
     Model.hasOne(OtherModel, 'joinedDoc', 'id', 'foreignKey');
 
-    var doc = new Model({id: util.s8()});
-    var otherDoc = new OtherModel({id: util.s8()})
+    let doc = new Model({id: util.s8()});
+    let otherDoc = new OtherModel({id: util.s8()});
     doc.joinedDoc = otherDoc;
 
-    var count = 0;
-    Model.addListener("retrieved", function(doc) {
+    let count = 0;
+    Model.addListener('retrieved', () => {
       count++;
-      if (count == 2) {
-        done();
-      }
-    });
-    OtherModel.addListener("retrieved", function(doc) {
-      count++;
-      if (count == 2) {
-        done();
-      }
+      if (count === 2) done();
     });
 
-    doc.saveAll().then(function() {
-      Model.get(doc.id).getJoin().run().then(function(result) {
-      });
+    OtherModel.addListener('retrieved', () => {
+      count++;
+      if (count === 2) done();
     });
+
+    doc.saveAll().then(() => Model.get(doc.id).getJoin().run());
   });
-
 });
