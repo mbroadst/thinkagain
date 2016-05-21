@@ -1,49 +1,23 @@
 'use strict';
-const config = require('./config'),
-
-      thinky = require('../lib/thinky')(config),
-      r = thinky.r,
-      type = thinky.type,
-
+const Promise = require('bluebird'),
+      TestFixture = require('./test-fixture'),
+      Errors = require('../lib/errors'),
+      type = require('../lib/type'),
       util = require('./util'),
-      assert = require('assert'),
-      Promise = require('bluebird'),
-      Errors = thinky.Errors;
+      assert = require('assert');
 
-
-let modelNameSet = {};
-modelNameSet[util.s8()] = true;
-modelNameSet[util.s8()] = true;
-
-let modelNames = Object.keys(modelNameSet);
-
-let cleanTables = function(done) {
-  let promises = [];
-  for (let name in modelNameSet) {
-    promises.push(r.table(name).delete().run());
-  }
-
-  Promise.settle(promises).error(function() {/*ignore*/}).finally(function() {
-    // Add the links table
-    for (let model in thinky.models) {
-      modelNameSet[model] = true;
-    }
-    modelNames = Object.keys(modelNameSet);
-    thinky._clean();
-    done();
-  });
-};
-
-let test = {};
+let test = new TestFixture();
 describe('Advanced cases', function() {
+  before(() => test.setup());
+  after(() => test.teardown());
   describe('saveAll', function() {
-    afterEach(cleanTables);
+    afterEach(() => test.cleanTables());
     beforeEach(() => {
-      test.Model = thinky.createModel(modelNames[0], {
+      test.Model = test.thinky.createModel(test.table(0), {
         id: String
       });
 
-      test.OtherModel = thinky.createModel(modelNames[1], {
+      test.OtherModel = test.thinky.createModel(test.table(1), {
         id: String,
         otherId: String
       });
@@ -521,7 +495,7 @@ describe('Advanced cases', function() {
         })
         .then(result => {
           assert.equal(result, 4);
-          return thinky.models[test.Model._joins.links.link].count().execute();
+          return test.thinky.models[test.Model._joins.links.link].count().execute();
         })
         .then(result => {
           assert.equal(result, 4);
@@ -560,7 +534,7 @@ describe('Advanced cases', function() {
         })
         .then(result => {
           assert.equal(result, 4);
-          return thinky.models[test.Model._joins.links.link].count().execute();
+          return test.thinky.models[test.Model._joins.links.link].count().execute();
         })
         .then(result => {
           assert.equal(result, 2);
@@ -571,7 +545,7 @@ describe('Advanced cases', function() {
         .then(result => test.OtherModel.count().execute())
         .then(result => {
           assert.equal(result, 4);
-          return thinky.models[test.Model._joins.links.link].count().execute();
+          return test.thinky.models[test.Model._joins.links.link].count().execute();
         })
         .then(result => {
           assert.equal(result, 2);
@@ -700,13 +674,13 @@ describe('Advanced cases', function() {
   });
 
   describe('deleteAll', function() {
-    afterEach(cleanTables);
+    afterEach(() => test.cleanTables());
     beforeEach(() => {
-      test.Model = thinky.createModel(modelNames[0], {
+      test.Model = test.thinky.createModel(test.table(0), {
         id: String
       });
 
-      test.OtherModel = thinky.createModel(modelNames[1], {
+      test.OtherModel = test.thinky.createModel(test.table(1), {
         id: String,
         otherId: String
       });
@@ -1608,13 +1582,13 @@ describe('Advanced cases', function() {
   });
 
   describe('getJoin', function() {
-    afterEach(cleanTables);
+    afterEach(() => test.cleanTables());
     beforeEach(() => {
-      test.Model = thinky.createModel(modelNames[0], {
+      test.Model = test.thinky.createModel(test.table(0), {
         id: String
       });
 
-      test.OtherModel = thinky.createModel(modelNames[1], {
+      test.OtherModel = test.thinky.createModel(test.table(1), {
         id: String,
         otherId: String
       });
@@ -1940,10 +1914,10 @@ describe('Advanced cases', function() {
   });
 
   describe('pair', function() {
-    afterEach(cleanTables);
+    afterEach(() => test.cleanTables());
 
     it('hasAndBelongsToMany -- pairs', function() {
-      let Model = thinky.createModel(modelNames[0], {
+      let Model = test.thinky.createModel(test.table(0), {
         id: String
       });
 
@@ -1968,7 +1942,7 @@ describe('Advanced cases', function() {
     });
 
     it('hasAndBelongsToMany -- pairs', function() {
-      let Model = thinky.createModel(modelNames[0], {
+      let Model = test.thinky.createModel(test.table(0), {
         id: String
       });
 
@@ -1984,7 +1958,7 @@ describe('Advanced cases', function() {
     });
 
     it('hasOne/belongsTo -- pairs', function() {
-      let Human = thinky.createModel(modelNames[0], {id: String, name: String, contactId: String});
+      let Human = test.thinky.createModel(test.table(0), { id: String, name: String, contactId: String });
       Human.belongsTo(Human, 'emergencyContact', 'contactId', 'id');
 
       let michel = new Human({
@@ -2006,18 +1980,18 @@ describe('Advanced cases', function() {
   });
 
   describe('delete - hidden links behavior', function() {
-    afterEach(cleanTables);
+    afterEach(() => test.cleanTables());
     beforeEach(() => {
-      test.Model = thinky.createModel(modelNames[0], {
+      test.Model = test.thinky.createModel(test.table(0), {
         id: String
       });
 
-      test.OtherModel = thinky.createModel(modelNames[1], {
+      test.OtherModel = test.thinky.createModel(test.table(1), {
         id: String,
         foreignKey: String
       });
 
-      test.RegressionModel = thinky.createModel(modelNames[2], {
+      test.RegressionModel = test.thinky.createModel(test.table(3), {
         id: String,
         foreignKey: type.string().required()
       });
@@ -2323,6 +2297,7 @@ describe('Advanced cases', function() {
       let otherDoc3 = new test.OtherModel({});
       doc.otherDocs = [otherDoc1, otherDoc2, otherDoc3];
 
+      let r = test.r;
       return doc.saveAll()
         .then(() => doc.delete())
         .then(() => {
@@ -2368,6 +2343,7 @@ describe('Advanced cases', function() {
       let otherDoc3 = new test.OtherModel({});
       doc.otherDocs = [otherDoc1, otherDoc2, otherDoc3];
 
+      let r = test.r;
       return doc.saveAll()
         .then(() => test.Model.get(doc.id).getJoin().run())
         .then(result => doc.delete())
@@ -2588,13 +2564,13 @@ describe('Advanced cases', function() {
   });
 
   describe('manual joins', function() {
-    afterEach(cleanTables);
+    afterEach(() => test.cleanTables());
     beforeEach(() => {
-      test.Model = thinky.createModel(modelNames[0], {
+      test.Model = test.thinky.createModel(test.table(0), {
         id: String
       });
 
-      test.OtherModel = thinky.createModel(modelNames[1], {
+      test.OtherModel = test.thinky.createModel(test.table(1), {
         id: String
       });
     });
@@ -2608,6 +2584,7 @@ describe('Advanced cases', function() {
         doc.save(), otherDocs[0].save(), otherDocs[1].save(), otherDocs[2].save()
       ];
 
+      let r = test.r;
       return Promise.all(promises)
         .then(() =>
           test.Model.innerJoin(test.OtherModel.between(r.minval, r.maxval)._query, () => true).execute())
@@ -2621,13 +2598,13 @@ describe('Advanced cases', function() {
   });
 
   describe('multiple hasAndBelongsToMany', function() {
-    afterEach(cleanTables);
+    afterEach(() => test.cleanTables());
     beforeEach(() => {
-      test.Model = thinky.createModel(modelNames[0], {
+      test.Model = test.thinky.createModel(test.table(0), {
         id: String
       });
 
-      test.OtherModel = thinky.createModel(modelNames[1], {
+      test.OtherModel = test.thinky.createModel(test.table(1), {
         id: String
       });
     });

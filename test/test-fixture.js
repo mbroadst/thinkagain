@@ -6,7 +6,7 @@ const Promise = require('bluebird'),
 
 class TestFixture {
   constructor() {
-    this.models = {};
+    this.models = new Map();
   }
 
   setup() {
@@ -42,6 +42,11 @@ class TestFixture {
     })
     .error(err => {})
     .finally(() => this.thinky._clean());
+  }
+
+  table(id) {
+    if (!this.models.has(id)) this.models.set(id, util.s8());
+    return this.models.get(id);
   }
 
   dropTables() {
