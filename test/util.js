@@ -75,3 +75,12 @@ function passThru(fn) {
 }
 
 module.exports.passThru = passThru;
+
+function linkTableName(Model, OtherModel) {
+  if (Model.getTableName() < OtherModel.getTableName()) {
+    return `${Model.getTableName()}_${OtherModel.getTableName()}`;
+  }
+
+  return `${OtherModel.getTableName()}_${Model.getTableName()}`;
+}
+module.exports.linkTableName = linkTableName;

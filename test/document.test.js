@@ -5,14 +5,6 @@ const TestFixture = require('./test-fixture'),
       util = require('./util'),
       assert = require('assert');
 
-function linkName(Model, OtherModel) {
-  if (Model.getTableName() < OtherModel.getTableName()) {
-    return `${Model.getTableName()}_${OtherModel.getTableName()}`;
-  }
-
-  return `${OtherModel.getTableName()}_${Model.getTableName()}`;
-}
-
 let test = new TestFixture();
 describe('documents', function() {
   before(() => test.setup());
@@ -839,7 +831,7 @@ describe('documents', function() {
               assert.equal(typeof result.otherDocs[i].id, 'string');
             }
 
-            return r.table(linkName(test.Model, test.OtherModel)).run();
+            return r.table(util.linkTableName(test.Model, test.OtherModel)).run();
           })
           .then(result => {
             assert.equal(result.length, 3);
@@ -863,7 +855,7 @@ describe('documents', function() {
         let r = test.r;
         doc.otherDocs = otherDocs;
         return doc.saveAll()
-          .then(result => r.table(linkName(test.Model, test.OtherModel)).run())
+          .then(result => r.table(util.linkTableName(test.Model, test.OtherModel)).run())
           .then(result => {
             let total = 0;
             // Check id
@@ -904,7 +896,7 @@ describe('documents', function() {
               assert.equal(typeof result.otherDocs[i].id, 'string');
             }
 
-            return r.table(linkName(test.Model, test.OtherModel)).run();
+            return r.table(util.linkTableName(test.Model, test.OtherModel)).run();
           })
           .then(result => {
             let total = 0, found = false;
@@ -964,7 +956,7 @@ describe('documents', function() {
 
         // let r = test.r;
         // return doc.saveAll()
-        //   .then(() => r.table(linkName(test.Model, test.OtherModel)).run())
+        //   .then(() => r.table(util.linkTableName(test.Model, test.OtherModel)).run())
         //   .then(result => {
         //     let total = 0;
         //     // Check id
@@ -1184,7 +1176,7 @@ describe('documents', function() {
           .then(result => {
             assert.equal(doc.otherDocs.length, 2);
             assert.equal(result.otherDocs.length, 2);
-            return r.table(linkName(test.Model, test.OtherModel)).count().run();
+            return r.table(util.linkTableName(test.Model, test.OtherModel)).count().run();
           })
           .then(result => {
             assert.equal(result, 2);

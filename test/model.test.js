@@ -12,6 +12,7 @@ describe('models', () => {
 
   describe('createModel', function() {
     afterEach(() => test.cleanTables());
+
     it('Create a new model', function() {
       let model = test.thinky.createModel(test.table(0), { id: String, name: String });
       assert(model);
@@ -54,6 +55,7 @@ describe('models', () => {
 
   describe('[_]getModel', function() {
     afterEach(() => test.cleanTables());
+
     it('_getModel', function() {
       let model = test.thinky.createModel(test.table(0), { id: String, name: String }, { init: false });
       assert(model._getModel().hasOwnProperty('_name'));
@@ -150,6 +152,7 @@ describe('models', () => {
 
   describe('Batch insert', function() {
     afterEach(() => test.cleanTables());
+
     it('insert should work with a single doc', function() {
       let Model = test.thinky.createModel(test.table(0), {
         id: String,
@@ -262,6 +265,7 @@ describe('models', () => {
 
   describe('Joins', function() {
     afterEach(() => test.cleanTables());
+
     it('hasOne should save the join', function() {
       let model = test.thinky.createModel(test.table(0), { id: String });
       let otherModel = test.thinky.createModel(test.table(1), { id: String, otherId: String });
@@ -427,13 +431,6 @@ describe('models', () => {
       let otherModel = test.thinky.createModel(test.table(1), { id: String, notid2: String });
       model.hasAndBelongsToMany(otherModel, 'otherDocs', 'notid1', 'notid2');
 
-      // let linkName;
-      // if (model.getTableName() < otherModel.getTableName()) {
-      //   linkName = model.getTableName() + '_' + otherModel.getTableName();
-      // } else {
-      //   linkName = otherModel.getTableName() + '_' + model.getTableName();
-      // }
-
       let r = test.r;
       model.once('ready', () => {
         r.table(model.getTableName()).indexList().run()
@@ -446,13 +443,6 @@ describe('models', () => {
       let model = test.thinky.createModel(test.table(0), { id: String, notid1: String });
       let otherModel = test.thinky.createModel(test.table(1), { id: String, notid2: String });
       model.hasAndBelongsToMany(otherModel, 'otherDocs', 'notid1', 'notid2');
-
-      // let linkName;
-      // if (model.getTableName() < otherModel.getTableName()) {
-      //   linkName = model.getTableName() + '_' + otherModel.getTableName();
-      // } else {
-      //   linkName = otherModel.getTableName() + '_' + model.getTableName();
-      // }
 
       let r = test.r;
       otherModel.once('ready', () => {
@@ -467,16 +457,9 @@ describe('models', () => {
       let otherModel = test.thinky.createModel(test.table(1), { id: String, notid2: String });
       model.hasAndBelongsToMany(otherModel, 'otherDocs', 'notid1', 'notid2');
 
-      let linkName;
-      if (model.getTableName() < otherModel.getTableName()) {
-        linkName = model.getTableName() + '_' + otherModel.getTableName();
-      } else {
-        linkName = otherModel.getTableName() + '_' + model.getTableName();
-      }
-
       let r = test.r;
       model.once('ready', () => {
-        r.table(linkName).indexList().run()
+        r.table(util.linkTableName(model, otherModel)).indexList().run()
           .then(result => r.table(otherModel.getTableName()).indexWait('notid2').run())
           .then(() => done());
       });
@@ -514,6 +497,7 @@ describe('models', () => {
 
   describe('define', function() {
     afterEach(() => test.cleanTables());
+
     it('Should be added on the document', function(done) {
       let Model = test.thinky.createModel(test.table(0), { id: String, num: Number }, { init: false });
       Model.define('foo', () => done());
@@ -532,6 +516,7 @@ describe('models', () => {
 
   describe('static', function() {
     afterEach(() => test.cleanTables());
+
     it('Should be added on the model', function(done) {
       let Model = test.thinky.createModel(test.table(0), { id: String, num: Number }, { init: false });
       Model.defineStatic('foo', () => done());
@@ -567,6 +552,7 @@ describe('models', () => {
 
   describe('ensureIndex', function() {
     afterEach(() => test.cleanTables());
+
     it('should add an index', function() {
       let Model = test.thinky.createModel(test.table(0), { id: String, num: Number });
       Model.ensureIndex('num');
@@ -607,6 +593,7 @@ describe('models', () => {
 
   describe('virtual', function() {
     afterEach(() => test.cleanTables());
+
     it('pass schema validation', function() {
       test.thinky.createModel(test.table(0), {
         id: String,
