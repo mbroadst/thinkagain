@@ -10,8 +10,10 @@ let test = new TestFixture();
 describe('Advanced cases', function() {
   before(() => test.setup());
   after(() => test.teardown());
+
   describe('saveAll', function() {
     afterEach(() => test.cleanTables());
+    after(() => { delete test.Model; delete test.OtherModel; });
     beforeEach(() => {
       test.Model = test.thinky.createModel(test.table(0), {
         id: String
@@ -675,6 +677,7 @@ describe('Advanced cases', function() {
 
   describe('deleteAll', function() {
     afterEach(() => test.cleanTables());
+    after(() => { delete test.Model; delete test.OtherModel; });
     beforeEach(() => {
       test.Model = test.thinky.createModel(test.table(0), {
         id: String
@@ -1583,6 +1586,7 @@ describe('Advanced cases', function() {
 
   describe('getJoin', function() {
     afterEach(() => test.cleanTables());
+    after(() => { delete test.Model; delete test.OtherModel; });
     beforeEach(() => {
       test.Model = test.thinky.createModel(test.table(0), {
         id: String
@@ -1981,6 +1985,7 @@ describe('Advanced cases', function() {
 
   describe('delete - hidden links behavior', function() {
     afterEach(() => test.cleanTables());
+    after(() => { delete test.Model; delete test.OtherModel; delete test.RegressionModel; });
     beforeEach(() => {
       test.Model = test.thinky.createModel(test.table(0), {
         id: String
@@ -2565,6 +2570,7 @@ describe('Advanced cases', function() {
 
   describe('manual joins', function() {
     afterEach(() => test.cleanTables());
+    after(() => { delete test.Model; delete test.OtherModel; });
     beforeEach(() => {
       test.Model = test.thinky.createModel(test.table(0), {
         id: String
@@ -2599,6 +2605,7 @@ describe('Advanced cases', function() {
 
   describe('multiple hasAndBelongsToMany', function() {
     afterEach(() => test.cleanTables());
+    after(() => { delete test.Model; delete test.OtherModel; });
     beforeEach(() => {
       test.Model = test.thinky.createModel(test.table(0), {
         id: String
