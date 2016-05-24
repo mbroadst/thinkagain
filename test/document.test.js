@@ -2738,7 +2738,7 @@ describe('documents', function() {
       });
 
       try {
-        let doc = new Model({id: 'foobar'});
+        let doc = new Model({id: 'foobar'}); // eslint-disable-line
       } catch (err) {
         assert.equal(err.message, 'Error thrown by a hook');
       }
@@ -2754,7 +2754,7 @@ describe('documents', function() {
         }, 1);
       });
 
-      let doc = new Model({id: 'foobar'})
+      let doc = new Model({id: 'foobar'});
       return doc.then(() => assert.equal(doc.id, doc.title));
     });
 
@@ -2768,7 +2768,7 @@ describe('documents', function() {
         }, 1);
       });
 
-      let doc = new Model({id: 'foobar'})
+      let doc = new Model({id: 'foobar'});
       return doc
         .error(err => {
           assert.equal(err.message, 'Async error thrown by a hook');

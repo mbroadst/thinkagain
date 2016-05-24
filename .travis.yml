@@ -7,6 +7,7 @@ cache:
     - node_modules
 
 before_install:
+  - npm install -g codeclimate-test-reporter
   - source /etc/lsb-release
   - echo "deb http://download.rethinkdb.com/apt $DISTRIB_CODENAME main" | sudo tee /etc/apt/sources.list.d/rethinkdb.list
   - wget -qO- http://download.rethinkdb.com/apt/pubkey.gpg | sudo apt-key add -
@@ -18,4 +19,7 @@ before_script:
   - sudo service rethinkdb start
 
 script:
-  - make test
+  - make coverage
+
+after_script:
+  - codeclimate-test-reporter < coverage/lcov.info
