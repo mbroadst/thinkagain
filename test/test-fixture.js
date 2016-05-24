@@ -28,19 +28,37 @@ class TestFixture {
       .then(() => {
         this.dbName = undefined;
         this.thinky = undefined;
-        this.models = {};
+        this.models = new Map();
       });
   }
 
   cleanTables() {
     let r = this.r;
     return Promise.map(Object.keys(this.thinky.models), model => {
-      if (this.thinky.models[model]._initModel) {
-        return r.db(this.dbName).table(model).wait()
-          .then(() => r.db(this.dbName).table(model).delete().run());
-      }
+      if (!this.thinky.models[model]._initModel) return;
+
+      let Model = this.thinky.models[model],
+          joinLinks = Object.keys(Model._joins).reduce((links, joinModel) => {
+            let join = Model._joins[joinModel];
+            if (!!join.link) links.push(join.link);
+            return links;
+          }, []),
+          reverseJoinLinks = Object.keys(Model._reverseJoins).reduce((links, joinModel) => {
+            let join = Model._reverseJoins[joinModel];
+            if (!!join.link) links.push(join.link);
+            return links;
+          }, []);
+
+      let tables = [ model ].concat(joinLinks).concat(reverseJoinLinks);
+      return Promise.map(tables, table => {
+        return r.db(this.dbName).table(table).wait()
+          .then(() => r.db(this.dbName).table(table).delete().run());
+      });
+
+      // return r.db(this.dbName).table(model).wait()
+      //   .then(() => r.db(this.dbName).table(model).delete().run());
     })
-    .error(err => {})
+    .error(err => { /* console.log('clean error: ', err); */ })
     .finally(() => this.thinky._clean());
   }
 
