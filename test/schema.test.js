@@ -11,8 +11,6 @@ let assert = require('assert');
 /* eslint-disable no-unused-vars */
 
 describe('schema', function() {
-  after(() => r.dbDrop(config.db));
-
   describe('schema', function() {
     it('String', function() {
       let name = util.s8();
