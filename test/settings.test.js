@@ -195,7 +195,11 @@ describe('Priorities for options', function() {
       config['validate'] = 'oncreate';
     */
     let name = util.s8();
-    let Model = thinky.createModel(name, {id: {_type: String, options: {enforce_missing: false}}, name: {_type: String, options: {enforce_missing: false}}});
+    let Model = thinky.createModel(name, {
+      id: { _type: String, options: { enforce_missing: false } },
+      name: { _type: String, options: { enforce_missing: false }}
+    });
+
     let doc = new Model({});
     doc.validate();
   });
