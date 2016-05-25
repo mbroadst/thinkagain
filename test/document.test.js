@@ -2770,7 +2770,7 @@ describe('documents', function() {
 
       let doc = new Model({id: 'foobar'});
       return doc
-        .error(err => {
+        .catch(err => {
           assert.equal(err.message, 'Async error thrown by a hook');
           done();
         });
@@ -2866,7 +2866,7 @@ describe('documents', function() {
 
       let doc = new Model({id: 'foobar'});
       return doc.validate()
-        .error(err => {
+        .catch(err => {
           assert.equal(err.message, 'Async error thrown by a hook');
           done();
         });
@@ -2958,7 +2958,7 @@ describe('documents', function() {
         let self = this;
         setTimeout(function() {
           self.title = self.id;
-          next(new Error("I'm Hook, and I'm a vilain"));
+          next(new Errors.ThinkyError("I'm Hook, and I'm a vilain"));
         }, 1);
       });
 
@@ -2966,7 +2966,6 @@ describe('documents', function() {
       Model.once('ready', () => {
         return r.table(Model.getTableName()).insert({id: 1}).run()
           .then(result => Model.get(1).run())
-          .then(result => done(new Error('Was expecting an error')))
           .error(err => {
             assert.equal(err.message, "I'm Hook, and I'm a vilain");
             done();
