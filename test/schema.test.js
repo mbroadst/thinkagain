@@ -1,71 +1,61 @@
 'use strict';
-let config = require('./config');
-let thinky = require('../lib/thinky')(config);
-let r = thinky.r;
-let type = thinky.type;
-let Errors = thinky.Errors;
-
-let util = require('./util');
-let assert = require('assert');
+const TestFixture = require('./test-fixture'),
+      type = require('../lib/type'),
+      Errors = require('../lib/errors'),
+      util = require('./util'),
+      assert = require('assert');
 
 /* eslint-disable no-unused-vars */
 
+let test = new TestFixture();
 describe('schema', function() {
+  before(() => test.setup());
+  after(() => test.teardown());
+
   describe('schema', function() {
     it('String', function() {
-      let name = util.s8();
-      thinky.createModel(name, {id: String}, {init: false});
+      test.thinky.createModel(test.table(), {id: String}, {init: false});
     });
 
     it('Number', function() {
-      let name = util.s8();
-      thinky.createModel(name, {id: Number}, {init: false});
+      test.thinky.createModel(test.table(), {id: Number}, {init: false});
     });
 
     it('Boolean', function() {
-      let name = util.s8();
-      thinky.createModel(name, {id: Boolean}, {init: false});
+      test.thinky.createModel(test.table(), {id: Boolean}, {init: false});
     });
 
     it('Array', function() {
-      let name = util.s8();
-      thinky.createModel(name, {id: Array}, {init: false});
+      test.thinky.createModel(test.table(), {id: Array}, {init: false});
     });
 
     it('Object', function() {
-      let name = util.s8();
-      thinky.createModel(name, {id: Object}, {init: false});
+      test.thinky.createModel(test.table(), {id: Object}, {init: false});
     });
 
     it('String - 2', function() {
-      let name = util.s8();
-      thinky.createModel(name, {id: {_type: String}}, {init: false});
+      test.thinky.createModel(test.table(), {id: {_type: String}}, {init: false});
     });
 
     it('Number - 2', function() {
-      let name = util.s8();
-      thinky.createModel(name, {id: {_type: Number}}, {init: false});
+      test.thinky.createModel(test.table(), {id: {_type: Number}}, {init: false});
     });
 
     it('Boolean', function() {
-      let name = util.s8();
-      thinky.createModel(name, {id: {_type: Boolean}}, {init: false});
+      test.thinky.createModel(test.table(), {id: {_type: Boolean}}, {init: false});
     });
 
     it('Array', function() {
-      let name = util.s8();
-      thinky.createModel(name, {id: {_type: Array}}, {init: false});
+      test.thinky.createModel(test.table(), {id: {_type: Array}}, {init: false});
     });
 
     it('Object', function() {
-      let name = util.s8();
-      thinky.createModel(name, {id: {_type: Object}}, {init: false});
+      test.thinky.createModel(test.table(), {id: {_type: Object}}, {init: false});
     });
 
     it('Non valid value - 1', function(done) {
-      let name = util.s8();
       try {
-        thinky.createModel(name, {id: 1}, {init: false});
+        test.thinky.createModel(test.table(), {id: 1}, {init: false});
       } catch (err) {
         assert.equal(err.message, "The value must be `String`/`Number`/`Boolean`/`Date`/`Buffer`/`Object`/`Array`/`'virtual'`/`'Point'` for [id]");
         done();
@@ -73,9 +63,8 @@ describe('schema', function() {
     });
 
     it('Non valid value - undefined', function(done) {
-      let name = util.s8();
       try {
-        thinky.createModel(name, {id: undefined}, {init: false});
+        test.thinky.createModel(test.table(), {id: undefined}, {init: false});
       } catch (err) {
         assert.equal(err.message, "The value must be `String`/`Number`/`Boolean`/`Date`/`Buffer`/`Object`/`Array`/`'virtual'`/`'Point'` for [id]");
         done();
@@ -83,14 +72,12 @@ describe('schema', function() {
     });
 
     it('Empty object is valid', function() {
-      let name = util.s8();
-      thinky.createModel(name, {id: {}}, {init: false});
+      test.thinky.createModel(test.table(), {id: {}}, {init: false});
     });
 
     it('Non valid value - nested 1', function(done) {
-      let name = util.s8();
       try {
-        thinky.createModel(name, {id: {bar: 2}}, {init: false});
+        test.thinky.createModel(test.table(), {id: {bar: 2}}, {init: false});
       } catch (err) {
         assert.equal(err.message, "The value must be `String`/`Number`/`Boolean`/`Date`/`Buffer`/`Object`/`Array`/`'virtual'`/`'Point'` for [id][bar]");
         done();
@@ -98,14 +85,12 @@ describe('schema', function() {
     });
 
     it('Empty array is valid', function() {
-      let name = util.s8();
-      thinky.createModel(name, {id: []}, {init: false});
+      test.thinky.createModel(test.table(), {id: []}, {init: false});
     });
 
     it('Array of length > 1 should throw', function(done) {
-      let name = util.s8();
       try {
-        thinky.createModel(name, {id: [{bar: String}, {foo: String}]}, {init: false});
+        test.thinky.createModel(test.table(), {id: [{bar: String}, {foo: String}]}, {init: false});
       } catch (err) {
         assert.equal(err.message, 'An array in a schema can have at most one element. Found 2 elements in [id]');
         done();
@@ -113,44 +98,36 @@ describe('schema', function() {
     });
 
     it('Array of length 1 with class is valid - String', function() {
-      let name = util.s8();
-      thinky.createModel(name, {id: [String]}, {init: false});
+      test.thinky.createModel(test.table(), {id: [String]}, {init: false});
     });
 
     it('Array of length 1 with class is valid - Boolean', function() {
-      let name = util.s8();
-      thinky.createModel(name, {id: [Boolean]}, {init: false});
+      test.thinky.createModel(test.table(), {id: [Boolean]}, {init: false});
     });
 
     it('Array of length 1 with class is valid - Number', function() {
-      let name = util.s8();
-      thinky.createModel(name, {id: [Number]}, {init: false});
+      test.thinky.createModel(test.table(), {id: [Number]}, {init: false});
     });
 
     it('Array of length 1 with class is valid - Object', function() {
-      let name = util.s8();
-      thinky.createModel(name, {id: [Object]}, {init: false});
+      test.thinky.createModel(test.table(), {id: [Object]}, {init: false});
     });
 
     it('Array of length 1 with class is valid - Array', function() {
-      let name = util.s8();
-      thinky.createModel(name, {id: [Array]}, {init: false});
+      test.thinky.createModel(test.table(), {id: [Array]}, {init: false});
     });
 
     it('Array of Array', function() {
-      let name = util.s8();
-      thinky.createModel(name, {id: [[String]]}, {init: false});
+      test.thinky.createModel(test.table(), {id: [[String]]}, {init: false});
     });
 
     it('Object in Object', function() {
-      let name = util.s8();
-      thinky.createModel(name, {id: {foo: {bar: String}}}, {init: false});
+      test.thinky.createModel(test.table(), {id: {foo: {bar: String}}}, {init: false});
     });
 
     it('Object in Object - non valid type - 1', function(done) {
-      let name = util.s8();
       try {
-        thinky.createModel(name, {id: {foo: {bar: 1}}}, {init: false});
+        test.thinky.createModel(test.table(), {id: {foo: {bar: 1}}}, {init: false});
         done(new Error('Expecting error'));
       } catch (err) {
         assert.equal(err.message, "The value must be `String`/`Number`/`Boolean`/`Date`/`Buffer`/`Object`/`Array`/`'virtual'`/`'Point'` for [id][foo][bar]");
@@ -159,9 +136,8 @@ describe('schema', function() {
     });
 
     it('Object in Object - non valid type - 2', function(done) {
-      let name = util.s8();
       try {
-        thinky.createModel(name, {id: {foo: {bar: {_type: 1}}}}, {init: false});
+        test.thinky.createModel(test.table(), {id: {foo: {bar: {_type: 1}}}}, {init: false});
         done(new Error('Expecting error'));
       } catch (err) {
         assert.equal(err.message, "The field `_type` must be `String`/`Number`/`Boolean`/`Date`/`Buffer`/`Object`/`Array`/`'virtual'`/`'Point'` for [id][foo][bar]");
@@ -170,9 +146,8 @@ describe('schema', function() {
     });
 
     it('Object in Object - non valid type - 3', function(done) {
-      let name = util.s8();
       try {
-        thinky.createModel(name, 1, {init: false});
+        test.thinky.createModel(test.table(), 1, {init: false});
         done(new Error('Expecting error'));
       } catch (err) {
         assert.equal(err.message, 'The schema must be a plain object.');
@@ -185,22 +160,19 @@ describe('schema', function() {
     // Chainable types were added in 1.15.3, prior tests still validates options and such.
     // These tests are mostly for new validators like `min`/`max`/`alphanum`/etc.
     it('General - chainable types in nested schemas', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
       {id: type.string(),
-        objectArray: [{ myAttribute: thinky.type.object() }]});
+        objectArray: [{ myAttribute: type.object() }]});
       let doc = new Model({ id: util.s8(), objectArray: {} });
     });
     it('String - basic - valid string', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string()},
         {init: false});
       let doc = new Model({ id: util.s8() });
     });
     it('String - basic - wrong type', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string()},
         {init: false});
       assert.throws(function() {
@@ -211,16 +183,14 @@ describe('schema', function() {
       });
     });
     it('String - basic - null', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string()},
         {init: false});
       let doc = new Model({});
       doc.validate();
     });
     it('String - basic - null and strict - deprecated', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string().options({enforce_type: 'strict'})},
         {init: false});
       assert.throws(function() {
@@ -231,8 +201,7 @@ describe('schema', function() {
       });
     });
     it('String - basic - null and strict', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string().allowNull(false)},
         {init: false});
       assert.throws(function() {
@@ -243,8 +212,7 @@ describe('schema', function() {
       });
     });
     it('String - basic - null and strict', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string().allowNull(false)},
         {init: false});
       assert.throws(function() {
@@ -255,16 +223,14 @@ describe('schema', function() {
       });
     });
     it('String - basic - undefined', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string().allowNull(false)},
         {init: false});
       let doc = new Model({});
       doc.validate();
     });
     it('String - basic - undefined - enforce_missing: strict', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string().required()},
         {init: false});
       assert.throws(function() {
@@ -275,16 +241,15 @@ describe('schema', function() {
       });
     });
     it('String - r.uuid', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let r = test.r;
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string().default(r.uuid())},
         {init: false});
       let doc = new Model({});
       doc.validate();
     });
     it('String - min - too short', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string().min(2) },
         {init: false});
       assert.throws(function() {
@@ -295,16 +260,14 @@ describe('schema', function() {
       });
     });
     it('String - min - good', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string().min(2) },
         {init: false});
       let doc = new Model({ id: 'abc'});
       doc.validate();
     });
     it('String - max - too long', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string().max(5) },
         {init: false});
       assert.throws(function() {
@@ -315,16 +278,14 @@ describe('schema', function() {
       });
     });
     it('String - max - good', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string().max(5) },
         {init: false});
       let doc = new Model({ id: 'abc'});
       doc.validate();
     });
     it('String - length - too long', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string().length(5) },
         {init: false});
       assert.throws(function() {
@@ -335,8 +296,7 @@ describe('schema', function() {
       });
     });
     it('String - length - too short', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string().length(5) },
         {init: false});
       assert.throws(function() {
@@ -347,16 +307,14 @@ describe('schema', function() {
       });
     });
     it('String - length - good', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string().max(5) },
         {init: false});
       let doc = new Model({ id: 'abcde'});
       doc.validate();
     });
     it('String - regex - not matching', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string().regex('^foo') },
         {init: false});
       assert.throws(function() {
@@ -367,16 +325,14 @@ describe('schema', function() {
       });
     });
     it('String - regex - good', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string().regex('^foo') },
         {init: false});
       let doc = new Model({ id: 'foobar'});
       doc.validate();
     });
     it('String - regex with flags - not matching', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string().regex('^foo', 'i') },
         {init: false});
       assert.throws(function() {
@@ -387,8 +343,7 @@ describe('schema', function() {
       });
     });
     it('String - regex with flags - good', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string().regex('^foo', 'i') },
         {init: false});
       let doc = new Model({ id: 'FOObar'});
@@ -397,8 +352,7 @@ describe('schema', function() {
       doc.validate();
     });
     it('String - alphanum - not alphanum', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string().alphanum() },
         {init: false});
       assert.throws(function() {
@@ -409,16 +363,14 @@ describe('schema', function() {
       });
     });
     it('String - alphanum - match', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string().alphanum() },
         {init: false});
       let doc = new Model({ id: 'fOOb12ar'});
       doc.validate();
     });
     it('String - email - not an email', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string().email() },
         {init: false});
       assert.throws(function() {
@@ -429,16 +381,14 @@ describe('schema', function() {
       });
     });
     it('String - email - match', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string().email() },
         {init: false});
       let doc = new Model({ id: 'foo@bar.com'});
       doc.validate();
     });
     it('String - lowercase - not lowercase', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string().lowercase() },
         {init: false});
       assert.throws(function() {
@@ -449,16 +399,14 @@ describe('schema', function() {
       });
     });
     it('String - lowercase - match', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string().lowercase() },
         {init: false});
       let doc = new Model({ id: 'foobar'});
       doc.validate();
     });
     it('String - uppercase - not uppercase', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string().uppercase() },
         {init: false});
       assert.throws(function() {
@@ -469,58 +417,50 @@ describe('schema', function() {
       });
     });
     it('String - uppercase - match', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string().uppercase() },
         {init: false});
       let doc = new Model({ id: 'FOOBAR'});
       doc.validate();
     });
     it('String - uuid - not uuid v3', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string().uuid(3) },
         {init: false});
       let doc = new Model({id: 'xxxA987FBC9-4BED-3078-CF07-9141BA07C9F3'});
     });
     it('String - uuid - is uuid v3', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string().uuid(3) },
         {init: false});
       let doc = new Model({id: 'A987FBC9-4BED-3078-CF07-9141BA07C9F3'});
     });
     it('String - uuid - not uuid v4', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string().uuid(4) },
         {init: false});
       let doc = new Model({id: 'A987FBC9-4BED-5078-AF07-9141BA07C9F3'});
     });
     it('String - uuid - is uuid v4', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string().uuid(4) },
         {init: false});
       let doc = new Model({id: '713ae7e3-cb32-45f9-adcb-7c4fa86b90c1'});
     });
     it('String - uuid - not uuid v5', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string().uuid(5) },
         {init: false});
       let doc = new Model({id: '9c858901-8a57-4791-81fe-4c455b099bc9'});
     });
     it('String - uuid - is uuid v5', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string().uuid(5) },
         {init: false});
       let doc = new Model({id: '987FBC97-4BED-5078-BF07-9141BA07C9F3'});
     });
     it('String - validator - return false', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string().validator(function() { return false; }) },
         {init: false});
       assert.throws(function() {
@@ -531,16 +471,14 @@ describe('schema', function() {
       });
     });
     it('String - validator - return true', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string().validator(function() { return true; }) },
         {init: false});
       let doc = new Model({ id: 'FOOBAR'});
       doc.validate();
     });
     it('String - validator - throw', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string().validator(function() { throw new Errors.ValidationError('Not good'); }) },
         {init: false});
       assert.throws(function() {
@@ -551,8 +489,7 @@ describe('schema', function() {
       });
     });
     it('String - enum - unknown value - 1', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string().enum('foo', 'bar') },
         {init: false});
       assert.throws(function() {
@@ -563,8 +500,7 @@ describe('schema', function() {
       });
     });
     it('String - enum - unknown value - 2', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string().enum(['foo', 'bar']) },
         {init: false});
       assert.throws(function() {
@@ -575,8 +511,7 @@ describe('schema', function() {
       });
     });
     it('String - enum - unknown value - 3', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string().enum(['foo']) },
         {init: false});
       assert.throws(function() {
@@ -587,8 +522,7 @@ describe('schema', function() {
       });
     });
     it('String - enum - unknown value - 4', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string().enum('foo') },
         {init: false});
       assert.throws(function() {
@@ -600,32 +534,28 @@ describe('schema', function() {
     });
 
     it('String - enum - known value - 1', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string().enum('foo', 'bar') },
         {init: false});
       let doc = new Model({ id: 'foo'});
       doc.validate();
     });
     it('String - enum - known value - 2', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string().enum(['foo', 'bar']) },
         {init: false});
       let doc = new Model({ id: 'foo'});
       doc.validate();
     });
     it('String - enum - known value - 3', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string().enum(['foo']) },
         {init: false});
       let doc = new Model({ id: 'foo'});
       doc.validate();
     });
     it('String - enum - known value - 4', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.string().enum('foo') },
         {init: false});
       let doc = new Model({ id: 'foo'});
@@ -633,15 +563,13 @@ describe('schema', function() {
     });
 
     it('Number - basic - valid number', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.number()},
         {init: false});
       let doc = new Model({ id: 1 });
     });
     it('Number - basic - wrong type', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.number()},
         {init: false});
       assert.throws(function() {
@@ -652,8 +580,7 @@ describe('schema', function() {
       });
     });
     it('Number - basic - NaN', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.number()},
         {init: false});
       assert.throws(function() {
@@ -664,16 +591,15 @@ describe('schema', function() {
       });
     });
     it('Number - r.random()', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let r = test.r;
+      let Model = test.thinky.createModel(test.table(),
         {id: type.number().default(r.uuid())},
         {init: false});
       let doc = new Model({});
       doc.validate();
     });
     it('Number - basic - Infinity', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.number()},
         {init: false});
       assert.throws(function() {
@@ -684,8 +610,7 @@ describe('schema', function() {
       });
     });
     it('Number - basic - -Infinity', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.number()},
         {init: false});
       assert.throws(function() {
@@ -696,8 +621,7 @@ describe('schema', function() {
       });
     });
     it('Number - min - too small', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.number().min(2) },
         {init: false});
       assert.throws(function() {
@@ -708,16 +632,14 @@ describe('schema', function() {
       });
     });
     it('Number - min - good', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.number().min(2) },
         {init: false});
       let doc = new Model({ id: 3});
       doc.validate();
     });
     it('Number - max - too big', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.number().max(5) },
         {init: false});
       assert.throws(function() {
@@ -728,16 +650,14 @@ describe('schema', function() {
       });
     });
     it('Number - max - good', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.number().max(5) },
         {init: false});
       let doc = new Model({ id: 3});
       doc.validate();
     });
     it('Number - integer - float', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.number().integer() },
         {init: false});
       assert.throws(function() {
@@ -748,16 +668,14 @@ describe('schema', function() {
       });
     });
     it('Number - integer - good', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.number().integer() },
         {init: false});
       let doc = new Model({ id: 3});
       doc.validate();
     });
     it('Number - validator - return false', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.number().validator(function() { return false; }) },
         {init: false});
       assert.throws(function() {
@@ -768,16 +686,14 @@ describe('schema', function() {
       });
     });
     it('Number - validator - return true', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.number().validator(function() { return true; }) },
         {init: false});
       let doc = new Model({ id: 3});
       doc.validate();
     });
     it('Number - validator - throw', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.number().validator(function() { throw new Errors.ValidationError('Not good'); }) },
         {init: false});
       assert.throws(function() {
@@ -789,15 +705,13 @@ describe('schema', function() {
     });
 
     it('Boolean - basic - valid boolean', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.boolean()},
         {init: false});
       let doc = new Model({ id: true });
     });
     it('Boolean - basic - wrong type', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.boolean()},
         {init: false});
       assert.throws(function() {
@@ -808,8 +722,7 @@ describe('schema', function() {
       });
     });
     it('Boolean - validator - return false', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.boolean().validator(function() { return false; }) },
         {init: false});
       assert.throws(function() {
@@ -820,16 +733,14 @@ describe('schema', function() {
       });
     });
     it('Boolean - validator - return true', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.boolean().validator(function() { return true; }) },
         {init: false});
       let doc = new Model({ id: true});
       doc.validate();
     });
     it('Boolean - validator - throw', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.number().validator(function() { throw new Errors.ValidationError('Not good'); }) },
         {init: false});
       assert.throws(function() {
@@ -841,32 +752,28 @@ describe('schema', function() {
     });
 
     it('Date - basic - valid date', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.date()},
         {init: false});
       let doc = new Model({ id: new Date() });
       doc.validate();
     });
     it('Date - null', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.date().allowNull(true)},
         {init: false});
       let doc = new Model({ id: null });
       doc.validate();
     });
     it('Date - number', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.date()},
         {init: false});
       let doc = new Model({ id: Date.now() });
       doc.validate();
     });
     it('Date - basic - wrong type', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.date()},
         {init: false});
       assert.throws(function() {
@@ -882,8 +789,7 @@ describe('schema', function() {
       let valueDate = new Date(0);
       valueDate.setUTCSeconds(60 * 60 * 24);
 
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.date().min(minDate) },
         {init: false});
       assert.throws(function() {
@@ -899,8 +805,7 @@ describe('schema', function() {
       let valueDate = new Date(0);
       valueDate.setUTCSeconds(60 * 60 * 24 * 2);
 
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.date().min(minDate) },
         {init: false});
       let doc = new Model({ id: valueDate});
@@ -912,8 +817,7 @@ describe('schema', function() {
       let valueDate = new Date(0);
       valueDate.setUTCSeconds(60 * 60 * 24 * 2);
 
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.date().max(maxDate) },
         {init: false});
       assert.throws(function() {
@@ -929,16 +833,14 @@ describe('schema', function() {
       let valueDate = new Date(0);
       valueDate.setUTCSeconds(60 * 60 * 24);
 
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.date().max(maxDate) },
         {init: false});
       let doc = new Model({ id: valueDate});
       doc.validate();
     });
     it('Date - validator - return false', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.date().validator(function() { return false; }) },
         {init: false});
       assert.throws(function() {
@@ -949,16 +851,14 @@ describe('schema', function() {
       });
     });
     it('Date - validator - return true', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.date().validator(function() { return true; }) },
         {init: false});
       let doc = new Model({ id: new Date()});
       doc.validate();
     });
     it('Date - validator - throw', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.date().validator(function() { throw new Errors.ValidationError('Not good'); }) },
         {init: false});
       assert.throws(function() {
@@ -970,24 +870,21 @@ describe('schema', function() {
     });
 
     it('Buffer - basic - valid buffer', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.buffer()},
         {init: false});
       let doc = new Model({ id: new Buffer('foobar') });
       doc.validate();
     });
     it('Buffer - basic - valid buffer', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.buffer()},
         {init: false});
       let doc = new Model({ id: null});
       doc.validate();
     });
     it('Buffer - basic - wrong type', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.buffer()},
         {init: false});
       assert.throws(function() {
@@ -999,22 +896,20 @@ describe('schema', function() {
     });
 
     it('Point - basic - valid point - 1', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.point()},
         {init: false});
       let doc = new Model({ id: [10, 2] });
     });
     it('Point - basic - valid point - 2', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let r = test.r;
+      let Model = test.thinky.createModel(test.table(),
         {id: type.point()},
         {init: false});
       let doc = new Model({ id: r.point(2, 10) });
     });
     it('Point - basic - wrong type', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.point()},
         {init: false});
       assert.throws(function() {
@@ -1025,8 +920,7 @@ describe('schema', function() {
       });
     });
     it('Object - basic - valid object', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.object().schema({
           foo: type.string()
         })},
@@ -1034,8 +928,7 @@ describe('schema', function() {
       let doc = new Model({ id: {foo: 'bar' }});
     });
     it('Object - basic - wrong type', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.object().schema({
           foo: type.string()
         })},
@@ -1049,15 +942,13 @@ describe('schema', function() {
     });
 
     it('Array - basic - valid array', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.array().schema(type.string())},
         {init: false});
       let doc = new Model({ id: ['bar']});
     });
     it('Array - basic - wrong type', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.array().schema(type.string())},
         {init: false});
       assert.throws(function() {
@@ -1068,8 +959,7 @@ describe('schema', function() {
       });
     });
     it('Array - basic - wrong nested type - 1', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.array().schema(type.string())},
         {init: false});
       assert.throws(function() {
@@ -1080,8 +970,7 @@ describe('schema', function() {
       });
     });
     it('Array - basic - wrong nested type - 2', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.array().schema(String)},
         {init: false});
       assert.throws(function() {
@@ -1092,24 +981,21 @@ describe('schema', function() {
       });
     });
     it('Array - no schema - valid array - 1', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.array()},
         {init: false});
       let doc = new Model({ id: ['bar']});
       doc.validate();
     });
     it('Array - no schema - valid array - 2', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.array()},
         {init: false});
       let doc = new Model({ id: [{foo: 'bar'}]});
       doc.validate();
     });
     it('Array - no schema - non valid array', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.array()},
         {init: false});
       let doc = new Model({ id: 'bar'});
@@ -1121,8 +1007,7 @@ describe('schema', function() {
     });
 
     it('Array - basic - wrong nested type - 3', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.array().schema({_type: String})},
         {init: false});
       assert.throws(function() {
@@ -1133,16 +1018,14 @@ describe('schema', function() {
       });
     });
     it('Array - min - good', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.array().schema(type.string()).min(2)},
         {init: false});
       let doc = new Model({ id: ['foo', 'bar', 'buzz']});
       doc.validate();
     });
     it('Array - min - error', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.array().schema(type.string()).min(2)},
         {init: false});
       let doc = new Model({ id: ['foo']});
@@ -1153,16 +1036,14 @@ describe('schema', function() {
       });
     });
     it('Array - max - good', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.array().schema(type.string()).max(2)},
         {init: false});
       let doc = new Model({ id: ['foo']});
       doc.validate();
     });
     it('Array - max - error', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.array().schema(type.string()).max(2)},
         {init: false});
       let doc = new Model({ id: ['foo', 'bar', 'buzz']});
@@ -1173,16 +1054,14 @@ describe('schema', function() {
       });
     });
     it('Array - length - good', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.array().schema(type.string()).length(2)},
         {init: false});
       let doc = new Model({ id: ['foo', 'bar']});
       doc.validate();
     });
     it('Array - length - error', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {id: type.array().schema(type.string()).length(2)},
         {init: false});
       let doc = new Model({ id: ['foo', 'bar', 'buzz']});
@@ -1193,8 +1072,7 @@ describe('schema', function() {
       });
     });
     it('Virtual - basic', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {
           id: type.string(),
           foo: type.virtual()
@@ -1203,8 +1081,7 @@ describe('schema', function() {
       let doc = new Model({ id: 'bar', foo: 'bar'});
     });
     it('Any - basic', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name,
+      let Model = test.thinky.createModel(test.table(),
         {
           id: type.string(),
           foo: type.any()
@@ -1223,11 +1100,10 @@ describe('schema', function() {
 
   describe('generateDefault', function() {
     it('String - constant', function() {
-      let name = util.s8();
       let str = util.s8();
       let defaultValue = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {_type: String, default: defaultValue}
       }, {init: false});
@@ -1239,11 +1115,10 @@ describe('schema', function() {
       assert.equal(doc.field, defaultValue);
     });
     it('String - function', function() {
-      let name = util.s8();
       let str = util.s8();
       let defaultValue = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {_type: String, default: function() {
           return defaultValue;
@@ -1259,10 +1134,9 @@ describe('schema', function() {
     });
 
     it('String - function - Test binding', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {_type: String, default: function() {
           return this.id;
@@ -1278,11 +1152,10 @@ describe('schema', function() {
     });
 
     it('Number - constant', function() {
-      let name = util.s8();
       let str = util.s8();
       let defaultValue = util.random();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {_type: Number, default: defaultValue}
       }, {init: false});
@@ -1295,11 +1168,10 @@ describe('schema', function() {
       assert.equal(doc.field, defaultValue);
     });
     it('Number - function', function() {
-      let name = util.s8();
       let str = util.s8();
       let defaultValue = util.random();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {_type: Number, default: function() {
           return defaultValue;
@@ -1315,11 +1187,10 @@ describe('schema', function() {
     });
 
     it('Bool - constant', function() {
-      let name = util.s8();
       let str = util.s8();
       let defaultValue = util.bool();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {_type: Boolean, default: defaultValue}
       }, {init: false});
@@ -1332,11 +1203,10 @@ describe('schema', function() {
       assert.equal(doc.field, defaultValue);
     });
     it('Bool - function', function() {
-      let name = util.s8();
       let str = util.s8();
       let defaultValue = util.bool();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {_type: Boolean, default: function() {
           return defaultValue;
@@ -1352,11 +1222,10 @@ describe('schema', function() {
     });
 
     it('Array - constant', function() {
-      let name = util.s8();
       let str = util.s8();
       let defaultValue = [1, 2, 3];
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {_type: Array, default: defaultValue}
       }, {init: false});
@@ -1369,11 +1238,10 @@ describe('schema', function() {
       assert.deepEqual(doc.field, defaultValue);
     });
     it('Array - function', function() {
-      let name = util.s8();
       let str = util.s8();
       let defaultValue = [1, 2, 3];
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {_type: Array, default: function() {
           return defaultValue;
@@ -1388,11 +1256,10 @@ describe('schema', function() {
       assert.deepEqual(doc.field, defaultValue);
     });
     it('Object - constant', function() {
-      let name = util.s8();
       let str = util.s8();
       let defaultValue = {foo: 'bar'};
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {_type: Object, default: defaultValue}
       }, {init: false});
@@ -1405,11 +1272,10 @@ describe('schema', function() {
       assert.deepEqual(doc.field, defaultValue);
     });
     it('Object - function', function() {
-      let name = util.s8();
       let str = util.s8();
       let defaultValue = {foo: 'bar'};
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {_type: Object, default: function() {
           return defaultValue;
@@ -1424,11 +1290,10 @@ describe('schema', function() {
       assert.deepEqual(doc.field, defaultValue);
     });
     it('Object - constant', function() {
-      let name = util.s8();
       let str = util.s8();
       let defaultValue = {foo: 'bar'};
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {_type: Object, default: defaultValue}
       }, {init: false});
@@ -1443,11 +1308,10 @@ describe('schema', function() {
     });
 
     it('Number - nested value', function() {
-      let name = util.s8();
       let str = util.s8();
       let defaultValue = util.random();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         nested: {
           _type: Object,
@@ -1467,12 +1331,11 @@ describe('schema', function() {
     });
 
     it('Array - nested value - 1', function() {
-      let name = util.s8();
       let str = util.s8();
       let defaultArray = [1, 2, 3];
       let defaultValue = util.random();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         nested: {
           _type: Array,
@@ -1491,12 +1354,11 @@ describe('schema', function() {
       assert.deepEqual(doc.nested, defaultArray);
     });
     it('Array - nested value - 2', function() {
-      let name = util.s8();
       let str = util.s8();
       let defaultArray = [1, 2, 3];
       let defaultValue = util.random();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         nested: {
           _type: Array,
@@ -1519,12 +1381,11 @@ describe('schema', function() {
       assert.deepEqual(doc.nested, []);
     });
     it('Array - nested value - 3', function() {
-      let name = util.s8();
       let str = util.s8();
       let defaultArray = [1, 2, 3];
       let defaultValue = util.random();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         nested: {
           _type: Array,
@@ -1548,12 +1409,11 @@ describe('schema', function() {
       assert.deepEqual(doc.nested, [{field: defaultValue}]);
     });
     it('Array - nested value - 4', function() {
-      let name = util.s8();
       let str = util.s8();
       let defaultArray = [1, 2, 3];
       let defaultValue = util.random();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         nested: [{
           _type: Object,
@@ -1573,12 +1433,11 @@ describe('schema', function() {
       assert.deepEqual(doc.nested, [{field: defaultValue}]);
     });
     it('Array - nested value - 5', function() {
-      let name = util.s8();
       let str = util.s8();
       let defaultArray = [1, 2, 3];
       let defaultValue = util.random();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         nested: [{
           _type: Object,
@@ -1599,11 +1458,10 @@ describe('schema', function() {
     });
 
     it('Object - deep nested - 1', function() {
-      let name = util.s8();
       let str = util.s8();
       let defaultValue = {foo: 'bar'};
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         nested: {
           _type: Object,
@@ -1622,11 +1480,10 @@ describe('schema', function() {
       assert.deepEqual(doc, { id: str });
     });
     it('Object - deep nested - 2', function() {
-      let name = util.s8();
       let str = util.s8();
       let defaultValue = {foo: 'bar'};
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         nested: {
           _type: Object,
@@ -1646,11 +1503,10 @@ describe('schema', function() {
       assert.deepEqual(doc, { id: str, nested: { field1: 1, field2: 'hello' } });
     });
     it('Object - deep nested - 3', function() {
-      let name = util.s8();
       let str = util.s8();
       let defaultValue = {foo: 'bar'};
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         nested: {
           field1: {_type: Number, default: 1},
@@ -1666,11 +1522,10 @@ describe('schema', function() {
       assert.deepEqual(doc, { id: str});
     });
     it('Object - deep nested - 4', function() {
-      let name = util.s8();
       let str = util.s8();
       let defaultValue = {foo: 'bar'};
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         nested: {
           field1: {_type: Number, default: 1},
@@ -1687,11 +1542,10 @@ describe('schema', function() {
       assert.deepEqual(doc, { id: str, nested: {field1: 1, field2: 'hello'}});
     });
     it('Default array', function() {
-      let name = util.s8();
       let str = util.s8();
       let defaultValue = {foo: 'bar'};
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         ar: {
           _type: Array,
@@ -1707,8 +1561,7 @@ describe('schema', function() {
       assert.deepEqual(doc.ar, [1, 2, 3]);
     });
     it('Object - default should make a deep copy', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         field: type.object().default({foo: 'bar'}).schema({
           foo: type.string()
         })
@@ -1721,8 +1574,7 @@ describe('schema', function() {
       assert.deepEqual(doc1.field, doc2.field);
     });
     it('Array - default should make a deep copy', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         field: type.array().default([{foo: 'bar'}]).schema({
           foo: type.string()
         })
@@ -1737,11 +1589,10 @@ describe('schema', function() {
       assert.deepEqual(doc1.field, doc2.field);
     });
     it('Nested object should not throw with a null value - #314', function() {
-      let name = util.s8();
       let str = util.s8();
       let defaultValue = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         nested: {
           field: type.string().default(2)
@@ -1758,10 +1609,9 @@ describe('schema', function() {
 
   describe('validate', function() {
     it('String - wrong type - type: "strict"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: String
       }, {init: false, enforce_type: 'strict'});
@@ -1778,10 +1628,9 @@ describe('schema', function() {
       });
     });
     it('String - wrong type  - type: "loose"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: String
       }, {init: false, enforce_type: 'loose'});
@@ -1798,10 +1647,9 @@ describe('schema', function() {
       });
     });
     it('String - wrong type  - type: "none"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: String
       }, {init: false, enforce_type: 'none'});
@@ -1814,10 +1662,9 @@ describe('schema', function() {
       doc.validate();
     });
     it('String - undefined - type: "strict"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: String
       }, {init: false, enforce_type: 'strict'});
@@ -1830,10 +1677,9 @@ describe('schema', function() {
       doc.validate();
     });
     it('String - undefined  - type: "loose"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: String
       }, {init: false, enforce_type: 'loose'});
@@ -1846,10 +1692,9 @@ describe('schema', function() {
       doc.validate();
     });
     it('String - undefined  - type: "none"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: String
       }, {init: false, enforce_type: 'none'});
@@ -1862,10 +1707,9 @@ describe('schema', function() {
       doc.validate();
     });
     it('String - undefined  - type: "none"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: String
       }, {init: false, enforce_type: 'none', enforce_missing: true});
@@ -1881,10 +1725,9 @@ describe('schema', function() {
       });
     });
     it('String - null - type: "strict"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: String
       }, {init: false, enforce_type: 'strict'});
@@ -1901,10 +1744,9 @@ describe('schema', function() {
       });
     });
     it('String - null  - type: "loose"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: String
       }, {init: false, enforce_type: 'loose'});
@@ -1917,10 +1759,9 @@ describe('schema', function() {
       doc.validate();
     });
     it('String - null  - type: "none"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: String
       }, {init: false, enforce_type: 'none'});
@@ -1933,10 +1774,9 @@ describe('schema', function() {
       doc.validate();
     });
     it('Number - wrong type - type: "strict"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: Number
       }, {init: false, enforce_type: 'strict'});
@@ -1953,10 +1793,9 @@ describe('schema', function() {
       });
     });
     it('Number - wrong type  - type: "loose"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: Number
       }, {init: false, enforce_type: 'loose'});
@@ -1973,10 +1812,9 @@ describe('schema', function() {
       });
     });
     it('Number - wrong type  - type: "none"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: Number
       }, {init: false, enforce_type: 'none'});
@@ -1989,10 +1827,9 @@ describe('schema', function() {
       doc.validate();
     });
     it('Number - not wrong type - numeric string', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: Number
       }, {init: false});
@@ -2005,10 +1842,9 @@ describe('schema', function() {
       doc.validate();
     });
     it('Boolean - wrong type - type: "strict"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: Boolean
       }, {init: false, enforce_type: 'strict'});
@@ -2025,10 +1861,9 @@ describe('schema', function() {
       });
     });
     it('Boolean - wrong type  - type: "loose"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: Boolean
       }, {init: false, enforce_type: 'loose'});
@@ -2045,10 +1880,9 @@ describe('schema', function() {
       });
     });
     it('Boolean - wrong type  - type: "none"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: Boolean
       }, {init: false, enforce_type: 'none'});
@@ -2061,10 +1895,9 @@ describe('schema', function() {
       doc.validate();
     });
     it('Date - string type - type: "strict"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: Date
       }, {init: false, enforce_type: 'strict'});
@@ -2077,10 +1910,9 @@ describe('schema', function() {
       doc.validate();
     });
     it('Date - wrong type - type: "strict"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: Date
       }, {init: false, enforce_type: 'strict'});
@@ -2097,10 +1929,9 @@ describe('schema', function() {
       });
     });
     it('Date - wrong type  - type: "loose"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: Date
       }, {init: false, enforce_type: 'loose'});
@@ -2117,10 +1948,9 @@ describe('schema', function() {
       });
     });
     it('Date - string type - type: "loose"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: Date
       }, {init: false, enforce_type: 'loose'});
@@ -2133,10 +1963,9 @@ describe('schema', function() {
     });
 
     it('Date - wrong type  - type: "none"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: Date
       }, {init: false, enforce_type: 'none'});
@@ -2149,10 +1978,9 @@ describe('schema', function() {
       doc.validate();
     });
     it('Date - raw type - type: "strict"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: Date
       }, {init: false, enforce_type: 'strict'});
@@ -2165,10 +1993,9 @@ describe('schema', function() {
       doc.validate();
     });
     it('Date - raw type - missing timezone - type: "strict"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: Date
       }, {init: false, enforce_type: 'strict'});
@@ -2184,10 +2011,9 @@ describe('schema', function() {
       });
     });
     it('Date - raw type - missing epoch_time - type: "strict"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: Date
       }, {init: false, enforce_type: 'strict'});
@@ -2203,14 +2029,13 @@ describe('schema', function() {
       });
     });
     it('Date - r.now', function() {
-      let name = util.s8();
       let str = util.s8();
-
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: Date
       }, {init: false});
 
+      let r = test.r;
       let doc = new Model({
         id: str,
         field: r.now()
@@ -2218,10 +2043,9 @@ describe('schema', function() {
       doc.validate();
     });
     it('Date - undefined - enforce_missing: true', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: Date
       }, {init: false, enforce_missing: true});
@@ -2236,10 +2060,9 @@ describe('schema', function() {
       });
     });
     it('Date - undefined - enforce_missing: false', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: Date
       }, {init: false, enforce_missing: false});
@@ -2250,10 +2073,9 @@ describe('schema', function() {
       doc.validate();
     });
     it('Buffer - type: "strict"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: Buffer
       }, {init: false, enforce_type: 'strict'});
@@ -2266,10 +2088,9 @@ describe('schema', function() {
       doc.validate();
     });
     it('Buffer - wrong type - type: "strict"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: Buffer
       }, {init: false, enforce_type: 'strict'});
@@ -2286,10 +2107,9 @@ describe('schema', function() {
       });
     });
     it('Buffer - wrong type  - type: "loose"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: Buffer
       }, {init: false, enforce_type: 'loose'});
@@ -2307,10 +2127,9 @@ describe('schema', function() {
     });
 
     it('Buffer - wrong type  - type: "none"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: Buffer
       }, {init: false, enforce_type: 'none'});
@@ -2323,10 +2142,9 @@ describe('schema', function() {
       doc.validate();
     });
     it('Buffer - raw type - type: "strict"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: Buffer
       }, {init: false, enforce_type: 'strict'});
@@ -2339,10 +2157,9 @@ describe('schema', function() {
       doc.validate();
     });
     it('Buffer - raw type - missing data - type: "strict"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: Buffer
       }, {init: false, enforce_type: 'strict'});
@@ -2358,14 +2175,13 @@ describe('schema', function() {
       });
     });
     it('Buffer - r.http', function() {
-      let name = util.s8();
       let str = util.s8();
-
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: Buffer
       }, {init: false});
 
+      let r = test.r;
       let doc = new Model({
         id: str,
         field: r.http('http://some/domain/com/some/binary/file')
@@ -2373,10 +2189,9 @@ describe('schema', function() {
       doc.validate();
     });
     it('Buffer - undefined - enforce_missing: true', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: Buffer
       }, {init: false, enforce_missing: true});
@@ -2391,10 +2206,9 @@ describe('schema', function() {
       });
     });
     it('Buffer - undefined - enforce_missing: false', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: Buffer
       }, {init: false, enforce_missing: false});
@@ -2405,10 +2219,9 @@ describe('schema', function() {
       doc.validate();
     });
     it('Array - missing - enforce_missing: true', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: [Number]
       }, {init: false, enforce_missing: true});
@@ -2424,10 +2237,9 @@ describe('schema', function() {
       });
     });
     it('Array - undefined - enforce_missing: true', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: [Number]
       }, {init: false, enforce_missing: true});
@@ -2443,10 +2255,9 @@ describe('schema', function() {
       });
     });
     it('Array - undefined - enforce_missing: false', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: [Number]
       }, {init: false, enforce_missing: false});
@@ -2458,10 +2269,9 @@ describe('schema', function() {
       doc.validate();
     });
     it('Array - wrong type - enforce_type: "loose"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: [Number]
       }, {init: false, enforce_type: 'loose'});
@@ -2478,10 +2288,9 @@ describe('schema', function() {
       });
     });
     it('Array - wrong type - enforce_type: "loose"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: [Number]
       }, {init: false, enforce_type: 'loose'});
@@ -2498,10 +2307,9 @@ describe('schema', function() {
       });
     });
     it('Array - wrong type - enforce_type: "none"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: [Number]
       }, {init: false, enforce_type: 'none'});
@@ -2513,10 +2321,9 @@ describe('schema', function() {
       doc.validate();
     });
     it('Array - wrong type inside - enforce_type: "strict"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: [Number]
       }, {init: false, enforce_type: 'strict'});
@@ -2533,10 +2340,9 @@ describe('schema', function() {
       });
     });
     it('Array - wrong type inside - enforce_type: "loose"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: [Number]
       }, {init: false, enforce_type: 'loose'});
@@ -2553,10 +2359,9 @@ describe('schema', function() {
       });
     });
     it('Array - wrong type inside - enforce_type: "none"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: [Number]
       }, {init: false, enforce_type: 'none'});
@@ -2569,10 +2374,9 @@ describe('schema', function() {
       doc.validate();
     });
     it('Array - wrong type inside - not first - enforce_type: "strict" - 1', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: [Number]
       }, {init: false, enforce_type: 'strict'});
@@ -2589,10 +2393,9 @@ describe('schema', function() {
       });
     });
     it('Array - wrong type inside - not first - enforce_type: "strict" - 2', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: [Number]
       }, {init: false, enforce_type: 'strict'});
@@ -2609,10 +2412,9 @@ describe('schema', function() {
       });
     });
     it('Array - wrong type inside - not first - enforce_type: "loose"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: [Number]
       }, {init: false, enforce_type: 'loose'});
@@ -2629,10 +2431,9 @@ describe('schema', function() {
       });
     });
     it('Array - null - enforce_type: "loose"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: [Number]
       }, {init: false, enforce_type: 'loose'});
@@ -2645,10 +2446,9 @@ describe('schema', function() {
       doc.validate();
     });
     it('Object - undefined - enforce_missing: true', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {}
       }, {init: false, enforce_missing: true});
@@ -2664,10 +2464,9 @@ describe('schema', function() {
       });
     });
     it('Object - undefined - enforce_missing: false', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {}
       }, {init: false, enforce_missing: false});
@@ -2679,10 +2478,9 @@ describe('schema', function() {
       doc.validate();
     });
     it('Object - undefined - enforce_type: "loose"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {}
       }, {init: false, enforce_type: 'loose'});
@@ -2699,10 +2497,9 @@ describe('schema', function() {
       });
     });
     it('Object - undefined - enforce_type: "none"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {}
       }, {init: false, enforce_type: 'none'});
@@ -2714,10 +2511,9 @@ describe('schema', function() {
       doc.validate();
     });
     it('Object - undefined - enforce_type: "none"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {}
       }, {init: false, enforce_type: 'none'});
@@ -2729,10 +2525,9 @@ describe('schema', function() {
       doc.validate();
     });
     it('Object - nested - enforce_type: "strict"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {
           foo: Number
@@ -2751,10 +2546,9 @@ describe('schema', function() {
       });
     });
     it('Object - nested wrong type - enforce_type: "strict"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {
           foo: Number
@@ -2773,10 +2567,9 @@ describe('schema', function() {
       });
     });
     it('Object - nested wrong type - enforce_type: "strict" - 2', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {
           foo: Number
@@ -2797,10 +2590,9 @@ describe('schema', function() {
       });
     });
     it('Object - nested wrong type - enforce_type: "loose"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {
           foo: Number
@@ -2821,10 +2613,9 @@ describe('schema', function() {
       });
     });
     it('Object - Empty - enforce_type: "strict"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String
       }, {init: false, enforce_type: 'strict'});
 
@@ -2834,10 +2625,9 @@ describe('schema', function() {
     });
 
     it('Object - nested wrong type 2 - enforce_type: "loose"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {
           foo: {_type: Number}
@@ -2856,10 +2646,9 @@ describe('schema', function() {
       });
     });
     it('Object - undefined - enforce_type: "loose"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {
           foo: {_type: Number}
@@ -2874,10 +2663,9 @@ describe('schema', function() {
       doc.validate();
     });
     it('Object - nested wrong type 4 - enforce_type: "loose"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {
           foo: {_type: Number, default: 'foo'}
@@ -2896,10 +2684,9 @@ describe('schema', function() {
       });
     });
     it('Object - nested wrong type 5 - enforce_type: "none"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {
           foo: {_type: Number}
@@ -2914,10 +2701,9 @@ describe('schema', function() {
       doc.validate();
     });
     it('Extra field - 1', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String
       }, {init: false, enforce_extra: 'strict'});
 
@@ -2932,10 +2718,9 @@ describe('schema', function() {
       });
     });
     it('Extra field - 2', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         foo: [{bar: String}]
       }, {init: false, enforce_extra: 'strict'});
@@ -2951,10 +2736,9 @@ describe('schema', function() {
       });
     });
     it('Extra field - 3', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         foo: {bar: String}
       }, {init: false, enforce_extra: 'strict'});
@@ -2970,10 +2754,9 @@ describe('schema', function() {
       });
     });
     it('Extra field - enforce_extra:"remove" - global option', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         foo: {fizz: String}
       }, {init: false, enforce_extra: 'remove'});
@@ -2992,10 +2775,9 @@ describe('schema', function() {
       });
     });
     it('Extra field - enforce_extra:"remove" - deprecated', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         foo: {
           _type: Object,
@@ -3021,10 +2803,9 @@ describe('schema', function() {
       });
     });
     it('Extra field - enforce_extra:"remove"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         foo: type.object().schema({
           fizz: type.string()
@@ -3046,15 +2827,14 @@ describe('schema', function() {
     });
 
     it('Extra field - enforce_extra:"remove" - should not removed joined documents', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String
       }, {init: false, enforce_extra: 'remove'});
 
 
-      let OtherModel = thinky.createModel(util.s8(), {
+      let OtherModel = test.thinky.createModel(test.table(), {
         id: String,
         otherId: String
       }, {init: false, enforce_extra: 'remove'});
@@ -3073,10 +2853,9 @@ describe('schema', function() {
     });
 
     it('Test option validate="oncreate"', function() {
-      let name = util.s8();
       let str = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: String
       }, {init: false, enforce_type: 'strict', enforce_missing: true, enforce_extra: 'strict', validate: 'oncreate'});
@@ -3095,19 +2874,18 @@ describe('schema', function() {
 
   describe('validateAll', function() {
     it('it should check joined Document too -- hasOne - 1', function() {
-      let name = util.s8();
       let otherName = util.s8();
 
       let str1 = util.s8();
       let str2 = util.s8();
       let str3 = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: String
       }, {init: false, enforce_type: 'strict'});
 
-      let OtherModel = thinky.createModel(otherName, {
+      let OtherModel = test.thinky.createModel(otherName, {
         id: String,
         field: String,
         otherId: String
@@ -3130,19 +2908,18 @@ describe('schema', function() {
       });
     });
     it('it should check joined Document too -- hasOne - 2', function() {
-      let name = util.s8();
       let otherName = util.s8();
 
       let str1 = util.s8();
       let str2 = util.s8();
       let str3 = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: String
       }, {init: false, enforce_type: 'strict'});
 
-      let OtherModel = thinky.createModel(otherName, {
+      let OtherModel = test.thinky.createModel(otherName, {
         id: String,
         field: String,
         otherId: String
@@ -3165,20 +2942,19 @@ describe('schema', function() {
       });
     });
     it('it should check joined Document too -- belongsTo - 1', function() {
-      let name = util.s8();
       let otherName = util.s8();
 
       let str1 = util.s8();
       let str2 = util.s8();
       let str3 = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: String,
         otherId: String
       }, {init: false, enforce_type: 'strict'});
 
-      let OtherModel = thinky.createModel(otherName, {
+      let OtherModel = test.thinky.createModel(otherName, {
         id: String,
         field: String
       }, {init: false, enforce_type: 'loose'});
@@ -3201,20 +2977,19 @@ describe('schema', function() {
       });
     });
     it('it should check joined Document too -- belongsTo - 2', function() {
-      let name = util.s8();
       let otherName = util.s8();
 
       let str1 = util.s8();
       let str2 = util.s8();
       let str3 = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: String,
         otherId: String
       }, {init: false, enforce_type: 'strict'});
 
-      let OtherModel = thinky.createModel(otherName, {
+      let OtherModel = test.thinky.createModel(otherName, {
         id: String,
         field: String
       }, {init: false, enforce_type: 'loose'});
@@ -3237,19 +3012,18 @@ describe('schema', function() {
       });
     });
     it('it should check joined Document too -- hasMany - 1', function() {
-      let name = util.s8();
       let otherName = util.s8();
 
       let str1 = util.s8();
       let str2 = util.s8();
       let str3 = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: String
       }, {init: false, enforce_type: 'strict'});
 
-      let OtherModel = thinky.createModel(otherName, {
+      let OtherModel = test.thinky.createModel(otherName, {
         id: String,
         field: String,
         otherId: String
@@ -3273,19 +3047,18 @@ describe('schema', function() {
       });
     });
     it('it should check joined Document too -- hasMany - 2', function() {
-      let name = util.s8();
       let otherName = util.s8();
 
       let str1 = util.s8();
       let str2 = util.s8();
       let str3 = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: String
       }, {init: false, enforce_type: 'strict'});
 
-      let OtherModel = thinky.createModel(otherName, {
+      let OtherModel = test.thinky.createModel(otherName, {
         id: String,
         field: String,
         otherId: String
@@ -3309,19 +3082,18 @@ describe('schema', function() {
       });
     });
     it('it should check joined Document too -- hasAndBelongsToMany - 1', function() {
-      let name = util.s8();
       let otherName = util.s8();
 
       let str1 = util.s8();
       let str2 = util.s8();
       let str3 = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: String
       }, {init: false, enforce_type: 'strict'});
 
-      let OtherModel = thinky.createModel(otherName, {
+      let OtherModel = test.thinky.createModel(otherName, {
         id: String,
         field: String,
         otherId: String
@@ -3345,19 +3117,18 @@ describe('schema', function() {
       });
     });
     it('it should check joined Document too -- hasAndBelongsToMany - 2', function() {
-      let name = util.s8();
       let otherName = util.s8();
 
       let str1 = util.s8();
       let str2 = util.s8();
       let str3 = util.s8();
 
-      let Model = thinky.createModel(name, {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: String
       }, {init: false, enforce_type: 'strict'});
 
-      let OtherModel = thinky.createModel(otherName, {
+      let OtherModel = test.thinky.createModel(otherName, {
         id: String,
         field: String,
         otherId: String
@@ -3381,56 +3152,65 @@ describe('schema', function() {
       });
     });
     it('hasOne with a circular reference', function() {
-      let Model = thinky.createModel(util.s8(), { id: String});
-      let OtherModel = thinky.createModel(util.s8(), { id: String, otherId: String });
+      let Model = test.thinky.createModel(test.table(), { id: String});
+      let OtherModel = test.thinky.createModel(test.table(), { id: String, otherId: String });
 
       Model.hasOne(OtherModel, 'has', 'id', 'otherId');
       OtherModel.belongsTo(Model, 'belongsTo', 'otherId', 'id');
 
-      let doc = new Model({});
-      let otherDoc = new Model({});
-      doc.has = otherDoc;
-      otherDoc.belongsTo = doc;
-      doc.validate();
-      otherDoc.validate();
+      return Promise.all([ Model.ready(), OtherModel.ready() ])
+        .then(() => {
+          let doc = new Model({});
+          let otherDoc = new Model({});
+          doc.has = otherDoc;
+          otherDoc.belongsTo = doc;
+          doc.validate();
+          otherDoc.validate();
+        });
     });
     it('hasOne with a circular reference - second reference should not be checked', function() {
-      let Model = thinky.createModel(util.s8(), { id: String});
-      let OtherModel = thinky.createModel(util.s8(), { id: String, otherId: String });
+      let Model = test.thinky.createModel(test.table(), { id: String});
+      let OtherModel = test.thinky.createModel(test.table(), { id: String, otherId: String });
 
       Model.hasOne(OtherModel, 'has', 'id', 'otherId');
       OtherModel.belongsTo(Model, 'belongsTo', 'otherId', 'id');
 
-      let doc = new Model({});
-      let otherDoc = new Model({});
-      let wrongDoc = new Model({id: 1});
-      doc.has = otherDoc;
-      otherDoc.belongsTo = wrongDoc;
-      doc.validateAll();
+      return Promise.all([ Model.ready(), OtherModel.ready() ])
+        .then(() => {
+          let doc = new Model({});
+          let otherDoc = new Model({});
+          let wrongDoc = new Model({id: 1});
+          doc.has = otherDoc;
+          otherDoc.belongsTo = wrongDoc;
+          doc.validateAll();
+        });
     });
     it('hasOne with a circular reference - second reference should be checked if manually asked', function() {
-      let Model = thinky.createModel(util.s8(), { id: String});
-      let OtherModel = thinky.createModel(util.s8(), { id: String, otherId: String });
+      let Model = test.thinky.createModel(test.table(), { id: String});
+      let OtherModel = test.thinky.createModel(test.table(), { id: String, otherId: String });
 
       Model.hasOne(OtherModel, 'has', 'id', 'otherId');
       OtherModel.belongsTo(Model, 'belongsTo', 'otherId', 'id');
 
-      let doc = new Model({});
-      let otherDoc = new OtherModel({});
-      let wrongDoc = new Model({id: 1});
-      doc.has = otherDoc;
-      otherDoc.belongsTo = wrongDoc;
-      assert.throws(function() {
-        doc.validateAll({}, {has: {belongsTo: true}});
-      }, function(error) {
-        return error.message === 'Value for [has][belongsTo][id] must be a string or null.';
-      });
+      return Promise.all([ Model.ready(), OtherModel.ready() ])
+        .then(() => {
+          let doc = new Model({});
+          let otherDoc = new OtherModel({});
+          let wrongDoc = new Model({id: 1});
+          doc.has = otherDoc;
+          otherDoc.belongsTo = wrongDoc;
+          assert.throws(function() {
+            doc.validateAll({}, {has: {belongsTo: true}});
+          }, function(error) {
+            return error.message === 'Value for [has][belongsTo][id] must be a string or null.';
+          });
+        });
     });
   });
 
   describe('_validator', function() {
     it('validate on the whole document - bind with the doc - 1 ', function() {
-      let Model = thinky.createModel(util.s8(), {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {_type: String},
         foreignKey: String
@@ -3445,7 +3225,7 @@ describe('schema', function() {
     });
 
     it('validate on the whole document - bind with the doc - 1 ', function() {
-      let Model = thinky.createModel(util.s8(), {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {_type: String},
         foreignKey: String
@@ -3466,7 +3246,7 @@ describe('schema', function() {
 
     /*
     it('validate on the whole document - make sure a relation is defined ', function(done) {
-      let Model = thinky.createModel(util.s8(), {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: String
       }, {validator: function() {
@@ -3497,7 +3277,7 @@ describe('schema', function() {
     */
 
     it('validate on the whole document - bind with the doc - return false - 1 ', function() {
-      let Model = thinky.createModel(util.s8(), {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {_type: String}
       }, {init: false, validator: function() {
@@ -3508,7 +3288,7 @@ describe('schema', function() {
       doc.validate();
     });
     it('validate on the whole document - bind with the doc - return false with arg - 1 ', function() {
-      let Model = thinky.createModel(util.s8(), {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {_type: String}
       }, {init: false, validator: function(doc) {
@@ -3519,7 +3299,7 @@ describe('schema', function() {
       doc.validate();
     });
     it('validate on the whole document - bind with the doc - return false with arg (error)- 1 ', function() {
-      let Model = thinky.createModel(util.s8(), {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {_type: String}
       }, {init: false, validator: function(doc) {
@@ -3535,7 +3315,7 @@ describe('schema', function() {
       });
     });
     it('validate on the whole document - bind with the doc - 2', function() {
-      let Model = thinky.createModel(util.s8(), {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {_type: String}
       }, {init: false, validator: function() {
@@ -3554,7 +3334,7 @@ describe('schema', function() {
       });
     });
     it('validate on the whole document - bind with the doc - return false - 2', function() {
-      let Model = thinky.createModel(util.s8(), {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {_type: String}
       }, {init: false, validator: function() {
@@ -3571,7 +3351,7 @@ describe('schema', function() {
       });
     });
     it('validate on the whole document - nested field - 1 ', function() {
-      let Model = thinky.createModel(util.s8(), {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {_type: String}
       }, {init: false, validator: function() {
@@ -3585,7 +3365,7 @@ describe('schema', function() {
       doc.validate();
     });
     it('validate on the whole document - nested field - 2', function() {
-      let Model = thinky.createModel(util.s8(), {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {_type: String}
       }, {init: false, validator: function() {
@@ -3604,7 +3384,7 @@ describe('schema', function() {
       });
     });
     it('validate on a field - 1 ', function() {
-      let Model = thinky.createModel(util.s8(), {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {_type: String, validator: function(value) {
           if (value !== 'abc') {
@@ -3616,7 +3396,7 @@ describe('schema', function() {
       doc.validate();
     });
     it('validate on a field - 2', function() {
-      let Model = thinky.createModel(util.s8(), {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {_type: String, validator: function(value) {
           if (value !== 'abc') {
@@ -3633,7 +3413,7 @@ describe('schema', function() {
       });
     });
     it('validate on a field - 3', function() {
-      let Model = thinky.createModel(util.s8(), {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {_type: String, validator: function(value) {
           return value === 'abc';
@@ -3648,7 +3428,7 @@ describe('schema', function() {
       });
     });
     it('validate on a field - 4', function() {
-      let Model = thinky.createModel(util.s8(), {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {_type: String, validator: function(value) {
           return this === 'abc';
@@ -3663,7 +3443,7 @@ describe('schema', function() {
       });
     });
     it('validate on the whole document - nested field - 1 ', function() {
-      let Model = thinky.createModel(util.s8(), {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         nested: {
           field: {_type: String, validator: function(value) {
@@ -3679,7 +3459,7 @@ describe('schema', function() {
       doc.validate();
     });
     it('validate on the whole document - nested field - 2', function() {
-      let Model = thinky.createModel(util.s8(), {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         nested: {
           field: {_type: String, validator: function(value) {
@@ -3699,7 +3479,7 @@ describe('schema', function() {
       });
     });
     it('validate with _type: Array - 1', function() {
-      let Model = thinky.createModel(util.s8(), {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         arr: {_type: Array, schema: Number}
       }, {init: false});
@@ -3708,7 +3488,7 @@ describe('schema', function() {
       doc.validate();
     });
     it('validate with _type: Array - 2', function() {
-      let Model = thinky.createModel(util.s8(), {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         arr: {_type: Array, schema: Number}
       }, {init: false});
@@ -3722,7 +3502,7 @@ describe('schema', function() {
       });
     });
     it('validate with _type: Object - 1', function() {
-      let Model = thinky.createModel(util.s8(), {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         ob: {_type: Object, schema: {foo: String}}
       }, {init: false});
@@ -3731,7 +3511,7 @@ describe('schema', function() {
       doc.validate();
     });
     it('validate with _type: Object - 2', function() {
-      let Model = thinky.createModel(util.s8(), {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         ob: {_type: Object, schema: {foo: String}}
       }, {init: false});
@@ -3745,7 +3525,7 @@ describe('schema', function() {
       });
     });
     it('Check extra fields only if the schema is an object without the _type field', function() {
-      let User = thinky.createModel('users', {
+      let User = test.thinky.createModel('users', {
         email: {
           _type: String,
           validator: function() { return true; }
@@ -3761,7 +3541,7 @@ describe('schema', function() {
       user.validate();
     });
     it('Enum - success ', function() {
-      let Model = thinky.createModel(util.s8(), {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {_type: String, enum: ['foo', 'bar', 'buzz']}
       }, {init: false});
@@ -3769,7 +3549,7 @@ describe('schema', function() {
       doc.validate();
     });
     it('Enum - throw - 1 ', function() {
-      let Model = thinky.createModel(util.s8(), {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {_type: String, enum: ['foo', 'bar', 'buzz']}
       }, {init: false});
@@ -3782,7 +3562,7 @@ describe('schema', function() {
       });
     });
     it('Enum - throw - 2', function() {
-      let Model = thinky.createModel(util.s8(), {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {_type: String, enum: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']}
       }, {init: false});
@@ -3795,7 +3575,7 @@ describe('schema', function() {
       });
     });
     it('Enum - throw - 3', function() {
-      let Model = thinky.createModel(util.s8(), {
+      let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {_type: String, enum: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11']}
       }, {init: false});
@@ -3809,8 +3589,7 @@ describe('schema', function() {
     });
 
     it('Array without type', function() {
-      let name = util.s8();
-      let Model = thinky.createModel(name, {id: Array}, {init: false});
+      let Model = test.thinky.createModel(test.table(), {id: Array}, {init: false});
       let doc = new Model({id: [1, 2, 3]});
       doc.validate();
     });

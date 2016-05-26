@@ -9,15 +9,16 @@ class TestFixture {
     this.models = new Map();
   }
 
-  setup() {
+  setup(options) {
     this.dbName = util.s8();
-    this.thinky = thinky({
+    let thinkyOptions = Object.assign({}, options, {
       db: this.dbName,
       host: config.host,
       port: config.port,
       silent: true
     });
 
+    this.thinky = thinky(thinkyOptions);
     this.r = this.thinky.r;
     this.type = this.thinky.type;
     return this.thinky.dbReady();
@@ -54,15 +55,13 @@ class TestFixture {
         return r.db(this.dbName).table(table).wait()
           .then(() => r.db(this.dbName).table(table).delete().run());
       });
-
-      // return r.db(this.dbName).table(model).wait()
-      //   .then(() => r.db(this.dbName).table(model).delete().run());
     })
     .error(err => { /* console.log('clean error: ', err); */ })
     .finally(() => this.thinky._clean());
   }
 
   table(id) {
+    if (id === null || id === undefined) id = util.s8();
     if (!this.models.has(id)) this.models.set(id, util.s8());
     return this.models.get(id);
   }
