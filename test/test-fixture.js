@@ -2,7 +2,11 @@
 const Promise = require('bluebird'),
       config = require('./config'),
       thinky = require('../lib/thinky'),
-      util = require('./util');
+      util = require('./util'),
+      chai = require('chai');
+
+chai.config.includeStack = true;
+chai.use(require('chai-as-promised'));
 
 class TestFixture {
   constructor() {

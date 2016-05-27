@@ -192,7 +192,7 @@ describe('models', () => {
 
       return Model.save([ { id: 4 } ])
         .error(err => {
-          assert.equal(err.message, 'One of the documents is not valid. Original error:\nValue for [id] must be a string or null.');
+          assert.equal(err.message, 'Value for [id] must be a string or null.');
           assert(err instanceof Errors.ValidationError);
           done();
         });

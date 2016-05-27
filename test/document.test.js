@@ -3,7 +3,8 @@ const TestFixture = require('./test-fixture'),
       Errors = require('../lib/errors'),
       type = require('../lib/type'),
       util = require('./util'),
-      assert = require('assert');
+      assert = require('assert'),
+      expect = require('chai').expect;
 
 let test = new TestFixture();
 describe('documents', function() {
@@ -2787,7 +2788,9 @@ describe('documents', function() {
       });
 
       let doc = new Model({id: 'foobar'});
-      return doc.then(() => assert.equal(doc.id, doc.title));
+
+      // because validation is explicitly promised based now we use process.nextTick
+      process.nextTick(() => assert.equal(doc.id, doc.title));
     });
 
     it('validate oncreate + init async', function() {
@@ -2821,8 +2824,8 @@ describe('documents', function() {
       });
 
       let doc = new Model({id: 'foobar'});
-      doc.validate();
-      assert.equal(doc.id, doc.title);
+      doc.validate()
+        .then(() => assert.equal(doc.id, doc.title));
     });
 
     it('validate post sync - error', function() {
@@ -2832,11 +2835,8 @@ describe('documents', function() {
       });
 
       let doc = new Model({id: 'foobar'});
-      try {
-        doc.validate();
-      } catch (err) {
-        assert.equal(err.message, 'Error thrown by a hook');
-      }
+      expect(doc.validate())
+        .to.be.rejectedWith(Error, 'Error thrown by a hook');
     });
 
     it('init validate async', function() {

@@ -3,7 +3,8 @@ const TestFixture = require('./test-fixture'),
       type = require('../lib/type'),
       Errors = require('../lib/errors'),
       util = require('./util'),
-      assert = require('assert');
+      assert = require('assert'),
+      expect = require('chai').expect;
 
 /* eslint-disable no-unused-vars */
 
@@ -165,23 +166,24 @@ describe('schema', function() {
         objectArray: [{ myAttribute: type.object() }]});
       let doc = new Model({ id: util.s8(), objectArray: {} });
     });
+
     it('String - basic - valid string', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.string()},
         {init: false});
       let doc = new Model({ id: util.s8() });
     });
+
     it('String - basic - wrong type', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.string()},
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: 1 });
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [id] must be a string or null.');
-      });
+
+      let doc = new Model({ id: 1 });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be a string or null.');
     });
+
     it('String - basic - null', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.string()},
@@ -189,39 +191,37 @@ describe('schema', function() {
       let doc = new Model({});
       doc.validate();
     });
+
     it('String - basic - null and strict - deprecated', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.string().options({enforce_type: 'strict'})},
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: null});
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [id] must be a string.');
-      });
+
+      let doc = new Model({ id: null});
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be a string.');
     });
+
     it('String - basic - null and strict', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.string().allowNull(false)},
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: null});
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Error) && (error.message === 'Value for [id] must be a string.');
-      });
+
+      let doc = new Model({ id: null});
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be a string.');
     });
+
     it('String - basic - null and strict', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.string().allowNull(false)},
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: null});
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Error) && (error.message === 'Value for [id] must be a string.');
-      });
+
+      let doc = new Model({ id: null});
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be a string.');
     });
+
     it('String - basic - undefined', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.string().allowNull(false)},
@@ -229,17 +229,17 @@ describe('schema', function() {
       let doc = new Model({});
       doc.validate();
     });
+
     it('String - basic - undefined - enforce_missing: strict', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.string().required()},
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({});
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [id] must be defined.');
-      });
+
+      let doc = new Model({});
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be defined.');
     });
+
     it('String - r.uuid', function() {
       let r = test.r;
       let Model = test.thinky.createModel(test.table(),
@@ -248,17 +248,17 @@ describe('schema', function() {
       let doc = new Model({});
       doc.validate();
     });
+
     it('String - min - too short', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.string().min(2) },
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: 'a'});
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [id] must be longer than 2.');
-      });
+
+      let doc = new Model({ id: 'a'});
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be longer than 2.');
     });
+
     it('String - min - good', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.string().min(2) },
@@ -266,17 +266,17 @@ describe('schema', function() {
       let doc = new Model({ id: 'abc'});
       doc.validate();
     });
+
     it('String - max - too long', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.string().max(5) },
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: 'abcdefgh'});
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [id] must be shorter than 5.');
-      });
+
+      let doc = new Model({ id: 'abcdefgh'});
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be shorter than 5.');
     });
+
     it('String - max - good', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.string().max(5) },
@@ -284,28 +284,27 @@ describe('schema', function() {
       let doc = new Model({ id: 'abc'});
       doc.validate();
     });
+
     it('String - length - too long', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.string().length(5) },
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: 'abcdef'});
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [id] must be a string with 5 characters.');
-      });
+
+      let doc = new Model({ id: 'abcdef'});
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be a string with 5 characters.');
     });
+
     it('String - length - too short', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.string().length(5) },
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: 'abc'});
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [id] must be a string with 5 characters.');
-      });
+
+      let doc = new Model({ id: 'abc'});
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be a string with 5 characters.');
     });
+
     it('String - length - good', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.string().max(5) },
@@ -313,17 +312,17 @@ describe('schema', function() {
       let doc = new Model({ id: 'abcde'});
       doc.validate();
     });
+
     it('String - regex - not matching', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.string().regex('^foo') },
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: 'bar'});
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [id] must match the regex.');
-      });
+
+      let doc = new Model({ id: 'bar'});
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must match the regex.');
     });
+
     it('String - regex - good', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.string().regex('^foo') },
@@ -331,17 +330,17 @@ describe('schema', function() {
       let doc = new Model({ id: 'foobar'});
       doc.validate();
     });
+
     it('String - regex with flags - not matching', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.string().regex('^foo', 'i') },
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: 'bar'});
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [id] must match the regex.');
-      });
+
+      let doc = new Model({ id: 'bar'});
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must match the regex.');
     });
+
     it('String - regex with flags - good', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.string().regex('^foo', 'i') },
@@ -351,17 +350,17 @@ describe('schema', function() {
       doc = new Model({ id: 'fOObar'});
       doc.validate();
     });
+
     it('String - alphanum - not alphanum', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.string().alphanum() },
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: 'élégant'});
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [id] must be an alphanumeric string.');
-      });
+
+      let doc = new Model({ id: 'élégant'});
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be an alphanumeric string.');
     });
+
     it('String - alphanum - match', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.string().alphanum() },
@@ -369,17 +368,17 @@ describe('schema', function() {
       let doc = new Model({ id: 'fOOb12ar'});
       doc.validate();
     });
+
     it('String - email - not an email', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.string().email() },
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: 'fooATbar.com'});
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [id] must be a valid email.');
-      });
+
+      let doc = new Model({ id: 'fooATbar.com'});
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be a valid email.');
     });
+
     it('String - email - match', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.string().email() },
@@ -387,17 +386,17 @@ describe('schema', function() {
       let doc = new Model({ id: 'foo@bar.com'});
       doc.validate();
     });
+
     it('String - lowercase - not lowercase', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.string().lowercase() },
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: 'fooBar'});
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [id] must be a lowercase string.');
-      });
+
+      let doc = new Model({ id: 'fooBar'});
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be a lowercase string.');
     });
+
     it('String - lowercase - match', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.string().lowercase() },
@@ -405,17 +404,17 @@ describe('schema', function() {
       let doc = new Model({ id: 'foobar'});
       doc.validate();
     });
+
     it('String - uppercase - not uppercase', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.string().uppercase() },
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: 'fooBar'});
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [id] must be a uppercase string.');
-      });
+
+      let doc = new Model({ id: 'fooBar'});
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be a uppercase string.');
     });
+
     it('String - uppercase - match', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.string().uppercase() },
@@ -423,53 +422,59 @@ describe('schema', function() {
       let doc = new Model({ id: 'FOOBAR'});
       doc.validate();
     });
+
     it('String - uuid - not uuid v3', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.string().uuid(3) },
         {init: false});
       let doc = new Model({id: 'xxxA987FBC9-4BED-3078-CF07-9141BA07C9F3'});
     });
+
     it('String - uuid - is uuid v3', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.string().uuid(3) },
         {init: false});
       let doc = new Model({id: 'A987FBC9-4BED-3078-CF07-9141BA07C9F3'});
     });
+
     it('String - uuid - not uuid v4', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.string().uuid(4) },
         {init: false});
       let doc = new Model({id: 'A987FBC9-4BED-5078-AF07-9141BA07C9F3'});
     });
+
     it('String - uuid - is uuid v4', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.string().uuid(4) },
         {init: false});
       let doc = new Model({id: '713ae7e3-cb32-45f9-adcb-7c4fa86b90c1'});
     });
+
     it('String - uuid - not uuid v5', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.string().uuid(5) },
         {init: false});
       let doc = new Model({id: '9c858901-8a57-4791-81fe-4c455b099bc9'});
     });
+
     it('String - uuid - is uuid v5', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.string().uuid(5) },
         {init: false});
       let doc = new Model({id: '987FBC97-4BED-5078-BF07-9141BA07C9F3'});
     });
+
     it('String - validator - return false', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.string().validator(function() { return false; }) },
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: 'fooBar'});
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Validator for the field [id] returned `false`.');
-      });
+
+      let doc = new Model({ id: 'fooBar'});
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Validator for the field [id] returned `false`.');
     });
+
     it('String - validator - return true', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.string().validator(function() { return true; }) },
@@ -477,60 +482,55 @@ describe('schema', function() {
       let doc = new Model({ id: 'FOOBAR'});
       doc.validate();
     });
+
     it('String - validator - throw', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.string().validator(function() { throw new Errors.ValidationError('Not good'); }) },
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: 'fooBar'});
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Not good');
-      });
+
+      let doc = new Model({ id: 'fooBar'});
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Not good');
     });
+
     it('String - enum - unknown value - 1', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.string().enum('foo', 'bar') },
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: 'buzz'});
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'The field [id] must be one of these values: foo, bar.');
-      });
+
+      let doc = new Model({ id: 'buzz'});
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'The field [id] must be one of these values: foo, bar.');
     });
+
     it('String - enum - unknown value - 2', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.string().enum(['foo', 'bar']) },
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: 'buzz'});
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'The field [id] must be one of these values: foo, bar.');
-      });
+
+      let doc = new Model({ id: 'buzz'});
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'The field [id] must be one of these values: foo, bar.');
     });
+
     it('String - enum - unknown value - 3', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.string().enum(['foo']) },
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: 'buzz'});
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'The field [id] must be one of these values: foo.');
-      });
+
+      let doc = new Model({ id: 'buzz'});
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'The field [id] must be one of these values: foo.');
     });
+
     it('String - enum - unknown value - 4', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.string().enum('foo') },
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: 'buzz'});
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'The field [id] must be one of these values: foo.');
-      });
+
+      let doc = new Model({ id: 'buzz'});
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'The field [id] must be one of these values: foo.');
     });
 
     it('String - enum - known value - 1', function() {
@@ -540,6 +540,7 @@ describe('schema', function() {
       let doc = new Model({ id: 'foo'});
       doc.validate();
     });
+
     it('String - enum - known value - 2', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.string().enum(['foo', 'bar']) },
@@ -547,6 +548,7 @@ describe('schema', function() {
       let doc = new Model({ id: 'foo'});
       doc.validate();
     });
+
     it('String - enum - known value - 3', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.string().enum(['foo']) },
@@ -554,6 +556,7 @@ describe('schema', function() {
       let doc = new Model({ id: 'foo'});
       doc.validate();
     });
+
     it('String - enum - known value - 4', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.string().enum('foo') },
@@ -568,28 +571,27 @@ describe('schema', function() {
         {init: false});
       let doc = new Model({ id: 1 });
     });
+
     it('Number - basic - wrong type', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.number()},
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: 'foo' });
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [id] must be a finite number or null.');
-      });
+
+      let doc = new Model({ id: 'foo' });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be a finite number or null.');
     });
+
     it('Number - basic - NaN', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.number()},
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: NaN });
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [id] must be a finite number or null.');
-      });
+
+      let doc = new Model({ id: NaN });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be a finite number or null.');
     });
+
     it('Number - r.random()', function() {
       let r = test.r;
       let Model = test.thinky.createModel(test.table(),
@@ -598,39 +600,37 @@ describe('schema', function() {
       let doc = new Model({});
       doc.validate();
     });
+
     it('Number - basic - Infinity', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.number()},
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: Infinity });
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [id] must be a finite number or null.');
-      });
+
+      let doc = new Model({ id: Infinity });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be a finite number or null.');
     });
+
     it('Number - basic - -Infinity', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.number()},
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: -Infinity });
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [id] must be a finite number or null.');
-      });
+
+      let doc = new Model({ id: -Infinity });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be a finite number or null.');
     });
+
     it('Number - min - too small', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.number().min(2) },
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: 1});
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [id] must be greater than 2.');
-      });
+
+      let doc = new Model({ id: 1});
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be greater than 2.');
     });
+
     it('Number - min - good', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.number().min(2) },
@@ -638,35 +638,35 @@ describe('schema', function() {
       let doc = new Model({ id: 3});
       doc.validate();
     });
+
     it('Number - max - too big', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.number().max(5) },
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: 8});
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [id] must be less than 5.');
-      });
+
+      let doc = new Model({ id: 8});
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be less than 5.');
     });
+
     it('Number - max - good', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.number().max(5) },
         {init: false});
       let doc = new Model({ id: 3});
-      doc.validate();
+      return doc.validate();
     });
+
     it('Number - integer - float', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.number().integer() },
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: 3.14});
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [id] must be an integer.');
-      });
+
+      let doc = new Model({ id: 3.14});
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be an integer.');
     });
+
     it('Number - integer - good', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.number().integer() },
@@ -674,17 +674,17 @@ describe('schema', function() {
       let doc = new Model({ id: 3});
       doc.validate();
     });
+
     it('Number - validator - return false', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.number().validator(function() { return false; }) },
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: 2});
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Validator for the field [id] returned `false`.');
-      });
+
+      let doc = new Model({ id: 2});
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Validator for the field [id] returned `false`.');
     });
+
     it('Number - validator - return true', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.number().validator(function() { return true; }) },
@@ -692,16 +692,15 @@ describe('schema', function() {
       let doc = new Model({ id: 3});
       doc.validate();
     });
+
     it('Number - validator - throw', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.number().validator(function() { throw new Errors.ValidationError('Not good'); }) },
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: 4});
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Not good');
-      });
+
+      let doc = new Model({ id: 4});
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Not good');
     });
 
     it('Boolean - basic - valid boolean', function() {
@@ -710,28 +709,27 @@ describe('schema', function() {
         {init: false});
       let doc = new Model({ id: true });
     });
+
     it('Boolean - basic - wrong type', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.boolean()},
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: 'foo' });
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [id] must be a boolean or null.');
-      });
+
+      let doc = new Model({ id: 'foo' });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be a boolean or null.');
     });
+
     it('Boolean - validator - return false', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.boolean().validator(function() { return false; }) },
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: true});
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Validator for the field [id] returned `false`.');
-      });
+
+      let doc = new Model({ id: true});
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Validator for the field [id] returned `false`.');
     });
+
     it('Boolean - validator - return true', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.boolean().validator(function() { return true; }) },
@@ -739,16 +737,14 @@ describe('schema', function() {
       let doc = new Model({ id: true});
       doc.validate();
     });
+
     it('Boolean - validator - throw', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.number().validator(function() { throw new Errors.ValidationError('Not good'); }) },
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: true});
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Not good');
-      });
+
+      let doc = new Model({ id: true});
+      expect(doc.validate()).to.be.rejectedWith(Errors.ValidationError, 'Not good');
     });
 
     it('Date - basic - valid date', function() {
@@ -758,6 +754,7 @@ describe('schema', function() {
       let doc = new Model({ id: new Date() });
       doc.validate();
     });
+
     it('Date - null', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.date().allowNull(true)},
@@ -765,6 +762,7 @@ describe('schema', function() {
       let doc = new Model({ id: null });
       doc.validate();
     });
+
     it('Date - number', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.date()},
@@ -772,17 +770,17 @@ describe('schema', function() {
       let doc = new Model({ id: Date.now() });
       doc.validate();
     });
+
     it('Date - basic - wrong type', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.date()},
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: 'foo' });
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [id] must be a date or a valid string or null.');
-      });
+
+      let doc = new Model({ id: 'foo' });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be a date or a valid string or null.');
     });
+
     it('Date - min - too small', function() {
       let minDate = new Date(0);
       minDate.setUTCSeconds(60 * 60 * 24 * 2);
@@ -792,13 +790,12 @@ describe('schema', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.date().min(minDate) },
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: valueDate});
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && ((error.message.match('Value for .id. must be after')) !== null);
-      });
+
+      let doc = new Model({ id: valueDate});
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, /Value for .id. must be after/);
     });
+
     it('Date - min - good', function() {
       let minDate = new Date(0);
       minDate.setUTCSeconds(60 * 60 * 24);
@@ -811,6 +808,7 @@ describe('schema', function() {
       let doc = new Model({ id: valueDate});
       doc.validate();
     });
+
     it('Date - max - too big', function() {
       let maxDate = new Date(0);
       maxDate.setUTCSeconds(60 * 60 * 24);
@@ -820,13 +818,12 @@ describe('schema', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.date().max(maxDate) },
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: valueDate});
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && ((error.message.match('Value for .id. must be before')) !== null);
-      });
+
+      let doc = new Model({ id: valueDate});
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, /Value for .id. must be before/);
     });
+
     it('Date - max - good', function() {
       let maxDate = new Date(0);
       maxDate.setUTCSeconds(60 * 60 * 24 * 2);
@@ -839,17 +836,17 @@ describe('schema', function() {
       let doc = new Model({ id: valueDate});
       doc.validate();
     });
+
     it('Date - validator - return false', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.date().validator(function() { return false; }) },
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: new Date()});
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Validator for the field [id] returned `false`.');
-      });
+
+      let doc = new Model({ id: new Date()});
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Validator for the field [id] returned `false`.');
     });
+
     it('Date - validator - return true', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.date().validator(function() { return true; }) },
@@ -857,16 +854,14 @@ describe('schema', function() {
       let doc = new Model({ id: new Date()});
       doc.validate();
     });
+
     it('Date - validator - throw', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.date().validator(function() { throw new Errors.ValidationError('Not good'); }) },
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: new Date()});
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Not good');
-      });
+
+      let doc = new Model({ id: new Date()});
+      expect(doc.validate()).to.be.rejectedWith(Errors.ValidationError, 'Not good');
     });
 
     it('Buffer - basic - valid buffer', function() {
@@ -876,6 +871,7 @@ describe('schema', function() {
       let doc = new Model({ id: new Buffer('foobar') });
       doc.validate();
     });
+
     it('Buffer - basic - valid buffer', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.buffer()},
@@ -883,16 +879,15 @@ describe('schema', function() {
       let doc = new Model({ id: null});
       doc.validate();
     });
+
     it('Buffer - basic - wrong type', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.buffer()},
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: 'foo' });
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [id] must be a buffer or null.');
-      });
+
+      let doc = new Model({ id: 'foo' });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be a buffer or null.');
     });
 
     it('Point - basic - valid point - 1', function() {
@@ -901,6 +896,7 @@ describe('schema', function() {
         {init: false});
       let doc = new Model({ id: [10, 2] });
     });
+
     it('Point - basic - valid point - 2', function() {
       let r = test.r;
       let Model = test.thinky.createModel(test.table(),
@@ -908,17 +904,17 @@ describe('schema', function() {
         {init: false});
       let doc = new Model({ id: r.point(2, 10) });
     });
+
     it('Point - basic - wrong type', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.point()},
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: 'foo' });
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [id] must be a Point or null.');
-      });
+
+      let doc = new Model({ id: 'foo' });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be a Point or null.');
     });
+
     it('Object - basic - valid object', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.object().schema({
@@ -927,18 +923,17 @@ describe('schema', function() {
         {init: false});
       let doc = new Model({ id: {foo: 'bar' }});
     });
+
     it('Object - basic - wrong type', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.object().schema({
           foo: type.string()
         })},
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: 'foo' });
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [id] must be an object or null.');
-      });
+
+      let doc = new Model({ id: 'foo' });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be an object or null.');
     });
 
     it('Array - basic - valid array', function() {
@@ -947,39 +942,37 @@ describe('schema', function() {
         {init: false});
       let doc = new Model({ id: ['bar']});
     });
+
     it('Array - basic - wrong type', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.array().schema(type.string())},
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: 'foo' });
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [id] must be an array or null.');
-      });
+
+      let doc = new Model({ id: 'foo' });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be an array or null.');
     });
+
     it('Array - basic - wrong nested type - 1', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.array().schema(type.string())},
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: [2] });
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [id][0] must be a string or null.');
-      });
+
+      let doc = new Model({ id: [2] });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [id][0] must be a string or null.');
     });
+
     it('Array - basic - wrong nested type - 2', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.array().schema(String)},
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: [2] });
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [id][0] must be a string or null.');
-      });
+
+      let doc = new Model({ id: [2] });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [id][0] must be a string or null.');
     });
+
     it('Array - no schema - valid array - 1', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.array()},
@@ -987,6 +980,7 @@ describe('schema', function() {
       let doc = new Model({ id: ['bar']});
       doc.validate();
     });
+
     it('Array - no schema - valid array - 2', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.array()},
@@ -994,29 +988,27 @@ describe('schema', function() {
       let doc = new Model({ id: [{foo: 'bar'}]});
       doc.validate();
     });
+
     it('Array - no schema - non valid array', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.array()},
         {init: false});
+
       let doc = new Model({ id: 'bar'});
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [id] must be an array or null.');
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be an array or null.');
     });
 
     it('Array - basic - wrong nested type - 3', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.array().schema({_type: String})},
         {init: false});
-      assert.throws(function() {
-        let doc = new Model({ id: [2] });
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [id][0] must be a string or null.');
-      });
+
+      let doc = new Model({ id: [2] });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [id][0] must be a string or null.');
     });
+
     it('Array - min - good', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.array().schema(type.string()).min(2)},
@@ -1024,17 +1016,17 @@ describe('schema', function() {
       let doc = new Model({ id: ['foo', 'bar', 'buzz']});
       doc.validate();
     });
+
     it('Array - min - error', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.array().schema(type.string()).min(2)},
         {init: false});
+
       let doc = new Model({ id: ['foo']});
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [id] must have at least 2 elements.');
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must have at least 2 elements.');
     });
+
     it('Array - max - good', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.array().schema(type.string()).max(2)},
@@ -1042,17 +1034,17 @@ describe('schema', function() {
       let doc = new Model({ id: ['foo']});
       doc.validate();
     });
+
     it('Array - max - error', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.array().schema(type.string()).max(2)},
         {init: false});
+
       let doc = new Model({ id: ['foo', 'bar', 'buzz']});
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [id] must have at most 2 elements.');
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must have at most 2 elements.');
     });
+
     it('Array - length - good', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.array().schema(type.string()).length(2)},
@@ -1060,17 +1052,17 @@ describe('schema', function() {
       let doc = new Model({ id: ['foo', 'bar']});
       doc.validate();
     });
+
     it('Array - length - error', function() {
       let Model = test.thinky.createModel(test.table(),
         {id: type.array().schema(type.string()).length(2)},
         {init: false});
+
       let doc = new Model({ id: ['foo', 'bar', 'buzz']});
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [id] must be an array with 2 elements.');
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be an array with 2 elements.');
     });
+
     it('Virtual - basic', function() {
       let Model = test.thinky.createModel(test.table(),
         {
@@ -1080,6 +1072,7 @@ describe('schema', function() {
         {init: false});
       let doc = new Model({ id: 'bar', foo: 'bar'});
     });
+
     it('Any - basic', function() {
       let Model = test.thinky.createModel(test.table(),
         {
@@ -1114,6 +1107,7 @@ describe('schema', function() {
       assert.equal(doc.id, str);
       assert.equal(doc.field, defaultValue);
     });
+
     it('String - function', function() {
       let str = util.s8();
       let defaultValue = util.s8();
@@ -1167,6 +1161,7 @@ describe('schema', function() {
       assert.equal(doc.id, str);
       assert.equal(doc.field, defaultValue);
     });
+
     it('Number - function', function() {
       let str = util.s8();
       let defaultValue = util.random();
@@ -1202,6 +1197,7 @@ describe('schema', function() {
       assert.equal(doc.id, str);
       assert.equal(doc.field, defaultValue);
     });
+
     it('Bool - function', function() {
       let str = util.s8();
       let defaultValue = util.bool();
@@ -1237,6 +1233,7 @@ describe('schema', function() {
       assert.equal(doc.id, str);
       assert.deepEqual(doc.field, defaultValue);
     });
+
     it('Array - function', function() {
       let str = util.s8();
       let defaultValue = [1, 2, 3];
@@ -1255,6 +1252,7 @@ describe('schema', function() {
       assert.equal(doc.id, str);
       assert.deepEqual(doc.field, defaultValue);
     });
+
     it('Object - constant', function() {
       let str = util.s8();
       let defaultValue = {foo: 'bar'};
@@ -1271,6 +1269,7 @@ describe('schema', function() {
       assert.equal(doc.id, str);
       assert.deepEqual(doc.field, defaultValue);
     });
+
     it('Object - function', function() {
       let str = util.s8();
       let defaultValue = {foo: 'bar'};
@@ -1289,6 +1288,7 @@ describe('schema', function() {
       assert.equal(doc.id, str);
       assert.deepEqual(doc.field, defaultValue);
     });
+
     it('Object - constant', function() {
       let str = util.s8();
       let defaultValue = {foo: 'bar'};
@@ -1353,6 +1353,7 @@ describe('schema', function() {
       assert.equal(doc.id, str);
       assert.deepEqual(doc.nested, defaultArray);
     });
+
     it('Array - nested value - 2', function() {
       let str = util.s8();
       let defaultArray = [1, 2, 3];
@@ -1380,6 +1381,7 @@ describe('schema', function() {
       assert.equal(doc.id, str);
       assert.deepEqual(doc.nested, []);
     });
+
     it('Array - nested value - 3', function() {
       let str = util.s8();
       let defaultArray = [1, 2, 3];
@@ -1408,6 +1410,7 @@ describe('schema', function() {
       assert.equal(doc.id, str);
       assert.deepEqual(doc.nested, [{field: defaultValue}]);
     });
+
     it('Array - nested value - 4', function() {
       let str = util.s8();
       let defaultArray = [1, 2, 3];
@@ -1432,6 +1435,7 @@ describe('schema', function() {
       assert.equal(doc.id, str);
       assert.deepEqual(doc.nested, [{field: defaultValue}]);
     });
+
     it('Array - nested value - 5', function() {
       let str = util.s8();
       let defaultArray = [1, 2, 3];
@@ -1479,6 +1483,7 @@ describe('schema', function() {
       assert.equal(doc.id, str);
       assert.deepEqual(doc, { id: str });
     });
+
     it('Object - deep nested - 2', function() {
       let str = util.s8();
       let defaultValue = {foo: 'bar'};
@@ -1502,6 +1507,7 @@ describe('schema', function() {
       assert.equal(doc.id, str);
       assert.deepEqual(doc, { id: str, nested: { field1: 1, field2: 'hello' } });
     });
+
     it('Object - deep nested - 3', function() {
       let str = util.s8();
       let defaultValue = {foo: 'bar'};
@@ -1521,6 +1527,7 @@ describe('schema', function() {
       assert.equal(doc.id, str);
       assert.deepEqual(doc, { id: str});
     });
+
     it('Object - deep nested - 4', function() {
       let str = util.s8();
       let defaultValue = {foo: 'bar'};
@@ -1541,6 +1548,7 @@ describe('schema', function() {
       assert.equal(doc.id, str);
       assert.deepEqual(doc, { id: str, nested: {field1: 1, field2: 'hello'}});
     });
+
     it('Default array', function() {
       let str = util.s8();
       let defaultValue = {foo: 'bar'};
@@ -1560,6 +1568,7 @@ describe('schema', function() {
       assert.equal(doc.id, str);
       assert.deepEqual(doc.ar, [1, 2, 3]);
     });
+
     it('Object - default should make a deep copy', function() {
       let Model = test.thinky.createModel(test.table(), {
         field: type.object().default({foo: 'bar'}).schema({
@@ -1573,6 +1582,7 @@ describe('schema', function() {
       assert.notEqual(doc1.field, doc2.field);
       assert.deepEqual(doc1.field, doc2.field);
     });
+
     it('Array - default should make a deep copy', function() {
       let Model = test.thinky.createModel(test.table(), {
         field: type.array().default([{foo: 'bar'}]).schema({
@@ -1588,6 +1598,7 @@ describe('schema', function() {
       assert.notEqual(doc1.field, doc2.field);
       assert.deepEqual(doc1.field, doc2.field);
     });
+
     it('Nested object should not throw with a null value - #314', function() {
       let str = util.s8();
       let defaultValue = util.s8();
@@ -1621,12 +1632,10 @@ describe('schema', function() {
         field: 1
       });
 
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [field] must be a string.');
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be a string.');
     });
+
     it('String - wrong type  - type: "loose"', function() {
       let str = util.s8();
 
@@ -1640,12 +1649,10 @@ describe('schema', function() {
         field: 1
       });
 
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [field] must be a string or null.');
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be a string or null.');
     });
+
     it('String - wrong type  - type: "none"', function() {
       let str = util.s8();
 
@@ -1661,6 +1668,7 @@ describe('schema', function() {
 
       doc.validate();
     });
+
     it('String - undefined - type: "strict"', function() {
       let str = util.s8();
 
@@ -1676,6 +1684,7 @@ describe('schema', function() {
 
       doc.validate();
     });
+
     it('String - undefined  - type: "loose"', function() {
       let str = util.s8();
 
@@ -1691,6 +1700,7 @@ describe('schema', function() {
 
       doc.validate();
     });
+
     it('String - undefined  - type: "none"', function() {
       let str = util.s8();
 
@@ -1706,9 +1716,9 @@ describe('schema', function() {
 
       doc.validate();
     });
+
     it('String - undefined  - type: "none"', function() {
       let str = util.s8();
-
       let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: String
@@ -1718,15 +1728,13 @@ describe('schema', function() {
         id: str,
         field: undefined
       });
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [field] must be defined.');
-      });
+
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be defined.');
     });
+
     it('String - null - type: "strict"', function() {
       let str = util.s8();
-
       let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: String
@@ -1737,15 +1745,12 @@ describe('schema', function() {
         field: null
       });
 
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [field] must be a string.');
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be a string.');
     });
+
     it('String - null  - type: "loose"', function() {
       let str = util.s8();
-
       let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: String
@@ -1758,9 +1763,9 @@ describe('schema', function() {
 
       doc.validate();
     });
+
     it('String - null  - type: "none"', function() {
       let str = util.s8();
-
       let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: String
@@ -1773,9 +1778,9 @@ describe('schema', function() {
 
       doc.validate();
     });
+
     it('Number - wrong type - type: "strict"', function() {
       let str = util.s8();
-
       let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: Number
@@ -1786,15 +1791,12 @@ describe('schema', function() {
         field: 'hello'
       });
 
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [field] must be a finite number.');
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be a finite number.');
     });
+
     it('Number - wrong type  - type: "loose"', function() {
       let str = util.s8();
-
       let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: Number
@@ -1805,15 +1807,12 @@ describe('schema', function() {
         field: 'hello'
       });
 
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [field] must be a finite number or null.');
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be a finite number or null.');
     });
+
     it('Number - wrong type  - type: "none"', function() {
       let str = util.s8();
-
       let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: Number
@@ -1826,9 +1825,9 @@ describe('schema', function() {
 
       doc.validate();
     });
+
     it('Number - not wrong type - numeric string', function() {
       let str = util.s8();
-
       let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: Number
@@ -1841,9 +1840,9 @@ describe('schema', function() {
 
       doc.validate();
     });
+
     it('Boolean - wrong type - type: "strict"', function() {
       let str = util.s8();
-
       let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: Boolean
@@ -1854,15 +1853,12 @@ describe('schema', function() {
         field: 'hello'
       });
 
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [field] must be a boolean.');
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be a boolean.');
     });
+
     it('Boolean - wrong type  - type: "loose"', function() {
       let str = util.s8();
-
       let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: Boolean
@@ -1873,12 +1869,10 @@ describe('schema', function() {
         field: 'hello'
       });
 
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [field] must be a boolean or null.');
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be a boolean or null.');
     });
+
     it('Boolean - wrong type  - type: "none"', function() {
       let str = util.s8();
 
@@ -1894,6 +1888,7 @@ describe('schema', function() {
 
       doc.validate();
     });
+
     it('Date - string type - type: "strict"', function() {
       let str = util.s8();
 
@@ -1909,6 +1904,7 @@ describe('schema', function() {
 
       doc.validate();
     });
+
     it('Date - wrong type - type: "strict"', function() {
       let str = util.s8();
 
@@ -1922,15 +1918,12 @@ describe('schema', function() {
         field: 'hello'
       });
 
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [field] must be a date or a valid string.');
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be a date or a valid string.');
     });
+
     it('Date - wrong type  - type: "loose"', function() {
       let str = util.s8();
-
       let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: Date
@@ -1941,15 +1934,12 @@ describe('schema', function() {
         field: 'hello'
       });
 
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [field] must be a date or a valid string or null.');
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be a date or a valid string or null.');
     });
+
     it('Date - string type - type: "loose"', function() {
       let str = util.s8();
-
       let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: Date
@@ -1964,7 +1954,6 @@ describe('schema', function() {
 
     it('Date - wrong type  - type: "none"', function() {
       let str = util.s8();
-
       let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: Date
@@ -1977,9 +1966,9 @@ describe('schema', function() {
 
       doc.validate();
     });
+
     it('Date - raw type - type: "strict"', function() {
       let str = util.s8();
-
       let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: Date
@@ -1992,9 +1981,9 @@ describe('schema', function() {
 
       doc.validate();
     });
+
     it('Date - raw type - missing timezone - type: "strict"', function() {
       let str = util.s8();
-
       let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: Date
@@ -2004,12 +1993,11 @@ describe('schema', function() {
         id: str,
         field: {$reql_type$: 'TIME', epoch_time: 1231}
       });
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'The raw date object for [field] is missing the required field timezone.');
-      });
+
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'The raw date object for [field] is missing the required field timezone.');
     });
+
     it('Date - raw type - missing epoch_time - type: "strict"', function() {
       let str = util.s8();
 
@@ -2022,12 +2010,11 @@ describe('schema', function() {
         id: str,
         field: {$reql_type$: 'TIME', timezone: '+00:00'}
       });
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'The raw date object for [field] is missing the required field epoch_time.');
-      });
+
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'The raw date object for [field] is missing the required field epoch_time.');
     });
+
     it('Date - r.now', function() {
       let str = util.s8();
       let Model = test.thinky.createModel(test.table(), {
@@ -2042,6 +2029,7 @@ describe('schema', function() {
       });
       doc.validate();
     });
+
     it('Date - undefined - enforce_missing: true', function() {
       let str = util.s8();
 
@@ -2053,12 +2041,11 @@ describe('schema', function() {
       let doc = new Model({
         id: str
       });
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [field] must be defined.');
-      });
+
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be defined.');
     });
+
     it('Date - undefined - enforce_missing: false', function() {
       let str = util.s8();
 
@@ -2072,6 +2059,7 @@ describe('schema', function() {
       });
       doc.validate();
     });
+
     it('Buffer - type: "strict"', function() {
       let str = util.s8();
 
@@ -2087,9 +2075,9 @@ describe('schema', function() {
 
       doc.validate();
     });
+
     it('Buffer - wrong type - type: "strict"', function() {
       let str = util.s8();
-
       let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: Buffer
@@ -2100,15 +2088,12 @@ describe('schema', function() {
         field: 'hello'
       });
 
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [field] must be a buffer.');
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be a buffer.');
     });
+
     it('Buffer - wrong type  - type: "loose"', function() {
       let str = util.s8();
-
       let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: Buffer
@@ -2119,11 +2104,8 @@ describe('schema', function() {
         field: 'hello'
       });
 
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [field] must be a buffer or null.');
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be a buffer or null.');
     });
 
     it('Buffer - wrong type  - type: "none"', function() {
@@ -2141,6 +2123,7 @@ describe('schema', function() {
 
       doc.validate();
     });
+
     it('Buffer - raw type - type: "strict"', function() {
       let str = util.s8();
 
@@ -2156,6 +2139,7 @@ describe('schema', function() {
 
       doc.validate();
     });
+
     it('Buffer - raw type - missing data - type: "strict"', function() {
       let str = util.s8();
 
@@ -2168,12 +2152,11 @@ describe('schema', function() {
         id: str,
         field: { $reql_type$: 'BINARY' }
       });
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'The raw binary object for [field] is missing the required field data.');
-      });
+
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'The raw binary object for [field] is missing the required field data.');
     });
+
     it('Buffer - r.http', function() {
       let str = util.s8();
       let Model = test.thinky.createModel(test.table(), {
@@ -2188,6 +2171,7 @@ describe('schema', function() {
       });
       doc.validate();
     });
+
     it('Buffer - undefined - enforce_missing: true', function() {
       let str = util.s8();
 
@@ -2199,12 +2183,11 @@ describe('schema', function() {
       let doc = new Model({
         id: str
       });
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [field] must be defined.');
-      });
+
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be defined.');
     });
+
     it('Buffer - undefined - enforce_missing: false', function() {
       let str = util.s8();
 
@@ -2218,9 +2201,9 @@ describe('schema', function() {
       });
       doc.validate();
     });
+
     it('Array - missing - enforce_missing: true', function() {
       let str = util.s8();
-
       let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: [Number]
@@ -2230,15 +2213,12 @@ describe('schema', function() {
         id: str
       });
 
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [field] must be defined.');
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be defined.');
     });
+
     it('Array - undefined - enforce_missing: true', function() {
       let str = util.s8();
-
       let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: [Number]
@@ -2248,12 +2228,10 @@ describe('schema', function() {
         id: str
       });
 
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [field] must be defined.');
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be defined.');
     });
+
     it('Array - undefined - enforce_missing: false', function() {
       let str = util.s8();
 
@@ -2268,9 +2246,9 @@ describe('schema', function() {
 
       doc.validate();
     });
+
     it('Array - wrong type - enforce_type: "loose"', function() {
       let str = util.s8();
-
       let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: [Number]
@@ -2281,15 +2259,12 @@ describe('schema', function() {
         field: 2
       });
 
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [field] must be an array or null.');
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be an array or null.');
     });
+
     it('Array - wrong type - enforce_type: "loose"', function() {
       let str = util.s8();
-
       let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: [Number]
@@ -2300,15 +2275,12 @@ describe('schema', function() {
         field: {}
       });
 
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [field] must be an array or null.');
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be an array or null.');
     });
+
     it('Array - wrong type - enforce_type: "none"', function() {
       let str = util.s8();
-
       let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: [Number]
@@ -2320,9 +2292,9 @@ describe('schema', function() {
 
       doc.validate();
     });
+
     it('Array - wrong type inside - enforce_type: "strict"', function() {
       let str = util.s8();
-
       let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: [Number]
@@ -2333,15 +2305,12 @@ describe('schema', function() {
         field: ['hello']
       });
 
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [field][0] must be a finite number.');
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [field][0] must be a finite number.');
     });
+
     it('Array - wrong type inside - enforce_type: "loose"', function() {
       let str = util.s8();
-
       let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: [Number]
@@ -2352,12 +2321,10 @@ describe('schema', function() {
         field: ['hello']
       });
 
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [field][0] must be a finite number or null.');
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [field][0] must be a finite number or null.');
     });
+
     it('Array - wrong type inside - enforce_type: "none"', function() {
       let str = util.s8();
 
@@ -2373,6 +2340,7 @@ describe('schema', function() {
 
       doc.validate();
     });
+
     it('Array - wrong type inside - not first - enforce_type: "strict" - 1', function() {
       let str = util.s8();
 
@@ -2386,12 +2354,10 @@ describe('schema', function() {
         field: [1, 2, 3, 'hello']
       });
 
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [field][3] must be a finite number.');
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [field][3] must be a finite number.');
     });
+
     it('Array - wrong type inside - not first - enforce_type: "strict" - 2', function() {
       let str = util.s8();
 
@@ -2405,12 +2371,10 @@ describe('schema', function() {
         field: [1, 2, 3, undefined]
       });
 
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'The element in the array [field] (position 3) cannot be `undefined`.');
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'The element in the array [field] (position 3) cannot be `undefined`.');
     });
+
     it('Array - wrong type inside - not first - enforce_type: "loose"', function() {
       let str = util.s8();
 
@@ -2424,12 +2388,10 @@ describe('schema', function() {
         field: [1, 2, 3, undefined]
       });
 
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'The element in the array [field] (position 3) cannot be `undefined`.');
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'The element in the array [field] (position 3) cannot be `undefined`.');
     });
+
     it('Array - null - enforce_type: "loose"', function() {
       let str = util.s8();
 
@@ -2445,6 +2407,7 @@ describe('schema', function() {
 
       doc.validate();
     });
+
     it('Object - undefined - enforce_missing: true', function() {
       let str = util.s8();
 
@@ -2457,12 +2420,10 @@ describe('schema', function() {
         id: str
       });
 
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [field] must be defined.');
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be defined.');
     });
+
     it('Object - undefined - enforce_missing: false', function() {
       let str = util.s8();
 
@@ -2477,9 +2438,9 @@ describe('schema', function() {
 
       doc.validate();
     });
+
     it('Object - undefined - enforce_type: "loose"', function() {
       let str = util.s8();
-
       let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {}
@@ -2490,12 +2451,10 @@ describe('schema', function() {
         field: 'foo'
       });
 
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [field] must be an object or null.');
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be an object or null.');
     });
+
     it('Object - undefined - enforce_type: "none"', function() {
       let str = util.s8();
 
@@ -2510,6 +2469,7 @@ describe('schema', function() {
 
       doc.validate();
     });
+
     it('Object - undefined - enforce_type: "none"', function() {
       let str = util.s8();
 
@@ -2524,6 +2484,7 @@ describe('schema', function() {
 
       doc.validate();
     });
+
     it('Object - nested - enforce_type: "strict"', function() {
       let str = util.s8();
 
@@ -2539,12 +2500,10 @@ describe('schema', function() {
         field: 'bar'
       });
 
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [field] must be an object.');
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be an object.');
     });
+
     it('Object - nested wrong type - enforce_type: "strict"', function() {
       let str = util.s8();
 
@@ -2560,12 +2519,10 @@ describe('schema', function() {
         field: 'hello'
       });
 
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [field] must be an object.');
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be an object.');
     });
+
     it('Object - nested wrong type - enforce_type: "strict" - 2', function() {
       let str = util.s8();
 
@@ -2583,12 +2540,10 @@ describe('schema', function() {
         }
       });
 
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [field][foo] must be a finite number.');
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [field][foo] must be a finite number.');
     });
+
     it('Object - nested wrong type - enforce_type: "loose"', function() {
       let str = util.s8();
 
@@ -2606,12 +2561,10 @@ describe('schema', function() {
         }
       });
 
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [field][foo] must be a finite number or null.');
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [field][foo] must be a finite number or null.');
     });
+
     it('Object - Empty - enforce_type: "strict"', function() {
       let str = util.s8();
 
@@ -2639,15 +2592,12 @@ describe('schema', function() {
         field: {}
       });
 
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [field][foo] must be defined.');
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [field][foo] must be defined.');
     });
+
     it('Object - undefined - enforce_type: "loose"', function() {
       let str = util.s8();
-
       let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {
@@ -2662,6 +2612,7 @@ describe('schema', function() {
 
       doc.validate();
     });
+
     it('Object - nested wrong type 4 - enforce_type: "loose"', function() {
       let str = util.s8();
 
@@ -2677,12 +2628,10 @@ describe('schema', function() {
         field: {}
       });
 
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [field][foo] must be a finite number or null.');
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [field][foo] must be a finite number or null.');
     });
+
     it('Object - nested wrong type 5 - enforce_type: "none"', function() {
       let str = util.s8();
 
@@ -2700,6 +2649,7 @@ describe('schema', function() {
 
       doc.validate();
     });
+
     it('Extra field - 1', function() {
       let str = util.s8();
 
@@ -2711,12 +2661,10 @@ describe('schema', function() {
         id: str,
         foo: 'hello'
       });
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return error.message === 'Extra field `foo` not allowed.';
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Extra field `foo` not allowed.');
     });
+
     it('Extra field - 2', function() {
       let str = util.s8();
 
@@ -2729,12 +2677,11 @@ describe('schema', function() {
         id: str,
         foo: [{bar: 'Hello', buzz: 'World'}]
       });
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return error.message === 'Extra field `buzz` in [foo][0] not allowed.';
-      });
+
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Extra field `buzz` in [foo][0] not allowed.');
     });
+
     it('Extra field - 3', function() {
       let str = util.s8();
 
@@ -2747,12 +2694,11 @@ describe('schema', function() {
         id: str,
         foo: {bar: 'Hello', buzz: 'World'}
       });
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return error.message === 'Extra field `buzz` in [foo] not allowed.';
-      });
+
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Extra field `buzz` in [foo] not allowed.');
     });
+
     it('Extra field - enforce_extra:"remove" - global option', function() {
       let str = util.s8();
 
@@ -2774,6 +2720,7 @@ describe('schema', function() {
         foo: { fizz: 'Hello' }
       });
     });
+
     it('Extra field - enforce_extra:"remove" - deprecated', function() {
       let str = util.s8();
 
@@ -2802,6 +2749,7 @@ describe('schema', function() {
         bar: 'keep'
       });
     });
+
     it('Extra field - enforce_extra:"remove"', function() {
       let str = util.s8();
 
@@ -2860,14 +2808,10 @@ describe('schema', function() {
         field: String
       }, {init: false, enforce_type: 'strict', enforce_missing: true, enforce_extra: 'strict', validate: 'oncreate'});
 
-
-      assert.throws(function() {
-        let doc = new Model({
-          id: str,
-          field: 1
-        });
-      }, function(error) {
-        return (error instanceof Errors.ValidationError) && (error.message === 'Value for [field] must be a string.');
+      assert.throws(() => {
+        let doc = new Model({ id: str, field: 1 });
+      }, error => {
+        return ((error instanceof Errors.ValidationError) && (error.message === 'Value for [field] must be a string.'));
       });
     });
   });
@@ -2901,12 +2845,11 @@ describe('schema', function() {
           field: 1
         }
       });
-      assert.throws(function() {
-        doc.validateAll();
-      }, function(error) {
-        return error.message === 'Value for [otherDoc][field] must be a string or null.';
-      });
+
+      expect(doc.validateAll())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [otherDoc][field] must be a string or null.');
     });
+
     it('it should check joined Document too -- hasOne - 2', function() {
       let otherName = util.s8();
 
@@ -2935,12 +2878,11 @@ describe('schema', function() {
           field: 1
         }
       });
-      assert.throws(function() {
-        doc.validateAll({otherDoc: true});
-      }, function(error) {
-        return error.message === 'Value for [otherDoc][field] must be a string or null.';
-      });
+
+      expect(doc.validateAll({otherDoc: true}))
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [otherDoc][field] must be a string or null.');
     });
+
     it('it should check joined Document too -- belongsTo - 1', function() {
       let otherName = util.s8();
 
@@ -2970,12 +2912,10 @@ describe('schema', function() {
         }
       });
 
-      assert.throws(function() {
-        doc.validateAll();
-      }, function(error) {
-        return error.message === 'Value for [otherDoc][field] must be a string or null.';
-      });
+      expect(doc.validateAll())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [otherDoc][field] must be a string or null.');
     });
+
     it('it should check joined Document too -- belongsTo - 2', function() {
       let otherName = util.s8();
 
@@ -3005,12 +2945,10 @@ describe('schema', function() {
         }
       });
 
-      assert.throws(function() {
-        doc.validateAll({otherDoc: true});
-      }, function(error) {
-        return error.message === 'Value for [otherDoc][field] must be a string or null.';
-      });
+      expect(doc.validateAll({otherDoc: true}))
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [otherDoc][field] must be a string or null.');
     });
+
     it('it should check joined Document too -- hasMany - 1', function() {
       let otherName = util.s8();
 
@@ -3040,12 +2978,10 @@ describe('schema', function() {
         }]
       });
 
-      assert.throws(function() {
-        doc.validateAll();
-      }, function(error) {
-        return error.message === 'Value for [otherDocs][0][field] must be a string or null.';
-      });
+      expect(doc.validateAll())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [otherDocs][0][field] must be a string or null.');
     });
+
     it('it should check joined Document too -- hasMany - 2', function() {
       let otherName = util.s8();
 
@@ -3075,12 +3011,10 @@ describe('schema', function() {
         }]
       });
 
-      assert.throws(function() {
-        doc.validateAll({otherDocs: true});
-      }, function(error) {
-        return error.message === 'Value for [otherDocs][0][field] must be a string or null.';
-      });
+      expect(doc.validateAll({otherDocs: true}))
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [otherDocs][0][field] must be a string or null.');
     });
+
     it('it should check joined Document too -- hasAndBelongsToMany - 1', function() {
       let otherName = util.s8();
 
@@ -3110,12 +3044,10 @@ describe('schema', function() {
         }]
       });
 
-      assert.throws(function() {
-        doc.validateAll();
-      }, function(error) {
-        return error.message === 'Value for [otherDocs][0][field] must be a string or null.';
-      });
+      expect(doc.validateAll())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [otherDocs][0][field] must be a string or null.');
     });
+
     it('it should check joined Document too -- hasAndBelongsToMany - 2', function() {
       let otherName = util.s8();
 
@@ -3145,12 +3077,10 @@ describe('schema', function() {
         }]
       });
 
-      assert.throws(function() {
-        doc.validateAll({otherDocs: true});
-      }, function(error) {
-        return error.message === 'Value for [otherDocs][0][field] must be a string or null.';
-      });
+      expect(doc.validateAll({otherDocs: true}))
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [otherDocs][0][field] must be a string or null.');
     });
+
     it('hasOne with a circular reference', function() {
       let Model = test.thinky.createModel(test.table(), { id: String});
       let OtherModel = test.thinky.createModel(test.table(), { id: String, otherId: String });
@@ -3168,6 +3098,7 @@ describe('schema', function() {
           otherDoc.validate();
         });
     });
+
     it('hasOne with a circular reference - second reference should not be checked', function() {
       let Model = test.thinky.createModel(test.table(), { id: String});
       let OtherModel = test.thinky.createModel(test.table(), { id: String, otherId: String });
@@ -3185,6 +3116,7 @@ describe('schema', function() {
           doc.validateAll();
         });
     });
+
     it('hasOne with a circular reference - second reference should be checked if manually asked', function() {
       let Model = test.thinky.createModel(test.table(), { id: String});
       let OtherModel = test.thinky.createModel(test.table(), { id: String, otherId: String });
@@ -3199,11 +3131,8 @@ describe('schema', function() {
           let wrongDoc = new Model({id: 1});
           doc.has = otherDoc;
           otherDoc.belongsTo = wrongDoc;
-          assert.throws(function() {
-            doc.validateAll({}, {has: {belongsTo: true}});
-          }, function(error) {
-            return error.message === 'Value for [has][belongsTo][id] must be a string or null.';
-          });
+          expect(doc.validateAll({}, {has: {belongsTo: true}}))
+            .to.be.rejectedWith(Errors.ValidationError, 'Value for [has][belongsTo][id] must be a string or null.');
         });
     });
   });
@@ -3237,44 +3166,39 @@ describe('schema', function() {
       });
       let doc = new Model({id: '', field: 'abc'});
 
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return error.message === 'Expecting `id` value to be `field` value.';
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Expecting `id` value to be `field` value.');
     });
 
-    /*
-    it('validate on the whole document - make sure a relation is defined ', function(done) {
-      let Model = test.thinky.createModel(test.table(), {
-        id: String,
-        field: String
-      }, {validator: function() {
-        if (this.otherDoc === null) {
-          throw new Errors.ValidationError('Relation must be defined.');
-        }
-      }});
-      let doc = new Model({id: 'abc', field: 'abc'});
+    // it('validate on the whole document - make sure a relation is defined ', function(done) {
+    //   let Model = test.thinky.createModel(test.table(), {
+    //     id: String,
+    //     field: String
+    //   }, {validator: function() {
+    //     if (this.otherDoc === null) {
+    //       throw new Errors.ValidationError('Relation must be defined.');
+    //     }
+    //   }});
+    //   let doc = new Model({id: 'abc', field: 'abc'});
 
-      Model.once('ready', function() {
-        assert.throws(function() {
-          doc.validate();
-        }, function(error) {
-          return (error instanceof Errors.ValidationError) && (error.message === 'Relation must be defined.');
-        });
+    //   Model.once('ready', function() {
+    //     expect(doc.validate()).to.be.rejectedWith(Errors.ValidationError, ));
+    //       doc.validate();
+    //     }, function(error) {
+    //       return (error instanceof Errors.ValidationError) && (error.message === 'Relation must be defined.');
+    //     });
 
-        Model.hasOne(Model, 'otherDoc', 'id', 'foreignKey');
-        let otherDoc = new Model({});
+    //     Model.hasOne(Model, 'otherDoc', 'id', 'foreignKey');
+    //     let otherDoc = new Model({});
 
-        doc.otherDoc = otherDoc;
+    //     doc.otherDoc = otherDoc;
 
-        doc.validate();
-        doc.saveAll().then(function() {
-          done();
-        });
-      });
-    });
-    */
+    //     doc.validate();
+    //     doc.saveAll().then(function() {
+    //       done();
+    //     });
+    //   });
+    // });
 
     it('validate on the whole document - bind with the doc - return false - 1 ', function() {
       let Model = test.thinky.createModel(test.table(), {
@@ -3287,6 +3211,7 @@ describe('schema', function() {
       let doc = new Model({id: 'abc', field: 'abc'});
       doc.validate();
     });
+
     it('validate on the whole document - bind with the doc - return false with arg - 1 ', function() {
       let Model = test.thinky.createModel(test.table(), {
         id: String,
@@ -3298,6 +3223,7 @@ describe('schema', function() {
       let doc = new Model({id: 'abc', field: 'abc'});
       doc.validate();
     });
+
     it('validate on the whole document - bind with the doc - return false with arg (error)- 1 ', function() {
       let Model = test.thinky.createModel(test.table(), {
         id: String,
@@ -3306,14 +3232,12 @@ describe('schema', function() {
         return doc.id === this.field;
       }
       });
+
       let doc = new Model({id: 'abc', field: ''});
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError)
-          && (error.message === "Document's validator returned `false`.");
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, "Document's validator returned `false`.");
     });
+
     it('validate on the whole document - bind with the doc - 2', function() {
       let Model = test.thinky.createModel(test.table(), {
         id: String,
@@ -3326,13 +3250,10 @@ describe('schema', function() {
       });
 
       let doc = new Model({id: 'abc', field: ''});
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError)
-          && (error.message === 'Expecting `id` value to be `field` value.');
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Expecting `id` value to be `field` value.');
     });
+
     it('validate on the whole document - bind with the doc - return false - 2', function() {
       let Model = test.thinky.createModel(test.table(), {
         id: String,
@@ -3343,13 +3264,10 @@ describe('schema', function() {
       });
 
       let doc = new Model({id: 'abc', field: ''});
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError)
-          && (error.message === "Document's validator returned `false`.");
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, "Document's validator returned `false`.");
     });
+
     it('validate on the whole document - nested field - 1 ', function() {
       let Model = test.thinky.createModel(test.table(), {
         id: String,
@@ -3364,6 +3282,7 @@ describe('schema', function() {
       let doc = new Model({id: 'abc', nested: {field: 'abc'}});
       doc.validate();
     });
+
     it('validate on the whole document - nested field - 2', function() {
       let Model = test.thinky.createModel(test.table(), {
         id: String,
@@ -3376,13 +3295,10 @@ describe('schema', function() {
       });
 
       let doc = new Model({id: 'abc', nested: { field: ''}});
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError)
-          && (error.message === 'Expecting `field` value to be `field` value.');
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Expecting `field` value to be `field` value.');
     });
+
     it('validate on a field - 1 ', function() {
       let Model = test.thinky.createModel(test.table(), {
         id: String,
@@ -3392,9 +3308,11 @@ describe('schema', function() {
           }
         }}
       }, {init: false});
+
       let doc = new Model({id: 'abc', field: 'abc'});
       doc.validate();
     });
+
     it('validate on a field - 2', function() {
       let Model = test.thinky.createModel(test.table(), {
         id: String,
@@ -3404,14 +3322,12 @@ describe('schema', function() {
           }
         }}
       }, {init: false});
+
       let doc = new Model({id: 'abc', field: ''});
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError)
-          && (error.message === "Expecting `field` value to be 'abc'.");
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, "Expecting `field` value to be 'abc'.");
     });
+
     it('validate on a field - 3', function() {
       let Model = test.thinky.createModel(test.table(), {
         id: String,
@@ -3419,14 +3335,12 @@ describe('schema', function() {
           return value === 'abc';
         }}
       }, {init: false});
+
       let doc = new Model({id: 'abc', field: ''});
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError)
-          && (error.message === 'Validator for the field [field] returned `false`.');
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Validator for the field [field] returned `false`.');
     });
+
     it('validate on a field - 4', function() {
       let Model = test.thinky.createModel(test.table(), {
         id: String,
@@ -3434,14 +3348,12 @@ describe('schema', function() {
           return this === 'abc';
         }}
       }, {init: false});
+
       let doc = new Model({id: 'abc', field: ''});
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError)
-          && (error.message === 'Validator for the field [field] returned `false`.');
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Validator for the field [field] returned `false`.');
     });
+
     it('validate on the whole document - nested field - 1 ', function() {
       let Model = test.thinky.createModel(test.table(), {
         id: String,
@@ -3458,7 +3370,8 @@ describe('schema', function() {
       let doc = new Model({id: 'abc', nested: {field: 'abc'}});
       doc.validate();
     });
-    it('validate on the whole document - nested field - 2', function() {
+
+    it('validate on the whole document - nested field - 3', function() {
       let Model = test.thinky.createModel(test.table(), {
         id: String,
         nested: {
@@ -3471,13 +3384,10 @@ describe('schema', function() {
       }, {init: false});
 
       let doc = new Model({id: 'abc', nested: { field: ''}});
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError)
-          && (error.message === "Expecting `field` value to be 'abc'.");
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, "Expecting `field` value to be 'abc'.");
     });
+
     it('validate with _type: Array - 1', function() {
       let Model = test.thinky.createModel(test.table(), {
         id: String,
@@ -3487,6 +3397,7 @@ describe('schema', function() {
       let doc = new Model({id: 'abc', arr: [2, 3]});
       doc.validate();
     });
+
     it('validate with _type: Array - 2', function() {
       let Model = test.thinky.createModel(test.table(), {
         id: String,
@@ -3494,13 +3405,10 @@ describe('schema', function() {
       }, {init: false});
 
       let doc = new Model({id: 'abc', arr: [2, 'ikk', 4]});
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError)
-          && (error.message === 'Value for [arr][1] must be a finite number or null.');
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [arr][1] must be a finite number or null.');
     });
+
     it('validate with _type: Object - 1', function() {
       let Model = test.thinky.createModel(test.table(), {
         id: String,
@@ -3510,6 +3418,7 @@ describe('schema', function() {
       let doc = new Model({id: 'abc', ob: {foo: 'bar'}});
       doc.validate();
     });
+
     it('validate with _type: Object - 2', function() {
       let Model = test.thinky.createModel(test.table(), {
         id: String,
@@ -3517,13 +3426,10 @@ describe('schema', function() {
       }, {init: false});
 
       let doc = new Model({id: 'abc', ob: {foo: 1}});
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError)
-          && (error.message === 'Value for [ob][foo] must be a string or null.');
-      });
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'Value for [ob][foo] must be a string or null.');
     });
+
     it('Check extra fields only if the schema is an object without the _type field', function() {
       let User = test.thinky.createModel('users', {
         email: {
@@ -3540,6 +3446,7 @@ describe('schema', function() {
       user.email = 'hello@world.com';
       user.validate();
     });
+
     it('Enum - success ', function() {
       let Model = test.thinky.createModel(test.table(), {
         id: String,
@@ -3548,44 +3455,38 @@ describe('schema', function() {
       let doc = new Model({id: 'abc', field: 'bar'});
       doc.validate();
     });
+
     it('Enum - throw - 1 ', function() {
       let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {_type: String, enum: ['foo', 'bar', 'buzz']}
       }, {init: false});
       let doc = new Model({id: 'abc', field: 'notavalidvalue'});
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError)
-          && (error.message === 'The field [field] must be one of these values: foo, bar, buzz.');
-      });
+
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'The field [field] must be one of these values: foo, bar, buzz.');
     });
+
     it('Enum - throw - 2', function() {
       let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {_type: String, enum: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']}
       }, {init: false});
       let doc = new Model({id: 'abc', field: 'notavalidvalue'});
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError)
-          && (error.message === 'The field [field] must be one of these values: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10.');
-      });
+
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'The field [field] must be one of these values: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10.');
     });
+
     it('Enum - throw - 3', function() {
       let Model = test.thinky.createModel(test.table(), {
         id: String,
         field: {_type: String, enum: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11']}
       }, {init: false});
       let doc = new Model({id: 'abc', field: 'notavalidvalue'});
-      assert.throws(function() {
-        doc.validate();
-      }, function(error) {
-        return (error instanceof Errors.ValidationError)
-          && (error.message === 'The field [field] must be one of these values: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10...');
-      });
+
+      expect(doc.validate())
+        .to.be.rejectedWith(Errors.ValidationError, 'The field [field] must be one of these values: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10...');
     });
 
     it('Array without type', function() {
