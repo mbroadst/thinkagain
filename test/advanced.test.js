@@ -2,7 +2,6 @@
 const Promise = require('bluebird'),
       TestFixture = require('./test-fixture'),
       Errors = require('../lib/errors'),
-      type = require('../lib/type'),
       util = require('./util'),
       assert = require('assert');
 
@@ -16,12 +15,16 @@ describe('Advanced cases', function() {
     after(() => { delete test.Model; delete test.OtherModel; });
     beforeEach(() => {
       test.Model = test.thinky.createModel(test.table(0), {
-        id: String
+        type: 'object',
+        properties: { id: { type: 'string' } }
       });
 
       test.OtherModel = test.thinky.createModel(test.table(1), {
-        id: String,
-        otherId: String
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          otherId: { type: 'string' }
+        }
       });
     });
 
@@ -680,12 +683,16 @@ describe('Advanced cases', function() {
     after(() => { delete test.Model; delete test.OtherModel; });
     beforeEach(() => {
       test.Model = test.thinky.createModel(test.table(0), {
-        id: String
+        type: 'object',
+        properties: { id: { type: 'string' } }
       });
 
       test.OtherModel = test.thinky.createModel(test.table(1), {
-        id: String,
-        otherId: String
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          otherId: { type: 'string' }
+        }
       });
     });
 
@@ -1589,12 +1596,16 @@ describe('Advanced cases', function() {
     after(() => { delete test.Model; delete test.OtherModel; });
     beforeEach(() => {
       test.Model = test.thinky.createModel(test.table(0), {
-        id: String
+        type: 'object',
+        properties: { id: { type: 'string' } }
       });
 
       test.OtherModel = test.thinky.createModel(test.table(1), {
-        id: String,
-        otherId: String
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          otherId: { type: 'string' }
+        }
       });
     });
 
@@ -1922,7 +1933,8 @@ describe('Advanced cases', function() {
 
     it('hasAndBelongsToMany -- pairs', function() {
       let Model = test.thinky.createModel(test.table(0), {
-        id: String
+        type: 'object',
+        properties: { id: { type: 'string' } }
       });
 
       Model.hasAndBelongsToMany(Model, 'links', 'id', 'id');
@@ -1947,7 +1959,8 @@ describe('Advanced cases', function() {
 
     it('hasAndBelongsToMany -- pairs', function() {
       let Model = test.thinky.createModel(test.table(0), {
-        id: String
+        type: 'object',
+        properties: { id: { type: 'string' } }
       });
 
       Model.hasAndBelongsToMany(Model, 'links', 'id', 'id');
@@ -1962,7 +1975,15 @@ describe('Advanced cases', function() {
     });
 
     it('hasOne/belongsTo -- pairs', function() {
-      let Human = test.thinky.createModel(test.table(0), { id: String, name: String, contactId: String });
+      let Human = test.thinky.createModel(test.table(0), {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          name: { type: 'string' },
+          contactId: { type: 'string' }
+        }
+      });
+
       Human.belongsTo(Human, 'emergencyContact', 'contactId', 'id');
 
       let michel = new Human({
@@ -1988,17 +2009,25 @@ describe('Advanced cases', function() {
     after(() => { delete test.Model; delete test.OtherModel; delete test.RegressionModel; });
     beforeEach(() => {
       test.Model = test.thinky.createModel(test.table(0), {
-        id: String
+        type: 'object',
+        properties: { id: { type: 'string' } }
       });
 
       test.OtherModel = test.thinky.createModel(test.table(1), {
-        id: String,
-        foreignKey: String
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          foreignKey: { type: 'string' }
+        }
       });
 
       test.RegressionModel = test.thinky.createModel(test.table(3), {
-        id: String,
-        foreignKey: type.string().required()
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          foreignKey: { type: 'string' }
+        },
+        required: [ 'foreignKey' ]
       });
     });
 
@@ -2573,11 +2602,13 @@ describe('Advanced cases', function() {
     after(() => { delete test.Model; delete test.OtherModel; });
     beforeEach(() => {
       test.Model = test.thinky.createModel(test.table(0), {
-        id: String
+        type: 'object',
+        properties: { id: { type: 'string' } }
       });
 
       test.OtherModel = test.thinky.createModel(test.table(1), {
-        id: String
+        type: 'object',
+        properties: { id: { type: 'string' } }
       });
     });
 
@@ -2608,11 +2639,13 @@ describe('Advanced cases', function() {
     after(() => { delete test.Model; delete test.OtherModel; });
     beforeEach(() => {
       test.Model = test.thinky.createModel(test.table(0), {
-        id: String
+        type: 'object',
+        properties: { id: { type: 'string' } }
       });
 
       test.OtherModel = test.thinky.createModel(test.table(1), {
-        id: String
+        type: 'object',
+        properties: { id: { type: 'string' } }
       });
     });
 

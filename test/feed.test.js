@@ -12,9 +12,12 @@ describe('feed', function() {
     after(() => test.cleanTables());
     before(function(done) {
       test.Model = test.thinky.createModel(test.table(0), {
-        id: String,
-        str: String,
-        num: Number
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          str: { type: 'string' },
+          num: { type: 'number' }
+        }
       });
 
       test.Model.on('ready', () => done());
@@ -94,9 +97,12 @@ describe('feed', function() {
     after(() => test.cleanTables());
     before(function(done) {
       test.Model = test.thinky.createModel(test.table(1), {
-        id: String,
-        str: String,
-        num: Number
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          str: { type: 'string' },
+          num: { type: 'number' }
+        }
       });
 
       test.Model.on('ready', () => done());
