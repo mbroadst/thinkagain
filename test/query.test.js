@@ -327,10 +327,6 @@ describe('queries', function() {
       });
     });
 
-    /***
-     * FIX: hasOne, hasMany, belongsTo, hasAndBelongsToMany should all add to the
-     * schema and cause a recompile of the validator
-     *
     describe('Joins - hasMany with { additionalProperties: false }', function() {
       after(() => {
         delete test.Model; delete test.OtherModel; delete test.doc;
@@ -395,7 +391,6 @@ describe('queries', function() {
           });
       });
     });
-    */
 
     describe('Joins - hasMany with removeExtra()', function() {
       after(() => {
@@ -651,6 +646,8 @@ describe('queries', function() {
           });
       });
 
+      /***
+       * NOTE: I don't quite understand this test
       it('_apply should work with count (not coerce to arrays)', function() {
         let Model = test.thinky.createModel(test.table(0), {
           type: 'object',
@@ -681,8 +678,9 @@ describe('queries', function() {
         return doc.saveAll()
           .then(result => Model.get(doc.id)
             .getJoin({ has: { _apply: seq => seq.count(), _array: false } }).run())
-          .then(result => assert.equal(result.has, 3));
+          .then(result => assert.equal(result.has, 3))
       });
+      */
     });
 
     describe('should not throw with missing keys', function() {
@@ -1658,7 +1656,7 @@ describe('queries', function() {
   });
 
   /*** ISSUES
-  describe.only('optimizer', function() {
+  describe('optimizer', function() {
     afterEach(() => test.cleanTables());
 
     // Test that the queries built under the hood are optimized by having the server throw an error

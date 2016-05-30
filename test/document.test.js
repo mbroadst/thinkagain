@@ -2775,7 +2775,7 @@ describe('documents', function() {
   describe('default should be saved', function() {
     afterEach(() => test.cleanTables());
 
-    it.only('when generated on create', function() {
+    it('when generated on create', function() {
       let Model = test.thinky.createModel(test.table(0), {
         type: 'object',
         properties: {

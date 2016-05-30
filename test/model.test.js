@@ -487,7 +487,7 @@ describe('models', () => {
 
       let foreignKey = util.s8();
       let schema = { type: 'object', properties: { id: { type: 'string' } } };
-      schema.properties[foreignKey] = String;
+      schema.properties[foreignKey] = { type: 'string' };
       let otherModel = test.thinky.createModel(test.table(1), schema);
       model.hasMany(otherModel, 'otherDocs', 'modelId', foreignKey);
 
