@@ -248,8 +248,11 @@ describe('documents', function() {
 
       // it('Date as string should be coerced to ReQL dates', function() {
       //   let Model = test.thinky.createModel(test.table(0), {
-      //     id: String,
-      //     date: Date
+      //     type: 'object',
+      //     properties: {
+      //       id: { type: 'string' },
+      //       date: { $ref: 'date' }
+      //     }
       //   });
 
       //   let t = new Model({
