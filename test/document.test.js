@@ -13,7 +13,7 @@ describe('documents', function() {
   describe('save', function() {
     describe('Basic', function() {
       afterEach(() => test.cleanTables());
-      after(() => { delete test.Model; });
+      after(() => { delete test.Model; delete test.PointModel; });
       before(function() {
         test.Model = test.thinky.createModel(test.table(0), {
           type: 'object',
@@ -205,21 +205,24 @@ describe('documents', function() {
           .then(result => assert.equal(result.extra.nested.foo, 1));
       });
 
-      // it('Point - ReQL point', function() {
-      //   test.Model = test.thinky.createModel(test.table(0), {
-      //     id: String,
-      //     point: type.point()
-      //   });
+      it('Point - ReQL point', function() {
+        test.PointModel = test.thinky.createModel(test.table(1), {
+          type: 'object',
+          properties: {
+            id: { type: 'string' },
+            point: { $ref: 'point' }
+          }
+        });
 
-      //   let r = test.r;
-      //   let t = new test.Model({
-      //     id: util.s8(),
-      //     point: r.point(2, 10)
-      //   });
+        let r = test.r;
+        let t = new test.Model({
+          id: util.s8(),
+          point: r.point(2, 10)
+        });
 
-      //   return t.save()
-      //     .then(result => assert.equal(result.point.$reql_type$, 'GEOMETRY'));
-      // });
+        return t.save()
+          .then(result => assert.equal(result.point.$reql_type$, 'GEOMETRY'));
+      });
     });
 
     describe('Replacement', function() {
@@ -321,86 +324,99 @@ describe('documents', function() {
       //     });
       // });
 
-      // it('Points as array should be coerced to ReQL points', function() {
-      //   let Model = test.thinky.createModel(test.table(0), {
-      //     id: String,
-      //     loc: 'Point'
-      //   });
+      it('Points as array should be coerced to ReQL points', function() {
+        let Model = test.thinky.createModel(test.table(0), {
+          type: 'object',
+          properties: {
+            id: { type: 'string' },
+            loc: { $ref: 'point' }
+          }
+        });
 
-      //   let t = new Model({
-      //     id: util.s8(),
-      //     loc: [1, 1]
-      //   });
+        let t = new Model({
+          id: util.s8(),
+          loc: [1, 1]
+        });
 
-      //   return t.save()
-      //     .then(result => Model.get(t.id).execute())
-      //     .then(result => {
-      //       assert.equal(t.loc.$reql_type$, 'GEOMETRY');
-      //       assert.equal(t.loc.type, 'Point');
-      //       assert(Array.isArray(t.loc.coordinates));
-      //     });
-      // });
+        return t.save()
+          .then(result => Model.get(t.id).execute())
+          .then(result => {
+            assert.equal(t.loc.$reql_type$, 'GEOMETRY');
+            assert.equal(t.loc.type, 'Point');
+            assert(Array.isArray(t.loc.coordinates));
+          });
+      });
 
-      // it('Raw ReQL points should work', function() {
-      //   let Model = test.thinky.createModel(test.table(0), {
-      //     id: String,
-      //     loc: 'Point'
-      //   });
+      it('Raw ReQL points should work', function() {
+        let Model = test.thinky.createModel(test.table(0), {
+          type: 'object',
+          properties: {
+            id: { type: 'string' },
+            loc: { $ref: 'point' }
+          }
+        });
 
-      //   let t = new Model({
-      //     id: util.s8(),
-      //     loc: { '$reql_type$': 'GEOMETRY',
-      //       coordinates: [ 1, 2 ],
-      //       type: 'Point'
-      //     }
-      //   });
+        let t = new Model({
+          id: util.s8(),
+          loc: {
+            '$reql_type$': 'GEOMETRY',
+            coordinates: [ 1, 2 ],
+            type: 'Point'
+          }
+        });
 
-      //   return t.save()
-      //     .then(result => Model.get(t.id).execute())
-      //     .then(result => {
-      //       assert.equal(t.loc.$reql_type$, 'GEOMETRY');
-      //       assert.equal(t.loc.type, 'Point');
-      //       assert(Array.isArray(t.loc.coordinates));
-      //     });
-      // });
+        return t.save()
+          .then(result => Model.get(t.id).execute())
+          .then(result => {
+            assert.equal(t.loc.$reql_type$, 'GEOMETRY');
+            assert.equal(t.loc.type, 'Point');
+            assert(Array.isArray(t.loc.coordinates));
+          });
+      });
 
-      // it('Points as objects should be coerced to ReQL points', function() {
-      //   let Model = test.thinky.createModel(test.table(0), {
-      //     id: String,
-      //     loc: 'Point'
-      //   });
+      it('Points as objects should be coerced to ReQL points', function() {
+        let Model = test.thinky.createModel(test.table(0), {
+          type: 'object',
+          properties: {
+            id: { type: 'string' },
+            loc: { $ref: 'point' }
+          }
+        });
 
-      //   let t = new Model({
-      //     id: util.s8(),
-      //     loc: {latitude: 1, longitude: 2}
-      //   });
+        let t = new Model({
+          id: util.s8(),
+          loc: { latitude: 1, longitude: 2 }
+        });
 
-      //   return t.save()
-      //     .then(result => Model.get(t.id).execute())
-      //     .then(result => {
-      //       assert.equal(t.loc.$reql_type$, 'GEOMETRY');
-      //       assert(Array.isArray(t.loc.coordinates));
-      //     });
-      // });
+        return t.save()
+          .then(result => Model.get(t.id).execute())
+          .then(result => {
+            assert.equal(t.loc.$reql_type$, 'GEOMETRY');
+            assert(Array.isArray(t.loc.coordinates));
+          });
+      });
 
-      // it('Points as geojson should be coerced to ReQL points', function() {
-      //   let Model = test.thinky.createModel(test.table(0), {
-      //     id: String,
-      //     loc: 'Point'
-      //   });
+      it('Points as geojson should be coerced to ReQL points', function() {
+        let Model = test.thinky.createModel(test.table(0), {
+          type: 'object',
+          properties: {
+            id: { type: 'string' },
+            loc: { $ref: 'point' }
+          }
+        });
 
-      //   let t = new Model({
-      //     id: util.s8(),
-      //     loc: {type: 'Point', coordinates: [1, 2]}
-      //   });
+        let t = new Model({
+          id: util.s8(),
+          loc: { type: 'Point', coordinates: [1, 2] }
+        });
 
-      //   return t.save()
-      //     .then(result => Model.get(t.id).execute())
-      //     .then(result => {
-      //       assert.equal(t.loc.$reql_type$, 'GEOMETRY');
-      //       assert(Array.isArray(t.loc.coordinates));
-      //     });
-      // });
+        return t.save()
+          .then(result => Model.get(t.id).execute())
+          .then(result => {
+            assert.equal(t.loc.$reql_type$, 'GEOMETRY');
+            assert(Array.isArray(t.loc.coordinates));
+          });
+      });
 
       // it('Number as string should be coerced to number', function() {
       //   let Model = test.thinky.createModel(test.table(0), {

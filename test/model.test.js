@@ -260,18 +260,21 @@ describe('models', () => {
         });
     });
 
-    // it('Should generate savable copies', function() {
-    //   let Model = test.thinky.createModel(test.table(0), {
-    //     id: { type: 'string' },
-    //     location: type.point()
-    //   });
+    it('Should generate savable copies', function() {
+      let Model = test.thinky.createModel(test.table(1), {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          location: { $ref: 'point' }
+        }
+      });
 
-    //   return Model.save({ id: 'foo', location: [1, 2] })
-    //     .then(result => {
-    //       assert.equal(result.id, 'foo');
-    //       assert.equal(result.location.$reql_type$, 'GEOMETRY');
-    //     });
-    // });
+      return Model.save({ id: 'foo', location: [1, 2] })
+        .then(result => {
+          assert.equal(result.id, 'foo');
+          assert.equal(result.location.$reql_type$, 'GEOMETRY');
+        });
+    });
 
     it('Model.save should handle options - update', function() {
       return test.Model.save({ id: 'foo' })
