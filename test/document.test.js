@@ -2791,6 +2791,7 @@ describe('documents', function() {
         .then(result => assert.deepEqual(result.date, doc.date));
     });
   });
+*/
 
   describe('default should be saved', function() {
     afterEach(() => test.cleanTables());
@@ -2812,10 +2813,7 @@ describe('documents', function() {
           assert.equal(doc.num, 2);
           return Model.get(doc.id).execute();
         })
-        .then(result => {
-          console.log(result);
-          assert.equal(result.num, 2);
-        });
+        .then(result => assert.equal(result.num, 2));
     });
 
     it('when generated on save', function() {
@@ -2840,7 +2838,6 @@ describe('documents', function() {
         .then(result => assert.equal(result.num, 2));
     });
   });
-*/
 
   describe('_merge', function() {
     afterEach(() => test.cleanTables());
