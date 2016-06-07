@@ -1,7 +1,8 @@
 'use strict';
 const TestFixture = require('./test-fixture'),
       Document = require('../lib/document'),
-      assert = require('assert');
+      assert = require('assert'),
+      expect = require('chai').expect;
 
 let test = new TestFixture();
 describe('feed', function() {
@@ -90,6 +91,37 @@ describe('feed', function() {
 
           return test.Model.save(data);
         });
+    });
+
+    describe('errors', function() {
+      it('should throw an error if `toArray` is called', function() {
+        return test.Model.changes().run()
+          .then(feed => {
+            expect(() => feed.toArray())
+              .to.throw(Error, 'The `toArray` method is not available on feeds.');
+            return feed.close();
+          });
+      });
+
+      it('should throw an error if `next` is called after emitter is bound', function() {
+        return test.Model.changes().run()
+          .then(feed => {
+            feed.on('data', () => {});
+            expect(() => feed.next())
+              .to.throw(Error, 'You cannot call `next` once you have bound listeners to this feed');
+            feed.close();
+          });
+      });
+
+      it('should throw an error if `each` is called after emitter is bound', function() {
+        return test.Model.changes().run()
+          .then(feed => {
+            feed.on('data', () => {});
+            expect(() => feed.each())
+              .to.throw(Error, 'You cannot call `each` once you have bound listeners to this feed');
+            feed.close();
+          });
+      });
     });
   });
 
