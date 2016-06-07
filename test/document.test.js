@@ -249,80 +249,81 @@ describe('documents', function() {
       //     .then(result => assert.equal(result.extra, undefined));
       // });
 
-      // it('Date as string should be coerced to ReQL dates', function() {
-      //   let Model = test.thinky.createModel(test.table(0), {
-      //     type: 'object',
-      //     properties: {
-      //       id: { type: 'string' },
-      //       date: { $ref: 'date' }
-      //     }
-      //   });
+      it('Date as string should be coerced to ReQL dates', function() {
+        let Model = test.thinky.createModel(test.table(0), {
+          type: 'object',
+          properties: {
+            id: { type: 'string' },
+            date: { $ref: 'date' }
+          }
+        });
 
-      //   let t = new Model({
-      //     id: util.s8(),
-      //     date: (new Date()).toISOString()
-      //   });
+        let t = new Model({
+          id: util.s8(),
+          date: (new Date()).toISOString()
+        });
 
-      //   return t.save()
-      //     .then(result => {
-      //       assert(t.date instanceof Date);
-      //       assert.equal(t.date.getYear(), new Date().getYear());
-      //       return Model.get(t.id).execute({ timeFormat: 'raw' });
-      //     })
-      //     .then(result => {
-      //       assert.equal(Object.prototype.toString.call(result.date), '[object Object]');
-      //       assert.equal(result.date.$reql_type$, 'TIME');
-      //     });
-      // });
+        return t.save()
+          .then(result => {
+            assert(t.date instanceof Date);
+            assert.equal(t.date.getYear(), new Date().getYear());
+            return Model.get(t.id).execute({ timeFormat: 'raw' });
+          })
+          .then(result => {
+            assert.equal(Object.prototype.toString.call(result.date), '[object Object]');
+            assert.equal(result.date.$reql_type$, 'TIME');
+          });
+      });
 
-      // it('Date as string should be coerced to ReQL dates in array', function() {
-      //   let Model = test.thinky.createModel(test.table(0), {
-      //     id: String,
-      //     array: type.array().schema({
-      //       date: Date
-      //     })
-      //   });
+      it('Date as string should be coerced to ReQL dates in array', function() {
+        let Model = test.thinky.createModel(test.table(0), {
+          type: 'object',
+          properties: {
+            id: { type: 'string' },
+            array: {
+              type: 'array',
+              items: { $ref: 'date' }
+            }
+          }
+        });
 
-      //   let t = new Model({
-      //     id: util.s8(),
-      //     array: [{
-      //       date: (new Date()).toISOString()
-      //     }]
-      //   });
+        let t = new Model({
+          id: util.s8(),
+          array: [ (new Date()).toISOString() ]
+        });
 
-      //   return t.save()
-      //     .then(result => {
-      //       assert(t.array[0].date instanceof Date);
-      //       assert.equal(t.array[0].date.getYear(), new Date().getYear());
-      //       return Model.get(t.id).execute({ timeFormat: 'raw' });
-      //     })
-      //     .then(result => {
-      //       assert.equal(Object.prototype.toString.call(result.array[0].date), '[object Object]');
-      //       assert.equal(result.array[0].date.$reql_type$, 'TIME');
-      //     });
-      // });
+        return t.save()
+          .then(result => {
+            assert(t.array[0] instanceof Date);
+            assert.equal(t.array[0].getYear(), new Date().getYear());
+            return Model.get(t.id).execute({ timeFormat: 'raw' });
+          })
+          .then(result => {
+            assert.equal(Object.prototype.toString.call(result.array[0]), '[object Object]');
+            assert.equal(result.array[0].$reql_type$, 'TIME');
+          });
+      });
 
-      // it('Date as number should be coerced to ReQL dates', function() {
-      //   let Model = test.thinky.createModel(test.table(0), {
-      //     id: String,
-      //     date: Date
-      //   });
+      it('Date as number should be coerced to ReQL dates', function() {
+        let Model = test.thinky.createModel(test.table(0), {
+          type: 'object',
+          properties: {
+            id: { type: 'string' },
+            date: { $ref: 'date' }
+          }
+        });
 
-      //   let t = new Model({
-      //     id: util.s8(),
-      //     date: Date.now()
-      //   });
-
-      //   return t.save()
-      //     .then(result => {
-      //       assert(t.date instanceof Date);
-      //       return Model.get(t.id).execute({ timeFormat: 'raw' });
-      //     })
-      //     .then(result => {
-      //       assert.equal(Object.prototype.toString.call(result.date), '[object Object]');
-      //       assert.equal(result.date.$reql_type$, 'TIME');
-      //     });
-      // });
+        let t = new Model({ id: util.s8(), date: Date.now() });
+        return t.save()
+          .then(result => {
+            assert(t.date instanceof Date);
+            return Model.get(t.id).execute({ timeFormat: 'raw' });
+          })
+          .then(result => {
+            assert.equal(Object.prototype.toString.call(result.date), '[object Object]');
+            assert.equal(result.date.$reql_type$, 'TIME');
+          });
+      });
 
       it('Points as array should be coerced to ReQL points', function() {
         let Model = test.thinky.createModel(test.table(0), {
