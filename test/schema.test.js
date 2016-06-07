@@ -180,7 +180,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: 1 });
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be a string or null.');
     });
 
@@ -198,7 +198,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: null});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be a string.');
     });
 
@@ -208,7 +208,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: null});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be a string.');
     });
 
@@ -218,7 +218,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: null});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be a string.');
     });
 
@@ -236,7 +236,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be defined.');
     });
 
@@ -255,7 +255,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: 'a'});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be longer than 2.');
     });
 
@@ -273,7 +273,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: 'abcdefgh'});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be shorter than 5.');
     });
 
@@ -291,7 +291,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: 'abcdef'});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be a string with 5 characters.');
     });
 
@@ -301,7 +301,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: 'abc'});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be a string with 5 characters.');
     });
 
@@ -319,7 +319,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: 'bar'});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must match the regex.');
     });
 
@@ -337,7 +337,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: 'bar'});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must match the regex.');
     });
 
@@ -357,7 +357,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: 'élégant'});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be an alphanumeric string.');
     });
 
@@ -375,7 +375,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: 'fooATbar.com'});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be a valid email.');
     });
 
@@ -393,7 +393,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: 'fooBar'});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be a lowercase string.');
     });
 
@@ -411,7 +411,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: 'fooBar'});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be a uppercase string.');
     });
 
@@ -471,7 +471,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: 'fooBar'});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Validator for the field [id] returned `false`.');
     });
 
@@ -489,7 +489,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: 'fooBar'});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Not good');
     });
 
@@ -499,7 +499,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: 'buzz'});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'The field [id] must be one of these values: foo, bar.');
     });
 
@@ -509,7 +509,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: 'buzz'});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'The field [id] must be one of these values: foo, bar.');
     });
 
@@ -519,7 +519,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: 'buzz'});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'The field [id] must be one of these values: foo.');
     });
 
@@ -529,7 +529,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: 'buzz'});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'The field [id] must be one of these values: foo.');
     });
 
@@ -578,7 +578,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: 'foo' });
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be a finite number or null.');
     });
 
@@ -588,7 +588,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: NaN });
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be a finite number or null.');
     });
 
@@ -607,7 +607,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: Infinity });
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be a finite number or null.');
     });
 
@@ -617,7 +617,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: -Infinity });
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be a finite number or null.');
     });
 
@@ -627,7 +627,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: 1});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be greater than 2.');
     });
 
@@ -645,7 +645,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: 8});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be less than 5.');
     });
 
@@ -663,7 +663,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: 3.14});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be an integer.');
     });
 
@@ -681,7 +681,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: 2});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Validator for the field [id] returned `false`.');
     });
 
@@ -699,7 +699,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: 4});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Not good');
     });
 
@@ -716,7 +716,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: 'foo' });
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be a boolean or null.');
     });
 
@@ -726,7 +726,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: true});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Validator for the field [id] returned `false`.');
     });
 
@@ -744,7 +744,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: true});
-      expect(doc.validate()).to.be.rejectedWith(Errors.ValidationError, 'Not good');
+      return expect(doc.validate()).to.be.rejectedWith(Errors.ValidationError, 'Not good');
     });
 
     it('Date - basic - valid date', function() {
@@ -777,7 +777,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: 'foo' });
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be a date or a valid string or null.');
     });
 
@@ -792,7 +792,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: valueDate});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, /Value for .id. must be after/);
     });
 
@@ -820,7 +820,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: valueDate});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, /Value for .id. must be before/);
     });
 
@@ -843,7 +843,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: new Date()});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Validator for the field [id] returned `false`.');
     });
 
@@ -861,7 +861,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: new Date()});
-      expect(doc.validate()).to.be.rejectedWith(Errors.ValidationError, 'Not good');
+      return expect(doc.validate()).to.be.rejectedWith(Errors.ValidationError, 'Not good');
     });
 
     it('Buffer - basic - valid buffer', function() {
@@ -886,7 +886,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: 'foo' });
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be a buffer or null.');
     });
 
@@ -911,7 +911,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: 'foo' });
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be a Point or null.');
     });
 
@@ -932,7 +932,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: 'foo' });
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be an object or null.');
     });
 
@@ -949,7 +949,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: 'foo' });
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be an array or null.');
     });
 
@@ -959,7 +959,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: [2] });
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [id][0] must be a string or null.');
     });
 
@@ -969,7 +969,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: [2] });
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [id][0] must be a string or null.');
     });
 
@@ -995,7 +995,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: 'bar'});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be an array or null.');
     });
 
@@ -1005,7 +1005,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: [2] });
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [id][0] must be a string or null.');
     });
 
@@ -1023,7 +1023,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: ['foo']});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must have at least 2 elements.');
     });
 
@@ -1041,7 +1041,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: ['foo', 'bar', 'buzz']});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must have at most 2 elements.');
     });
 
@@ -1059,7 +1059,7 @@ describe('schema', function() {
         {init: false});
 
       let doc = new Model({ id: ['foo', 'bar', 'buzz']});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [id] must be an array with 2 elements.');
     });
 
@@ -1632,7 +1632,7 @@ describe('schema', function() {
         field: 1
       });
 
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be a string.');
     });
 
@@ -1649,7 +1649,7 @@ describe('schema', function() {
         field: 1
       });
 
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be a string or null.');
     });
 
@@ -1729,7 +1729,7 @@ describe('schema', function() {
         field: undefined
       });
 
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be defined.');
     });
 
@@ -1745,7 +1745,7 @@ describe('schema', function() {
         field: null
       });
 
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be a string.');
     });
 
@@ -1791,7 +1791,7 @@ describe('schema', function() {
         field: 'hello'
       });
 
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be a finite number.');
     });
 
@@ -1807,7 +1807,7 @@ describe('schema', function() {
         field: 'hello'
       });
 
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be a finite number or null.');
     });
 
@@ -1853,7 +1853,7 @@ describe('schema', function() {
         field: 'hello'
       });
 
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be a boolean.');
     });
 
@@ -1869,7 +1869,7 @@ describe('schema', function() {
         field: 'hello'
       });
 
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be a boolean or null.');
     });
 
@@ -1918,7 +1918,7 @@ describe('schema', function() {
         field: 'hello'
       });
 
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be a date or a valid string.');
     });
 
@@ -1934,7 +1934,7 @@ describe('schema', function() {
         field: 'hello'
       });
 
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be a date or a valid string or null.');
     });
 
@@ -1994,7 +1994,7 @@ describe('schema', function() {
         field: {$reql_type$: 'TIME', epoch_time: 1231}
       });
 
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'The raw date object for [field] is missing the required field timezone.');
     });
 
@@ -2011,7 +2011,7 @@ describe('schema', function() {
         field: {$reql_type$: 'TIME', timezone: '+00:00'}
       });
 
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'The raw date object for [field] is missing the required field epoch_time.');
     });
 
@@ -2042,7 +2042,7 @@ describe('schema', function() {
         id: str
       });
 
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be defined.');
     });
 
@@ -2088,7 +2088,7 @@ describe('schema', function() {
         field: 'hello'
       });
 
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be a buffer.');
     });
 
@@ -2104,7 +2104,7 @@ describe('schema', function() {
         field: 'hello'
       });
 
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be a buffer or null.');
     });
 
@@ -2153,7 +2153,7 @@ describe('schema', function() {
         field: { $reql_type$: 'BINARY' }
       });
 
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'The raw binary object for [field] is missing the required field data.');
     });
 
@@ -2184,7 +2184,7 @@ describe('schema', function() {
         id: str
       });
 
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be defined.');
     });
 
@@ -2213,7 +2213,7 @@ describe('schema', function() {
         id: str
       });
 
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be defined.');
     });
 
@@ -2228,7 +2228,7 @@ describe('schema', function() {
         id: str
       });
 
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be defined.');
     });
 
@@ -2259,7 +2259,7 @@ describe('schema', function() {
         field: 2
       });
 
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be an array or null.');
     });
 
@@ -2275,7 +2275,7 @@ describe('schema', function() {
         field: {}
       });
 
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be an array or null.');
     });
 
@@ -2305,7 +2305,7 @@ describe('schema', function() {
         field: ['hello']
       });
 
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [field][0] must be a finite number.');
     });
 
@@ -2321,7 +2321,7 @@ describe('schema', function() {
         field: ['hello']
       });
 
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [field][0] must be a finite number or null.');
     });
 
@@ -2354,7 +2354,7 @@ describe('schema', function() {
         field: [1, 2, 3, 'hello']
       });
 
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [field][3] must be a finite number.');
     });
 
@@ -2371,7 +2371,7 @@ describe('schema', function() {
         field: [1, 2, 3, undefined]
       });
 
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'The element in the array [field] (position 3) cannot be `undefined`.');
     });
 
@@ -2388,7 +2388,7 @@ describe('schema', function() {
         field: [1, 2, 3, undefined]
       });
 
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'The element in the array [field] (position 3) cannot be `undefined`.');
     });
 
@@ -2420,7 +2420,7 @@ describe('schema', function() {
         id: str
       });
 
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be defined.');
     });
 
@@ -2451,7 +2451,7 @@ describe('schema', function() {
         field: 'foo'
       });
 
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be an object or null.');
     });
 
@@ -2500,7 +2500,7 @@ describe('schema', function() {
         field: 'bar'
       });
 
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be an object.');
     });
 
@@ -2519,7 +2519,7 @@ describe('schema', function() {
         field: 'hello'
       });
 
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [field] must be an object.');
     });
 
@@ -2540,7 +2540,7 @@ describe('schema', function() {
         }
       });
 
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [field][foo] must be a finite number.');
     });
 
@@ -2561,7 +2561,7 @@ describe('schema', function() {
         }
       });
 
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [field][foo] must be a finite number or null.');
     });
 
@@ -2592,7 +2592,7 @@ describe('schema', function() {
         field: {}
       });
 
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [field][foo] must be defined.');
     });
 
@@ -2628,7 +2628,7 @@ describe('schema', function() {
         field: {}
       });
 
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [field][foo] must be a finite number or null.');
     });
 
@@ -2661,7 +2661,8 @@ describe('schema', function() {
         id: str,
         foo: 'hello'
       });
-      expect(doc.validate())
+
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Extra field `foo` not allowed.');
     });
 
@@ -2678,7 +2679,7 @@ describe('schema', function() {
         foo: [{bar: 'Hello', buzz: 'World'}]
       });
 
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Extra field `buzz` in [foo][0] not allowed.');
     });
 
@@ -2695,7 +2696,7 @@ describe('schema', function() {
         foo: {bar: 'Hello', buzz: 'World'}
       });
 
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Extra field `buzz` in [foo] not allowed.');
     });
 
@@ -2846,7 +2847,7 @@ describe('schema', function() {
         }
       });
 
-      expect(doc.validateAll())
+      return expect(doc.validateAll())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [otherDoc][field] must be a string or null.');
     });
 
@@ -2879,7 +2880,7 @@ describe('schema', function() {
         }
       });
 
-      expect(doc.validateAll({otherDoc: true}))
+      return expect(doc.validateAll({otherDoc: true}))
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [otherDoc][field] must be a string or null.');
     });
 
@@ -2912,7 +2913,7 @@ describe('schema', function() {
         }
       });
 
-      expect(doc.validateAll())
+      return expect(doc.validateAll())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [otherDoc][field] must be a string or null.');
     });
 
@@ -2945,7 +2946,7 @@ describe('schema', function() {
         }
       });
 
-      expect(doc.validateAll({otherDoc: true}))
+      return expect(doc.validateAll({otherDoc: true}))
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [otherDoc][field] must be a string or null.');
     });
 
@@ -2978,7 +2979,7 @@ describe('schema', function() {
         }]
       });
 
-      expect(doc.validateAll())
+      return expect(doc.validateAll())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [otherDocs][0][field] must be a string or null.');
     });
 
@@ -3011,7 +3012,7 @@ describe('schema', function() {
         }]
       });
 
-      expect(doc.validateAll({otherDocs: true}))
+      return expect(doc.validateAll({otherDocs: true}))
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [otherDocs][0][field] must be a string or null.');
     });
 
@@ -3044,7 +3045,7 @@ describe('schema', function() {
         }]
       });
 
-      expect(doc.validateAll())
+      return expect(doc.validateAll())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [otherDocs][0][field] must be a string or null.');
     });
 
@@ -3077,7 +3078,7 @@ describe('schema', function() {
         }]
       });
 
-      expect(doc.validateAll({otherDocs: true}))
+      return expect(doc.validateAll({otherDocs: true}))
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [otherDocs][0][field] must be a string or null.');
     });
 
@@ -3131,7 +3132,7 @@ describe('schema', function() {
           let wrongDoc = new Model({id: 1});
           doc.has = otherDoc;
           otherDoc.belongsTo = wrongDoc;
-          expect(doc.validateAll({}, {has: {belongsTo: true}}))
+          return expect(doc.validateAll({}, {has: {belongsTo: true}}))
             .to.be.rejectedWith(Errors.ValidationError, 'Value for [has][belongsTo][id] must be a string or null.');
         });
     });
@@ -3166,7 +3167,7 @@ describe('schema', function() {
       });
       let doc = new Model({id: '', field: 'abc'});
 
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Expecting `id` value to be `field` value.');
     });
 
@@ -3234,7 +3235,7 @@ describe('schema', function() {
       });
 
       let doc = new Model({id: 'abc', field: ''});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, "Document's validator returned `false`.");
     });
 
@@ -3250,7 +3251,7 @@ describe('schema', function() {
       });
 
       let doc = new Model({id: 'abc', field: ''});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Expecting `id` value to be `field` value.');
     });
 
@@ -3264,7 +3265,7 @@ describe('schema', function() {
       });
 
       let doc = new Model({id: 'abc', field: ''});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, "Document's validator returned `false`.");
     });
 
@@ -3295,7 +3296,7 @@ describe('schema', function() {
       });
 
       let doc = new Model({id: 'abc', nested: { field: ''}});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Expecting `field` value to be `field` value.');
     });
 
@@ -3324,7 +3325,7 @@ describe('schema', function() {
       }, {init: false});
 
       let doc = new Model({id: 'abc', field: ''});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, "Expecting `field` value to be 'abc'.");
     });
 
@@ -3337,7 +3338,7 @@ describe('schema', function() {
       }, {init: false});
 
       let doc = new Model({id: 'abc', field: ''});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Validator for the field [field] returned `false`.');
     });
 
@@ -3350,7 +3351,7 @@ describe('schema', function() {
       }, {init: false});
 
       let doc = new Model({id: 'abc', field: ''});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Validator for the field [field] returned `false`.');
     });
 
@@ -3384,7 +3385,7 @@ describe('schema', function() {
       }, {init: false});
 
       let doc = new Model({id: 'abc', nested: { field: ''}});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, "Expecting `field` value to be 'abc'.");
     });
 
@@ -3405,7 +3406,7 @@ describe('schema', function() {
       }, {init: false});
 
       let doc = new Model({id: 'abc', arr: [2, 'ikk', 4]});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [arr][1] must be a finite number or null.');
     });
 
@@ -3426,7 +3427,7 @@ describe('schema', function() {
       }, {init: false});
 
       let doc = new Model({id: 'abc', ob: {foo: 1}});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'Value for [ob][foo] must be a string or null.');
     });
 
@@ -3463,7 +3464,7 @@ describe('schema', function() {
       }, {init: false});
       let doc = new Model({id: 'abc', field: 'notavalidvalue'});
 
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'The field [field] must be one of these values: foo, bar, buzz.');
     });
 
@@ -3474,7 +3475,7 @@ describe('schema', function() {
       }, {init: false});
       let doc = new Model({id: 'abc', field: 'notavalidvalue'});
 
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'The field [field] must be one of these values: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10.');
     });
 
@@ -3485,7 +3486,7 @@ describe('schema', function() {
       }, {init: false});
       let doc = new Model({id: 'abc', field: 'notavalidvalue'});
 
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Errors.ValidationError, 'The field [field] must be one of these values: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10...');
     });
 

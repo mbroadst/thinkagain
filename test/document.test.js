@@ -2835,7 +2835,7 @@ describe('documents', function() {
       });
 
       let doc = new Model({id: 'foobar'});
-      expect(doc.validate())
+      return expect(doc.validate())
         .to.be.rejectedWith(Error, 'Error thrown by a hook');
     });
 
