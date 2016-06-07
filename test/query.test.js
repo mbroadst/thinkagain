@@ -1114,173 +1114,173 @@ describe('queries', function() {
   describe('removeRelation', function() {
     afterEach(() => test.cleanTables());
 
-    // it('should work for hasOne', function() {
-    //   let Model = test.thinky.createModel(test.table(0), {
-    //     type: 'object',
-    //     properties: {
-    //       id: { type: 'string' },
-    //       str: { type: 'string' },
-    //       num: { type: 'number' }
-    //     }
-    //   });
+    it('should work for hasOne', function() {
+      let Model = test.thinky.createModel(test.table(0), {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          str: { type: 'string' },
+          num: { type: 'number' }
+        }
+      });
 
-    //   let OtherModel = test.thinky.createModel(test.table(1), {
-    //     type: 'object',
-    //     properties: {
-    //       id: { type: 'string' },
-    //       str: { type: 'string' },
-    //       num: { type: 'number' },
-    //       foreignKey: { type: 'string' }
-    //     }
-    //   });
+      let OtherModel = test.thinky.createModel(test.table(1), {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          str: { type: 'string' },
+          num: { type: 'number' },
+          foreignKey: { type: 'string' }
+        }
+      });
 
-    //   Model.hasOne(OtherModel, 'otherDoc', 'id', 'foreignKey');
+      Model.hasOne(OtherModel, 'otherDoc', 'id', 'foreignKey');
 
-    //   let docValues = {str: util.s8(), num: util.random()};
-    //   let otherDocValues = {str: util.s8(), num: util.random()};
+      let docValues = { str: util.s8(), num: util.random() };
+      let otherDocValues = { str: util.s8(), num: util.random() };
 
-    //   let doc = new Model(docValues);
-    //   let otherDoc = new OtherModel(otherDocValues);
-    //   doc.otherDoc = otherDoc;
+      let doc = new Model(docValues);
+      let otherDoc = new OtherModel(otherDocValues);
+      doc.otherDoc = otherDoc;
 
-    //   return doc.saveAll()
-    //     .then(result => Model.get(result.id).removeRelation('otherDoc').run())
-    //     .then(otherDocResults => {
-    //       assert.equal(otherDocResults.id, otherDoc.id);
-    //       assert.equal(otherDocResults.str, otherDoc.str);
-    //       assert.equal(otherDocResults.num, otherDoc.num);
-    //       return OtherModel.get(otherDoc.id).run();
-    //     })
-    //     .then(result => assert.equal(result.foreignKey, undefined));
-    // });
+      return doc.saveAll()
+        .then(result => Model.get(result.id).removeRelation('otherDoc').run())
+        .then(otherDocResults => {
+          assert.equal(otherDocResults.id, otherDoc.id);
+          assert.equal(otherDocResults.str, otherDoc.str);
+          assert.equal(otherDocResults.num, otherDoc.num);
+          return OtherModel.get(otherDoc.id).run();
+        })
+        .then(result => assert.equal(result.foreignKey, undefined));
+    });
 
-    // it('should work for hasMany - all', function() {
-    //   let Model = test.thinky.createModel(test.table(0), {
-    //     type: 'object',
-    //     properties: {
-    //       id: { type: 'string' },
-    //       str: { type: 'string' },
-    //       num: { type: 'number' }
-    //     }
-    //   });
+    it('should work for hasMany - all', function() {
+      let Model = test.thinky.createModel(test.table(0), {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          str: { type: 'string' },
+          num: { type: 'number' }
+        }
+      });
 
-    //   let OtherModel = test.thinky.createModel(test.table(1), {
-    //     type: 'object',
-    //     properties: {
-    //       id: { type: 'string' },
-    //       str: { type: 'string' },
-    //       num: { type: 'number' },
-    //       foreignKey: { type: 'string' }
-    //     }
-    //   });
+      let OtherModel = test.thinky.createModel(test.table(1), {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          str: { type: 'string' },
+          num: { type: 'number' },
+          foreignKey: { type: 'string' }
+        }
+      });
 
-    //   Model.hasMany(OtherModel, 'otherDocs', 'id', 'foreignKey');
+      Model.hasMany(OtherModel, 'otherDocs', 'id', 'foreignKey');
 
-    //   let docValues = {str: util.s8(), num: util.random()};
-    //   let otherDocValues = {str: util.s8(), num: util.random()};
+      let docValues = {str: util.s8(), num: util.random()};
+      let otherDocValues = {str: util.s8(), num: util.random()};
 
-    //   let doc = new Model(docValues);
-    //   let otherDoc = new OtherModel(otherDocValues);
-    //   doc.otherDocs = [otherDoc];
+      let doc = new Model(docValues);
+      let otherDoc = new OtherModel(otherDocValues);
+      doc.otherDocs = [otherDoc];
 
-    //   return doc.saveAll()
-    //     .then(result => Model.get(result.id).removeRelation('otherDocs').run())
-    //     .then(otherDocResults => {
-    //       assert.equal(otherDocResults.length, 1);
-    //       assert.equal(otherDocResults[0].id, otherDoc.id);
-    //       assert.equal(otherDocResults[0].str, otherDoc.str);
-    //       assert.equal(otherDocResults[0].num, otherDoc.num);
-    //       return OtherModel.get(otherDoc.id).run();
-    //     })
-    //     .then(result => assert.equal(result.foreignKey, undefined));
-    // });
+      return doc.saveAll()
+        .then(result => Model.get(result.id).removeRelation('otherDocs').run())
+        .then(otherDocResults => {
+          assert.equal(otherDocResults.length, 1);
+          assert.equal(otherDocResults[0].id, otherDoc.id);
+          assert.equal(otherDocResults[0].str, otherDoc.str);
+          assert.equal(otherDocResults[0].num, otherDoc.num);
+          return OtherModel.get(otherDoc.id).run();
+        })
+        .then(result => assert.equal(result.foreignKey, undefined));
+    });
 
-    // it('should work for hasMany - one', function() {
-    //   let Model = test.thinky.createModel(test.table(0), {
-    //     type: 'object',
-    //     properties: {
-    //       id: { type: 'string' },
-    //       str: { type: 'string' },
-    //       num: { type: 'number' }
-    //     }
-    //   });
+    it('should work for hasMany - one', function() {
+      let Model = test.thinky.createModel(test.table(0), {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          str: { type: 'string' },
+          num: { type: 'number' }
+        }
+      });
 
-    //   let OtherModel = test.thinky.createModel(test.table(1), {
-    //     type: 'object',
-    //     properties: {
-    //       id: { type: 'string' },
-    //       str: { type: 'string' },
-    //       num: { type: 'number' },
-    //       foreignKey: { type: 'string' }
-    //     }
-    //   });
+      let OtherModel = test.thinky.createModel(test.table(1), {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          str: { type: 'string' },
+          num: { type: 'number' },
+          foreignKey: { type: 'string' }
+        }
+      });
 
-    //   Model.hasMany(OtherModel, 'otherDocs', 'id', 'foreignKey');
+      Model.hasMany(OtherModel, 'otherDocs', 'id', 'foreignKey');
 
-    //   let docValues = {str: util.s8(), num: util.random()};
-    //   let otherDocValues1 = {str: util.s8(), num: util.random()};
-    //   let otherDocValues2 = {str: util.s8(), num: util.random()};
+      let docValues = {str: util.s8(), num: util.random()};
+      let otherDocValues1 = {str: util.s8(), num: util.random()};
+      let otherDocValues2 = {str: util.s8(), num: util.random()};
 
-    //   let doc = new Model(docValues);
-    //   let otherDoc1 = new OtherModel(otherDocValues1);
-    //   let otherDoc2 = new OtherModel(otherDocValues2);
-    //   doc.otherDocs = [otherDoc1, otherDoc2];
+      let doc = new Model(docValues);
+      let otherDoc1 = new OtherModel(otherDocValues1);
+      let otherDoc2 = new OtherModel(otherDocValues2);
+      doc.otherDocs = [otherDoc1, otherDoc2];
 
-    //   return doc.saveAll()
-    //     .then(result => Model.get(result.id).removeRelation('otherDocs', {id: otherDoc2.id}).run())
-    //     .then(otherDocResults => {
-    //       assert.equal(otherDocResults.length, 1);
-    //       assert.equal(otherDocResults[0].id, otherDoc2.id);
-    //       assert.equal(otherDocResults[0].str, otherDoc2.str);
-    //       assert.equal(otherDocResults[0].num, otherDoc2.num);
-    //       return Model.get(doc.id).getJoin({otherDocs: true}).run();
-    //     })
-    //     .then(result => {
-    //       assert.equal(result.otherDocs.length, 1);
-    //       assert.equal(result.otherDocs[0].id, otherDoc1.id);
-    //     });
-    // });
+      return doc.saveAll()
+        .then(result => Model.get(result.id).removeRelation('otherDocs', {id: otherDoc2.id}).run())
+        .then(otherDocResults => {
+          assert.equal(otherDocResults.length, 1);
+          assert.equal(otherDocResults[0].id, otherDoc2.id);
+          assert.equal(otherDocResults[0].str, otherDoc2.str);
+          assert.equal(otherDocResults[0].num, otherDoc2.num);
+          return Model.get(doc.id).getJoin({otherDocs: true}).run();
+        })
+        .then(result => {
+          assert.equal(result.otherDocs.length, 1);
+          assert.equal(result.otherDocs[0].id, otherDoc1.id);
+        });
+    });
 
-    // it('should work for belongsTo', function() {
-    //   let Model = test.thinky.createModel(test.table(0), {
-    //     type: 'object',
-    //     properties: {
-    //       id: { type: 'string' },
-    //       str: { type: 'string' },
-    //       num: { type: 'number' },
-    //       foreignKey: { type: 'string' }
-    //     }
-    //   });
+    it('should work for belongsTo', function() {
+      let Model = test.thinky.createModel(test.table(0), {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          str: { type: 'string' },
+          num: { type: 'number' },
+          foreignKey: { type: 'string' }
+        }
+      });
 
-    //   let OtherModel = test.thinky.createModel(test.table(1), {
-    //     type: 'object',
-    //     properties: {
-    //       id: { type: 'string' },
-    //       str: { type: 'string' },
-    //       num: { type: 'number' }
-    //     }
-    //   });
+      let OtherModel = test.thinky.createModel(test.table(1), {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          str: { type: 'string' },
+          num: { type: 'number' }
+        }
+      });
 
-    //   Model.belongsTo(OtherModel, 'otherDoc', 'foreignKey', 'id');
+      Model.belongsTo(OtherModel, 'otherDoc', 'foreignKey', 'id');
 
-    //   let docValues = {str: util.s8(), num: util.random()};
-    //   let otherDocValues = {str: util.s8(), num: util.random()};
+      let docValues = {str: util.s8(), num: util.random()};
+      let otherDocValues = {str: util.s8(), num: util.random()};
 
-    //   let doc = new Model(docValues);
-    //   let otherDoc = new OtherModel(otherDocValues);
-    //   doc.otherDoc = otherDoc;
+      let doc = new Model(docValues);
+      let otherDoc = new OtherModel(otherDocValues);
+      doc.otherDoc = otherDoc;
 
-    //   return doc.saveAll()
-    //     .then(result => Model.get(result.id).removeRelation('otherDoc').run())
-    //     .then(docResult => {
-    //       assert.equal(docResult.foreignKey, undefined);
-    //       assert.equal(docResult.id, doc.id);
-    //       assert.equal(docResult.str, doc.str);
-    //       assert.equal(docResult.num, doc.num);
-    //       return Model.get(doc.id).run();
-    //     })
-    //     .then(result => assert.equal(result.foreignKey, undefined));
-    // });
+      return doc.saveAll()
+        .then(result => Model.get(result.id).removeRelation('otherDoc').run())
+        .then(docResult => {
+          assert.equal(docResult.foreignKey, undefined);
+          assert.equal(docResult.id, doc.id);
+          assert.equal(docResult.str, doc.str);
+          assert.equal(docResult.num, doc.num);
+          return Model.get(doc.id).run();
+        })
+        .then(result => assert.equal(result.foreignKey, undefined));
+    });
 
     it('should work for hasAndBelongsTo - all', function() {
       let Model = test.thinky.createModel(test.table(0), {
