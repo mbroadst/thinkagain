@@ -19,6 +19,7 @@
     "url": "https://github.com/mbroadst/thinkagain/issues"
   },
   "dependencies":{
+    "ajv": "^4.1.0",
     "bluebird": "^3.4.0",
     "rethinkdbdash": "~2.3.0",
     "validator": "~3.22.1"

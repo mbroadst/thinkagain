@@ -1,0 +1,8 @@
+{
+  "id": "date",
+  "oneOf": [
+    { "instanceOf": "Date" },
+    { "type": "string", "coerceTo": "Date" },
+    { "type": "number", "coerceTo": "Date" }
+  ]
+}

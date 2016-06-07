@@ -24,7 +24,6 @@ class TestFixture {
 
     this.thinky = thinky(thinkyOptions);
     this.r = this.thinky.r;
-    this.type = this.thinky.type;
     return this.thinky.dbReady();
   }
 

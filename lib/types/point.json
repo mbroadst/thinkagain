@@ -1,0 +1,55 @@
+{
+  "id": "point",
+  "oneOf": [
+    {
+      "type": "object",
+      "properties": {
+        "latitude": { "type": "number" },
+        "longitude": { "type": "number" }
+      },
+      "additionalProperties": false,
+      "required": [ "latitude", "longitude" ],
+      "coerceTo": "Point"
+    },
+    {
+      "type": "object",
+      "description": "GeoJSON format",
+      "properties": {
+        "type": { "constant": "Point" },
+        "coordinates": {
+          "type": "array",
+          "items": [ { "type": "number" }, { "type": "number" } ],
+          "additionalItems": false,
+          "minItems": 2
+        }
+      },
+      "additionalProperties": false,
+      "required": [ "type", "coordinates" ],
+      "coerceTo": "Point"
+    },
+    {
+      "type": "array",
+      "description": "point as a plain array",
+      "items": [ { "type": "number" }, { "type": "number" } ],
+      "additionalItems": false,
+      "minItems": 2,
+      "coerceTo": "Point"
+    },
+    {
+      "type": "object",
+      "description": "raw ReQL point format",
+      "properties": {
+        "$reql_type$": { "constant": "GEOMETRY" },
+        "coordinates": {
+          "type": "array",
+          "items": [ { "type": "number" }, { "type": "number" } ],
+          "additionalItems": false,
+          "minItems": 2
+        },
+        "type": { "constant": "Point" }
+      },
+      "additionalProperties": false,
+      "required": [ "$reql_type$", "coordinates", "type" ]
+    }
+  ]
+}

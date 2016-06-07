@@ -28,7 +28,12 @@ describe('settings', function() {
     });
 
     it('Options on a model', function() {
-      let Model = test.thinky.createModel(test.table(), {id: String, name: String}, {
+      let Model = test.thinky.createModel(test.table(), {
+        type: 'object',
+        properties: {
+          id: { type: 'string' }, name: { type: 'string' }
+        }
+      }, {
         timeFormat: 'native',
         enforce_extra: 'none',
         enforce_missing: false,
@@ -57,7 +62,13 @@ describe('settings', function() {
     });
 
     it('pk option on a model', function(done) {
-      let Model = test.thinky.createModel(test.table(), {id: String, name: String}, {
+      let Model = test.thinky.createModel(test.table(), {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          name: { type: 'string' }
+        }
+      }, {
         pk: 'path'
       });
 
@@ -72,7 +83,13 @@ describe('settings', function() {
     });
 
     it('table option on a model', function(done) {
-      let Model = test.thinky.createModel(test.table(), {id: String, name: String}, {
+      let Model = test.thinky.createModel(test.table(), {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          name: { type: 'string' }
+        }
+      }, {
         table: {
           durability: 'soft'
         }
@@ -89,7 +106,14 @@ describe('settings', function() {
     });
 
     it('Options on a document', function() {
-      let Model = test.thinky.createModel(test.table(), {id: String, name: String});
+      let Model = test.thinky.createModel(test.table(), {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          name: { type: 'string' }
+        }
+      });
+
       let doc = new Model({}, {
         timeFormat: 'raw',
         enforce_extra: 'none',
@@ -115,22 +139,29 @@ describe('settings', function() {
   });
 
   describe('Priorities for options', function() {
-    it('Thinky options are used by default', function() {
-      /*
-      Thinky options:
-        config['timeFormat'] = 'raw';
-        config['enforce_extra'] =  'strict';
-        config['enforce_missing'] =  true;
-        config['enforce_type'] =  'strict';
-        config['validate'] = 'oncreate';
-      */
-      let Model = test.thinky.createModel(test.table(), {id: String, name: String});
-      assert.throws(() => {
-        let doc = new Model({});  // eslint-disable-line
-      }, error => {
-        return error.message === 'Value for [id] must be defined.';
-      });
-    });
+    // it('Thinky options are used by default', function() {
+    //   /*
+    //   Thinky options:
+    //     config['timeFormat'] = 'raw';
+    //     config['enforce_extra'] =  'strict';
+    //     config['enforce_missing'] =  true;
+    //     config['enforce_type'] =  'strict';
+    //     config['validate'] = 'oncreate';
+    //   */
+    //   let Model = test.thinky.createModel(test.table(), {
+    //     type: 'object',
+    //     properties: {
+    //       id: { type: 'string' },
+    //       name: { type: 'string' }
+    //     }
+    //   });
+
+    //   assert.throws(() => {
+    //     let doc = new Model({});  // eslint-disable-line
+    //   }, error => {
+    //     return error.message === 'Value for [id] must be defined.';
+    //   });
+    // });
 
     it("Thinky options can be overwritten by the Model's one", function() {
       /*
@@ -141,7 +172,16 @@ describe('settings', function() {
         config['enforce_type'] =  'strict';
         config['validate'] = 'oncreate';
       */
-      let Model = test.thinky.createModel(test.table(), {id: String, name: String}, {enforce_missing: false});
+      let Model = test.thinky.createModel(test.table(), {
+        type: 'object',
+        properties: {
+          id: { type: 'string'},
+          name: { type: 'string' }
+        }
+      }, {
+        enforce_missing: false
+      });
+
       let doc = new Model({});
       doc.validate();
     });
@@ -155,7 +195,14 @@ describe('settings', function() {
         config['enforce_type'] =  'strict';
         config['validate'] = 'oncreate';
       */
-      let Model = test.thinky.createModel(test.table(), {id: String, name: String});
+      let Model = test.thinky.createModel(test.table(), {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          name: { type: 'string' }
+        }
+      });
+
       let doc = new Model({}, {enforce_missing: false});
       doc.validate();
     });
@@ -169,28 +216,37 @@ describe('settings', function() {
         config['enforce_type'] =  'strict';
         config['validate'] = 'oncreate';
       */
-      let Model = test.thinky.createModel(test.table(), {id: String, name: String}, {validate: 'onsave'});
+      let Model = test.thinky.createModel(test.table(), {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          name: { type: 'string' }
+        }
+      }, {
+        validate: 'onsave'
+      });
+
       let doc = new Model({});
       doc.validate({enforce_missing: false});
     });
 
-    it('Thinky options can be overwritten by the options in the schema', function() {
-      /*
-      Thinky options:
-        config['timeFormat'] = 'raw';
-        config['enforce_extra'] = 'strict';
-        config['enforce_missing'] =  true;
-        config['enforce_type'] =  'strict';
-        config['validate'] = 'oncreate';
-      */
-      let Model = test.thinky.createModel(test.table(), {
-        id: { _type: String, options: { enforce_missing: false } },
-        name: { _type: String, options: { enforce_missing: false }}
-      });
+    // it('Thinky options can be overwritten by the options in the schema', function() {
+    //   /*
+    //   Thinky options:
+    //     config['timeFormat'] = 'raw';
+    //     config['enforce_extra'] = 'strict';
+    //     config['enforce_missing'] =  true;
+    //     config['enforce_type'] =  'strict';
+    //     config['validate'] = 'oncreate';
+    //   */
+    //   let Model = test.thinky.createModel(test.table(), {
+    //     id: { _type: String, options: { enforce_missing: false } },
+    //     name: { _type: String, options: { enforce_missing: false }}
+    //   });
 
-      let doc = new Model({});
-      doc.validate();
-    });
+    //   let doc = new Model({});
+    //   doc.validate();
+    // });
   });
 
   describe('mergeOptions', function() {

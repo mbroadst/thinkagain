@@ -10,7 +10,10 @@ describe('events', function() {
   afterEach(() => test.cleanTables());
 
   it('Add events on doc', function(done) {
-    let Model = test.thinky.createModel(test.table(0), { id: String }, { init: false });
+    let Model = test.thinky.createModel(test.table(0), {
+      type: 'object', properties: { id: { type: 'string' } }
+    }, { init: false });
+
     let doc = new Model({});
     doc.addListener('foo', () => done());
     doc.emit('foo');
@@ -18,7 +21,10 @@ describe('events', function() {
 
   it('Events on model should be forward to documents', function(done) {
     let count = 0;
-    let Model = test.thinky.createModel(test.table(0), { id: String }, { init: false });
+    let Model = test.thinky.createModel(test.table(0), {
+      type: 'object', properties: { id: { type: 'string' } }
+    }, { init: false });
+
     Model.docOn('foo', () => {
       count++;
       if (count === 2) done();
@@ -30,21 +36,30 @@ describe('events', function() {
   });
 
   it('Doc should emit save when saved', function(done) {
-    let Model = test.thinky.createModel(test.table(0), { id: String });
+    let Model = test.thinky.createModel(test.table(0), {
+      type: 'object', properties: { id: { type: 'string' } }
+    });
+
     let doc = new Model({});
     doc.once('saved', () => done());
     doc.save();
   });
 
   it('Doc should emit save when saved', function(done) {
-    let Model = test.thinky.createModel(test.table(0), { id: String });
+    let Model = test.thinky.createModel(test.table(0), {
+      type: 'object', properties: { id: { type: 'string' } }
+    });
+
     let doc = new Model({});
     doc.once('deleted', () => done());
     doc.save().then(() => doc.delete());
   });
 
   it('Doc should emit save when deleted -- hasAndBelongsToMany', function(done) {
-    let Model = test.thinky.createModel(test.table(0), { id: String });
+    let Model = test.thinky.createModel(test.table(0), {
+      type: 'object', properties: { id: { type: 'string' } }
+    });
+
     Model.hasAndBelongsToMany(Model, 'links', 'id', 'id');
 
     let doc1 = new Model({});
@@ -61,7 +76,13 @@ describe('events', function() {
   });
 
   it('Doc should emit save when deleted -- hasMany', function(done) {
-    let Model = test.thinky.createModel(test.table(0), { id: String, foreignKey: String });
+    let Model = test.thinky.createModel(test.table(0), {
+      type: 'object', properties: {
+        id: { type: 'string' },
+        foreignKey: { type: 'string' }
+      }
+    });
+
     Model.hasMany(Model, 'links', 'id', 'foreignKey');
 
     let doc1 = new Model({});
@@ -78,7 +99,10 @@ describe('events', function() {
   });
 
   it('Test saving event', function() {
-    let Model = test.thinky.createModel(test.table(0), { id: Number });
+    let Model = test.thinky.createModel(test.table(0), {
+      type: 'object', properties: { id: { type: 'number' } }
+    });
+
     let doc = new Model({});
     doc.addListener('saving', _doc => { _doc.id = 1; });
     return doc.save()
@@ -90,8 +114,16 @@ describe('events', function() {
   });
 
   it('Test saving event to validate a relation', function(done) {
-    let Model = test.thinky.createModel(test.table(0), { id: String });
-    let OtherModel = test.thinky.createModel(test.table(1), { id: String, foreignKey: String });
+    let Model = test.thinky.createModel(test.table(0), {
+      type: 'object', properties: { id: { type: 'string' } }
+    });
+
+    let OtherModel = test.thinky.createModel(test.table(1), {
+      type: 'object', properties: {
+        id: { type: 'string' },
+        foreignKey: { type: 'string' }
+      }
+    });
 
     Model.hasOne(OtherModel, 'joinedDoc', 'id', 'foreignKey');
     let doc = new Model({});
@@ -111,9 +143,11 @@ describe('events', function() {
   });
 
   it('Test retrieved event', function() {
-    let Model = test.thinky.createModel(test.table(0), { id: Number });
-    let doc = new Model({ id: 1 });
+    let Model = test.thinky.createModel(test.table(0), {
+      type: 'object', properties: { id: { type: 'number' } }
+    });
 
+    let doc = new Model({ id: 1 });
     Model.addListener('retrieved', _doc => { _doc.id++; });
     return doc.save()
       .then(() => {
@@ -124,8 +158,17 @@ describe('events', function() {
   });
 
   it('Test retrieved event for joined documents', function(done) {
-    let Model = test.thinky.createModel(test.table(0), { id: String });
-    let OtherModel = test.thinky.createModel(test.table(1), { id: String, foreignKey: String });
+    let Model = test.thinky.createModel(test.table(0), {
+      type: 'object', properties: { id: { type: 'string' } }
+    });
+
+    let OtherModel = test.thinky.createModel(test.table(1), {
+      type: 'object', properties: {
+        id: { type: 'string' },
+        foreignKey: { type: 'string' }
+      }
+    });
+
     Model.hasOne(OtherModel, 'joinedDoc', 'id', 'foreignKey');
 
     let doc = new Model({id: util.s8()});
