@@ -1,7 +1,7 @@
 'use strict';
 const Promise = require('bluebird'),
       config = require('./config'),
-      thinkagain = require('../lib/thinkagain'),
+      thinkagain = require('..'),
       util = require('./util'),
       chai = require('chai');
 
