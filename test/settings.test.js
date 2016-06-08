@@ -18,7 +18,7 @@ describe('settings', function() {
 
   describe('Options', function() {
     it('Options on the top level namespace', function() {
-      assert.deepEqual(test.thinky.getOptions(), {
+      assert.deepEqual(test.thinkagain.getOptions(), {
         timeFormat: 'raw',
         enforce_extra: 'strict',
         enforce_missing: true,
@@ -28,7 +28,7 @@ describe('settings', function() {
     });
 
     it('Options on a model', function() {
-      let Model = test.thinky.createModel(test.table(), {
+      let Model = test.thinkagain.createModel(test.table(), {
         type: 'object',
         properties: {
           id: { type: 'string' }, name: { type: 'string' }
@@ -50,7 +50,7 @@ describe('settings', function() {
       });
 
       // Make sure we didn't mess up the global options
-      assert.deepEqual(test.thinky.getOptions(), {
+      assert.deepEqual(test.thinkagain.getOptions(), {
         timeFormat: 'raw',
         enforce_extra: 'strict',
         enforce_missing: true,
@@ -62,7 +62,7 @@ describe('settings', function() {
     });
 
     it('pk option on a model', function(done) {
-      let Model = test.thinky.createModel(test.table(), {
+      let Model = test.thinkagain.createModel(test.table(), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -83,7 +83,7 @@ describe('settings', function() {
     });
 
     it('table option on a model', function(done) {
-      let Model = test.thinky.createModel(test.table(), {
+      let Model = test.thinkagain.createModel(test.table(), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -106,7 +106,7 @@ describe('settings', function() {
     });
 
     it('Options on a document', function() {
-      let Model = test.thinky.createModel(test.table(), {
+      let Model = test.thinkagain.createModel(test.table(), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -128,7 +128,7 @@ describe('settings', function() {
       });
 
       // Make sure we didn't messed up the global options
-      assert.deepEqual(test.thinky.getOptions(), {
+      assert.deepEqual(test.thinkagain.getOptions(), {
         timeFormat: 'raw',
         enforce_extra: 'strict',
         enforce_missing: true,
@@ -139,16 +139,16 @@ describe('settings', function() {
   });
 
   describe('Priorities for options', function() {
-    // it('Thinky options are used by default', function() {
+    // it('thinkagain options are used by default', function() {
     //   /*
-    //   Thinky options:
+    //   thinkagain options:
     //     config['timeFormat'] = 'raw';
     //     config['enforce_extra'] =  'strict';
     //     config['enforce_missing'] =  true;
     //     config['enforce_type'] =  'strict';
     //     config['validate'] = 'oncreate';
     //   */
-    //   let Model = test.thinky.createModel(test.table(), {
+    //   let Model = test.thinkagain.createModel(test.table(), {
     //     type: 'object',
     //     properties: {
     //       id: { type: 'string' },
@@ -163,16 +163,16 @@ describe('settings', function() {
     //   });
     // });
 
-    it("Thinky options can be overwritten by the Model's one", function() {
+    it("thinkagain options can be overwritten by the Model's one", function() {
       /*
-      Thinky options:
+      thinkagain options:
         config['timeFormat'] = 'raw';
         config['enforce_extra'] =  'strict';
         config['enforce_missing'] =  true;
         config['enforce_type'] =  'strict';
         config['validate'] = 'oncreate';
       */
-      let Model = test.thinky.createModel(test.table(), {
+      let Model = test.thinkagain.createModel(test.table(), {
         type: 'object',
         properties: {
           id: { type: 'string'},
@@ -186,16 +186,16 @@ describe('settings', function() {
       doc.validate();
     });
 
-    it("Thinky options can be overwritten by the Document's one", function() {
+    it("thinkagain options can be overwritten by the Document's one", function() {
       /*
-      Thinky options:
+      thinkagain options:
         config['timeFormat'] = 'raw';
         config['enforce_extra'] =  'strict';
         config['enforce_missing'] =  true;
         config['enforce_type'] =  'strict';
         config['validate'] = 'oncreate';
       */
-      let Model = test.thinky.createModel(test.table(), {
+      let Model = test.thinkagain.createModel(test.table(), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -207,16 +207,16 @@ describe('settings', function() {
       doc.validate();
     });
 
-    it('Thinky options can be overwritten by the options given to validate', function() {
+    it('thinkagain options can be overwritten by the options given to validate', function() {
       /*
-      Thinky options:
+      thinkagain options:
         config['timeFormat'] = 'raw';
         config['enforce_extra'] =  'strict';
         config['enforce_missing'] =  true;
         config['enforce_type'] =  'strict';
         config['validate'] = 'oncreate';
       */
-      let Model = test.thinky.createModel(test.table(), {
+      let Model = test.thinkagain.createModel(test.table(), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -230,16 +230,16 @@ describe('settings', function() {
       doc.validate({enforce_missing: false});
     });
 
-    // it('Thinky options can be overwritten by the options in the schema', function() {
+    // it('thinkagain options can be overwritten by the options in the schema', function() {
     //   /*
-    //   Thinky options:
+    //   thinkagain options:
     //     config['timeFormat'] = 'raw';
     //     config['enforce_extra'] = 'strict';
     //     config['enforce_missing'] =  true;
     //     config['enforce_type'] =  'strict';
     //     config['validate'] = 'oncreate';
     //   */
-    //   let Model = test.thinky.createModel(test.table(), {
+    //   let Model = test.thinkagain.createModel(test.table(), {
     //     id: { _type: String, options: { enforce_missing: false } },
     //     name: { _type: String, options: { enforce_missing: false }}
     //   });

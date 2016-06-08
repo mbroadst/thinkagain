@@ -1,7 +1,7 @@
 'use strict';
 const Promise = require('bluebird'),
       config = require('./config'),
-      thinky = require('../lib/thinky'),
+      thinkagain = require('../lib/thinkagain'),
       util = require('./util'),
       chai = require('chai');
 
@@ -15,33 +15,33 @@ class TestFixture {
 
   setup(options) {
     this.dbName = util.s8();
-    let thinkyOptions = Object.assign({}, options, {
+    let thinkagainOptions = Object.assign({}, options, {
       db: this.dbName,
       host: config.host,
       port: config.port,
       silent: true
     });
 
-    this.thinky = thinky(thinkyOptions);
-    this.r = this.thinky.r;
-    return this.thinky.dbReady();
+    this.thinkagain = thinkagain(thinkagainOptions);
+    this.r = this.thinkagain.r;
+    return this.thinkagain.dbReady();
   }
 
   teardown() {
     return this.r.dbDrop(this.dbName)
       .then(() => {
         this.dbName = undefined;
-        this.thinky = undefined;
+        this.thinkagain = undefined;
         this.models = new Map();
       });
   }
 
   cleanTables() {
     let r = this.r;
-    return Promise.map(Object.keys(this.thinky.models), model => {
-      if (!this.thinky.models[model]._initModel) return;
+    return Promise.map(Object.keys(this.thinkagain.models), model => {
+      if (!this.thinkagain.models[model]._initModel) return;
 
-      let Model = this.thinky.models[model],
+      let Model = this.thinkagain.models[model],
           joinLinks = Object.keys(Model._joins).reduce((links, joinModel) => {
             let join = Model._joins[joinModel];
             if (!!join.link) links.push(join.link);
@@ -60,7 +60,7 @@ class TestFixture {
       });
     })
     .error(err => { /* console.log('clean error: ', err); */ })
-    .finally(() => this.thinky._clean());
+    .finally(() => this.thinkagain._clean());
   }
 
   table(id) {
@@ -70,9 +70,9 @@ class TestFixture {
   }
 
   dropTables() {
-    return Promise.map(Object.keys(this.thinky.models), model => {
-      if (this.thinky.models[model]._initModel) return this.r.tableDrop(model).run();
-    }).then(() => this.thinky._clean());
+    return Promise.map(Object.keys(this.thinkagain.models), model => {
+      if (this.thinkagain.models[model]._initModel) return this.r.tableDrop(model).run();
+    }).then(() => this.thinkagain._clean());
   }
 }
 

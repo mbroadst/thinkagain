@@ -15,7 +15,7 @@ describe('types', function() {
     after(() => { delete test.Model; });
 
     it('should generate an error on invalid type', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: { id: { type: 'string', coerceTo: 'invalid' } }
       }, { init: false });
@@ -31,7 +31,7 @@ describe('types', function() {
     after(() => { delete test.Model; });
 
     it('should accept Date objects', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -53,7 +53,7 @@ describe('types', function() {
     });
 
     it('should should coerce strings to ReQL dates', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -75,7 +75,7 @@ describe('types', function() {
     });
 
     it('should coerce strings in an array to ReQL dates', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -100,7 +100,7 @@ describe('types', function() {
     });
 
     it('should coerce numbers to ReQL dates', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -126,7 +126,7 @@ describe('types', function() {
     after(() => { delete test.Model; });
 
     it('Points as array should be coerced to ReQL points', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -145,7 +145,7 @@ describe('types', function() {
     });
 
     it('Raw ReQL points should work', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -172,7 +172,7 @@ describe('types', function() {
     });
 
     it('Points as objects should be coerced to ReQL points', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -190,7 +190,7 @@ describe('types', function() {
     });
 
     it('Points as geojson should be coerced to ReQL points', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -209,7 +209,7 @@ describe('types', function() {
   }); // Point
 
   // it('Number as string should be coerced to number', function() {
-  //   let Model = test.thinky.createModel(test.table(0), {
+  //   let Model = test.thinkagain.createModel(test.table(0), {
   //     type: 'object',
   //     properties: {
   //       id: { type: 'string' },

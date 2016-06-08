@@ -14,12 +14,12 @@ describe('Advanced cases', function() {
     afterEach(() => test.cleanTables());
     after(() => { delete test.Model; delete test.OtherModel; });
     beforeEach(() => {
-      test.Model = test.thinky.createModel(test.table(0), {
+      test.Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: { id: { type: 'string' } }
       });
 
-      test.OtherModel = test.thinky.createModel(test.table(1), {
+      test.OtherModel = test.thinkagain.createModel(test.table(1), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -500,7 +500,7 @@ describe('Advanced cases', function() {
         })
         .then(result => {
           assert.equal(result, 4);
-          return test.thinky.models[test.Model._joins.links.link].count().execute();
+          return test.thinkagain.models[test.Model._joins.links.link].count().execute();
         })
         .then(result => {
           assert.equal(result, 4);
@@ -539,7 +539,7 @@ describe('Advanced cases', function() {
         })
         .then(result => {
           assert.equal(result, 4);
-          return test.thinky.models[test.Model._joins.links.link].count().execute();
+          return test.thinkagain.models[test.Model._joins.links.link].count().execute();
         })
         .then(result => {
           assert.equal(result, 2);
@@ -550,7 +550,7 @@ describe('Advanced cases', function() {
         .then(result => test.OtherModel.count().execute())
         .then(result => {
           assert.equal(result, 4);
-          return test.thinky.models[test.Model._joins.links.link].count().execute();
+          return test.thinkagain.models[test.Model._joins.links.link].count().execute();
         })
         .then(result => {
           assert.equal(result, 2);
@@ -682,12 +682,12 @@ describe('Advanced cases', function() {
     afterEach(() => test.cleanTables());
     after(() => { delete test.Model; delete test.OtherModel; });
     beforeEach(() => {
-      test.Model = test.thinky.createModel(test.table(0), {
+      test.Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: { id: { type: 'string' } }
       });
 
-      test.OtherModel = test.thinky.createModel(test.table(1), {
+      test.OtherModel = test.thinkagain.createModel(test.table(1), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -1595,12 +1595,12 @@ describe('Advanced cases', function() {
     afterEach(() => test.cleanTables());
     after(() => { delete test.Model; delete test.OtherModel; });
     beforeEach(() => {
-      test.Model = test.thinky.createModel(test.table(0), {
+      test.Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: { id: { type: 'string' } }
       });
 
-      test.OtherModel = test.thinky.createModel(test.table(1), {
+      test.OtherModel = test.thinkagain.createModel(test.table(1), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -1932,7 +1932,7 @@ describe('Advanced cases', function() {
     afterEach(() => test.cleanTables());
 
     it('hasAndBelongsToMany -- pairs', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: { id: { type: 'string' } }
       });
@@ -1958,7 +1958,7 @@ describe('Advanced cases', function() {
     });
 
     it('hasAndBelongsToMany -- pairs', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: { id: { type: 'string' } }
       });
@@ -1975,7 +1975,7 @@ describe('Advanced cases', function() {
     });
 
     it('hasOne/belongsTo -- pairs', function() {
-      let Human = test.thinky.createModel(test.table(0), {
+      let Human = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -2008,12 +2008,12 @@ describe('Advanced cases', function() {
     afterEach(() => test.cleanTables());
     after(() => { delete test.Model; delete test.OtherModel; delete test.RegressionModel; });
     beforeEach(() => {
-      test.Model = test.thinky.createModel(test.table(0), {
+      test.Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: { id: { type: 'string' } }
       });
 
-      test.OtherModel = test.thinky.createModel(test.table(1), {
+      test.OtherModel = test.thinkagain.createModel(test.table(1), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -2021,7 +2021,7 @@ describe('Advanced cases', function() {
         }
       });
 
-      test.RegressionModel = test.thinky.createModel(test.table(3), {
+      test.RegressionModel = test.thinkagain.createModel(test.table(3), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -2601,12 +2601,12 @@ describe('Advanced cases', function() {
     afterEach(() => test.cleanTables());
     after(() => { delete test.Model; delete test.OtherModel; });
     beforeEach(() => {
-      test.Model = test.thinky.createModel(test.table(0), {
+      test.Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: { id: { type: 'string' } }
       });
 
-      test.OtherModel = test.thinky.createModel(test.table(1), {
+      test.OtherModel = test.thinkagain.createModel(test.table(1), {
         type: 'object',
         properties: { id: { type: 'string' } }
       });
@@ -2638,12 +2638,12 @@ describe('Advanced cases', function() {
     afterEach(() => test.cleanTables());
     after(() => { delete test.Model; delete test.OtherModel; });
     beforeEach(() => {
-      test.Model = test.thinky.createModel(test.table(0), {
+      test.Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: { id: { type: 'string' } }
       });
 
-      test.OtherModel = test.thinky.createModel(test.table(1), {
+      test.OtherModel = test.thinkagain.createModel(test.table(1), {
         type: 'object',
         properties: { id: { type: 'string' } }
       });

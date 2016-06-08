@@ -16,7 +16,7 @@ describe('queries', function() {
     before(function() {
       test.data = [];
       test.bag = {};
-      test.Model = test.thinky.createModel(test.table(0), {
+      test.Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -222,7 +222,7 @@ describe('queries', function() {
       });
 
       before(() => {
-        test.Model = test.thinky.createModel(test.table(0), {
+        test.Model = test.thinkagain.createModel(test.table(0), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -231,7 +231,7 @@ describe('queries', function() {
           }
         });
 
-        test.OtherModel = test.thinky.createModel(test.table(1), {
+        test.OtherModel = test.thinkagain.createModel(test.table(1), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -278,7 +278,7 @@ describe('queries', function() {
       });
 
       before(function() {
-        test.Model = test.thinky.createModel(test.table(0), {
+        test.Model = test.thinkagain.createModel(test.table(0), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -288,7 +288,7 @@ describe('queries', function() {
           }
         });
 
-        test.OtherModel = test.thinky.createModel(test.table(1), {
+        test.OtherModel = test.thinkagain.createModel(test.table(1), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -334,7 +334,7 @@ describe('queries', function() {
       });
 
       before(function() {
-        test.Model = test.thinky.createModel(test.table(0), {
+        test.Model = test.thinkagain.createModel(test.table(0), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -344,7 +344,7 @@ describe('queries', function() {
           additionalProperties: false
         });
 
-        test.OtherModel = test.thinky.createModel(test.table(1), {
+        test.OtherModel = test.thinkagain.createModel(test.table(1), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -399,7 +399,7 @@ describe('queries', function() {
       });
 
       before(function() {
-        test.Model = test.thinky.createModel(test.table(0), {
+        test.Model = test.thinkagain.createModel(test.table(0), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -410,7 +410,7 @@ describe('queries', function() {
         // ).removeExtra()
         );
 
-        test.OtherModel = test.thinky.createModel(test.table(1), {
+        test.OtherModel = test.thinkagain.createModel(test.table(1), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -465,7 +465,7 @@ describe('queries', function() {
       });
 
       before(function() {
-        test.Model = test.thinky.createModel(test.table(0), {
+        test.Model = test.thinkagain.createModel(test.table(0), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -474,7 +474,7 @@ describe('queries', function() {
           }
         });
 
-        test.OtherModel = test.thinky.createModel(test.table(1), {
+        test.OtherModel = test.thinkagain.createModel(test.table(1), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -529,7 +529,7 @@ describe('queries', function() {
       });
 
       before(function() {
-        test.Model = test.thinky.createModel(test.table(0), {
+        test.Model = test.thinkagain.createModel(test.table(0), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -538,7 +538,7 @@ describe('queries', function() {
           }
         });
 
-        test.OtherModel = test.thinky.createModel(test.table(1), {
+        test.OtherModel = test.thinkagain.createModel(test.table(1), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -590,12 +590,12 @@ describe('queries', function() {
       afterEach(() => test.cleanTables());
 
       it('hasMany - belongsTo', function() {
-        let Model = test.thinky.createModel(test.table(0), {
+        let Model = test.thinkagain.createModel(test.table(0), {
           type: 'object',
           properties: { id: { type: 'string' } }
         });
 
-        let OtherModel = test.thinky.createModel(test.table(1), {
+        let OtherModel = test.thinkagain.createModel(test.table(1), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -649,12 +649,12 @@ describe('queries', function() {
       /***
        * NOTE: I don't quite understand this test
       it('_apply should work with count (not coerce to arrays)', function() {
-        let Model = test.thinky.createModel(test.table(0), {
+        let Model = test.thinkagain.createModel(test.table(0), {
           type: 'object',
           properties: { id: { type: 'string' } }
         });
 
-        let OtherModel = test.thinky.createModel(test.table(1), {
+        let OtherModel = test.thinkagain.createModel(test.table(1), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -690,7 +690,7 @@ describe('queries', function() {
       });
 
       it('hasOne', function() {
-        test.Model = test.thinky.createModel(test.table(0), {
+        test.Model = test.thinkagain.createModel(test.table(0), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -699,7 +699,7 @@ describe('queries', function() {
           }
         });
 
-        test.OtherModel = test.thinky.createModel(test.table(1), {
+        test.OtherModel = test.thinkagain.createModel(test.table(1), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -721,7 +721,7 @@ describe('queries', function() {
       });
 
       it('belongsTo', function() {
-        test.Model = test.thinky.createModel(test.table(0), {
+        test.Model = test.thinkagain.createModel(test.table(0), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -731,7 +731,7 @@ describe('queries', function() {
           }
         });
 
-        test.OtherModel = test.thinky.createModel(test.table(1), {
+        test.OtherModel = test.thinkagain.createModel(test.table(1), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -750,7 +750,7 @@ describe('queries', function() {
       });
 
       it('hasMany', function() {
-        test.Model = test.thinky.createModel(test.table(0), {
+        test.Model = test.thinkagain.createModel(test.table(0), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -759,7 +759,7 @@ describe('queries', function() {
           }
         });
 
-        test.OtherModel = test.thinky.createModel(test.table(1), {
+        test.OtherModel = test.thinkagain.createModel(test.table(1), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -778,7 +778,7 @@ describe('queries', function() {
       });
 
       it('hasAndBelongsToMany', function() {
-        test.Model = test.thinky.createModel(test.table(0), {
+        test.Model = test.thinkagain.createModel(test.table(0), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -787,7 +787,7 @@ describe('queries', function() {
           }
         });
 
-        test.OtherModel = test.thinky.createModel(test.table(1), {
+        test.OtherModel = test.thinkagain.createModel(test.table(1), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -810,7 +810,7 @@ describe('queries', function() {
     afterEach(() => test.cleanTables());
 
     // it('hasOne - pk', function() {
-    //   let Model = test.thinky.createModel(test.table(0), {
+    //   let Model = test.thinkagain.createModel(test.table(0), {
     //     type: 'object',
     //     properties: {
     //       id: { type: 'string' },
@@ -819,7 +819,7 @@ describe('queries', function() {
     //     }
     //   });
 
-    //   let OtherModel = test.thinky.createModel(test.table(1), {
+    //   let OtherModel = test.thinkagain.createModel(test.table(1), {
     //     type: 'object',
     //     properties: {
     //       id: { type: 'string' },
@@ -852,7 +852,7 @@ describe('queries', function() {
     // });
 
     // it('hasMany - pk', function() {
-    //   let Model = test.thinky.createModel(test.table(0), {
+    //   let Model = test.thinkagain.createModel(test.table(0), {
     //     type: 'object',
     //     properties: {
     //       id: { type: 'string' },
@@ -861,7 +861,7 @@ describe('queries', function() {
     //     }
     //   });
 
-    //   let OtherModel = test.thinky.createModel(test.table(1), {
+    //   let OtherModel = test.thinkagain.createModel(test.table(1), {
     //     type: 'object',
     //     properties: {
     //       id: { type: 'string' },
@@ -893,7 +893,7 @@ describe('queries', function() {
     // });
 
     // it('belongsTo - pk', function() {
-    //   let Model = test.thinky.createModel(test.table(0), {
+    //   let Model = test.thinkagain.createModel(test.table(0), {
     //     type: 'object',
     //     properties: {
     //       id: { type: 'string' },
@@ -903,7 +903,7 @@ describe('queries', function() {
     //     }
     //   });
 
-    //   let OtherModel = test.thinky.createModel(test.table(1), {
+    //   let OtherModel = test.thinkagain.createModel(test.table(1), {
     //     type: 'object',
     //     properties: {
     //       id: { type: 'string' },
@@ -933,7 +933,7 @@ describe('queries', function() {
     // });
 
     it('belongsTo - field', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -942,7 +942,7 @@ describe('queries', function() {
         }
       });
 
-      let OtherModel = test.thinky.createModel(test.table(1), {
+      let OtherModel = test.thinkagain.createModel(test.table(1), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -973,7 +973,7 @@ describe('queries', function() {
     });
 
     it('hasAndBelongsToMany - pair - field', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -1004,7 +1004,7 @@ describe('queries', function() {
     });
 
     it('hasAndBelongsToMany - pair - id', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -1035,7 +1035,7 @@ describe('queries', function() {
     });
 
     it('hasAndBelongsToMany - id', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -1045,7 +1045,7 @@ describe('queries', function() {
         }
       });
 
-      let OtherModel = test.thinky.createModel(test.table(1), {
+      let OtherModel = test.thinkagain.createModel(test.table(1), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -1073,7 +1073,7 @@ describe('queries', function() {
     });
 
     it('hasAndBelongsToMany - field', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -1083,7 +1083,7 @@ describe('queries', function() {
         }
       });
 
-      let OtherModel = test.thinky.createModel(test.table(1), {
+      let OtherModel = test.thinkagain.createModel(test.table(1), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -1115,7 +1115,7 @@ describe('queries', function() {
     afterEach(() => test.cleanTables());
 
     it('should work for hasOne', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -1124,7 +1124,7 @@ describe('queries', function() {
         }
       });
 
-      let OtherModel = test.thinky.createModel(test.table(1), {
+      let OtherModel = test.thinkagain.createModel(test.table(1), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -1155,7 +1155,7 @@ describe('queries', function() {
     });
 
     it('should work for hasMany - all', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -1164,7 +1164,7 @@ describe('queries', function() {
         }
       });
 
-      let OtherModel = test.thinky.createModel(test.table(1), {
+      let OtherModel = test.thinkagain.createModel(test.table(1), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -1196,7 +1196,7 @@ describe('queries', function() {
     });
 
     it('should work for hasMany - one', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -1205,7 +1205,7 @@ describe('queries', function() {
         }
       });
 
-      let OtherModel = test.thinky.createModel(test.table(1), {
+      let OtherModel = test.thinkagain.createModel(test.table(1), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -1242,7 +1242,7 @@ describe('queries', function() {
     });
 
     it('should work for belongsTo', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -1252,7 +1252,7 @@ describe('queries', function() {
         }
       });
 
-      let OtherModel = test.thinky.createModel(test.table(1), {
+      let OtherModel = test.thinkagain.createModel(test.table(1), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -1283,7 +1283,7 @@ describe('queries', function() {
     });
 
     it('should work for hasAndBelongsTo - all', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -1292,7 +1292,7 @@ describe('queries', function() {
         }
       });
 
-      let OtherModel = test.thinky.createModel(test.table(1), {
+      let OtherModel = test.thinkagain.createModel(test.table(1), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -1318,7 +1318,7 @@ describe('queries', function() {
     });
 
     it('should work for hasAndBelongsTo - one', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -1327,7 +1327,7 @@ describe('queries', function() {
         }
       });
 
-      let OtherModel = test.thinky.createModel(test.table(1), {
+      let OtherModel = test.thinkagain.createModel(test.table(1), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -1358,7 +1358,7 @@ describe('queries', function() {
     });
 
     it('should work for hasAndBelongsToMany - pair - all', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -1382,7 +1382,7 @@ describe('queries', function() {
     });
 
     it('should work for hasAndBelongsToMany - pair - one', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -1416,7 +1416,7 @@ describe('queries', function() {
     });
 
     before(function() {
-      test.Model = test.thinky.createModel(test.table(0), {
+      test.Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -1502,13 +1502,13 @@ describe('queries', function() {
     });
   });
 
-  describe('thinky.Query', function() {
+  describe('thinkagain.Query', function() {
     afterEach(() => test.cleanTables());
 
     it('Manual query', function() {
-      let Query = test.thinky.Query;
-      let r = test.thinky.r;
-      let User = test.thinky.createModel(test.table(0), {
+      let Query = test.thinkagain.Query;
+      let r = test.thinkagain.r;
+      let User = test.thinkagain.createModel(test.table(0), {
         type: 'object', properties: { id: { type: 'string' } }
       });
 
@@ -1533,7 +1533,7 @@ describe('queries', function() {
     afterEach(() => test.cleanTables());
     after(() => { delete test.User; });
     before(() => {
-      test.User = test.thinky.createModel(test.table(0), {
+      test.User = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: { id: { type: 'string' } }
       });
@@ -1560,7 +1560,7 @@ describe('queries', function() {
 
     it('should run the query and call handler', function(done) {
       let r = test.r;
-      let User = test.thinky.createModel(test.table(0), {
+      let User = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: { id: { type: 'string' } }
       }, {init: false});
@@ -1570,7 +1570,7 @@ describe('queries', function() {
 
     it('should return a promise', function(done) {
       let r = test.r;
-      let User = test.thinky.createModel(test.table(0), {
+      let User = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: { id: { type: 'string' } }
       }, {init: false});
@@ -1585,7 +1585,7 @@ describe('queries', function() {
 
     it('should run the query and call handler', function(done) {
       let r = test.r;
-      let User = test.thinky.createModel(test.table(0), {
+      let User = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: { id: { type: 'string' } }
       }, { init: false});
@@ -1595,7 +1595,7 @@ describe('queries', function() {
 
     it('should return a promise', function(done) {
       let r = test.r;
-      let User = test.thinky.createModel(test.table(0), {
+      let User = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: { id: { type: 'string' } }
       }, { init: false });
@@ -1610,7 +1610,7 @@ describe('queries', function() {
     afterEach(() => test.cleanTables());
     after(() => { delete test.User; });
     before(() => {
-      test.User = test.thinky.createModel(test.table(0), {
+      test.User = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: { id: { type: 'string' } }
       });
@@ -1632,7 +1632,7 @@ describe('queries', function() {
     afterEach(() => test.cleanTables());
 
     it('people should be able to fork queries', function(done) {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: { id: { type: 'string' } }
       });
@@ -1666,7 +1666,7 @@ describe('queries', function() {
       return r.tableCreate(name).run()
         .then(result => r.table(name).indexCreate('name1').run())
         .then(() => {
-          test.Model = test.thinky.createModel(test.table(0), {
+          test.Model = test.thinkagain.createModel(test.table(0), {
             type: 'object',
             properties: {
               id: { type: 'string' },
@@ -1751,7 +1751,7 @@ describe('queries', function() {
     after(() => { delete test.Model; });
     afterEach(() => test.cleanTables());
     before(() => {
-      test.Model = test.thinky.createModel(test.table(0), {
+      test.Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -1779,7 +1779,7 @@ describe('queries', function() {
       return doc.save()
         .then(() => test.Model.get(doc.id).update({num: r.expr('foo')}).run())
         .error(error => {
-          assert(error instanceof Errors.ThinkyError);
+          assert(error instanceof Errors.ThinkAgainError);
           assert(error.message.match('The partial value is not valid, so the write was not executed.'));
           return test.Model.get(doc.id).run();
         })
@@ -1790,7 +1790,7 @@ describe('queries', function() {
     });
 
     it('Point write - post non valid - primary key not a string', function(done) {
-      let Model = test.thinky.createModel(test.table(1), {
+      let Model = test.thinkagain.createModel(test.table(1), {
         type: 'object',
         properties: {
           id: { type: 'number' },
@@ -1898,8 +1898,8 @@ describe('queries', function() {
     });
 
     it('should spread filter and count queries', function() {
-      //let User = test.thinky.createModel(test.table(0), {id: String}, {init: false});
-      let Model = test.thinky.createModel(test.table(0), {
+      //let User = test.thinkagain.createModel(test.table(0), {id: String}, {init: false});
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: { id: { type: 'string' } }
       });
@@ -1920,7 +1920,7 @@ describe('queries', function() {
     describe('Query.prototype.bindRun()', function() {
       after(() => { delete test.Model; });
       before(() => {
-        test.Model = test.thinky.createModel(test.table(0), {
+        test.Model = test.thinkagain.createModel(test.table(0), {
           type: 'object', properties: { id: { type: 'string' } }
         });
       });
@@ -1955,7 +1955,7 @@ describe('queries', function() {
     describe('Query.prototype.bindExecute()', function() {
       after(() => { delete test.Model; });
       before(() => {
-        test.Model = test.thinky.createModel(test.table(0), {
+        test.Model = test.thinkagain.createModel(test.table(0), {
           type: 'object',
           properties: { id: { type: 'string' } }
         });

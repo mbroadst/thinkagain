@@ -15,7 +15,7 @@ describe('documents', function() {
       afterEach(() => test.cleanTables());
       after(() => { delete test.Model; delete test.PointModel; });
       before(function() {
-        test.Model = test.thinky.createModel(test.table(0), {
+        test.Model = test.thinkagain.createModel(test.table(0), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -206,7 +206,7 @@ describe('documents', function() {
       });
 
       it('Point - ReQL point', function() {
-        test.PointModel = test.thinky.createModel(test.table(1), {
+        test.PointModel = test.thinkagain.createModel(test.table(1), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -230,7 +230,7 @@ describe('documents', function() {
       after(() => { delete test.Model; });
 
       // it('enforce_extra: "remove" should not save the field in the db', function() {
-      //   let Model = test.thinky.createModel(test.table(0), {
+      //   let Model = test.thinkagain.createModel(test.table(0), {
       //     type: 'object',
       //     properties: {
       //       id: { type: 'string' },
@@ -250,7 +250,7 @@ describe('documents', function() {
       // });
 
       it('Date as string should be coerced to ReQL dates', function() {
-        let Model = test.thinky.createModel(test.table(0), {
+        let Model = test.thinkagain.createModel(test.table(0), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -276,7 +276,7 @@ describe('documents', function() {
       });
 
       it('Date as string should be coerced to ReQL dates in array', function() {
-        let Model = test.thinky.createModel(test.table(0), {
+        let Model = test.thinkagain.createModel(test.table(0), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -305,7 +305,7 @@ describe('documents', function() {
       });
 
       it('Date as number should be coerced to ReQL dates', function() {
-        let Model = test.thinky.createModel(test.table(0), {
+        let Model = test.thinkagain.createModel(test.table(0), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -326,7 +326,7 @@ describe('documents', function() {
       });
 
       it('Points as array should be coerced to ReQL points', function() {
-        let Model = test.thinky.createModel(test.table(0), {
+        let Model = test.thinkagain.createModel(test.table(0), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -349,7 +349,7 @@ describe('documents', function() {
       });
 
       it('Raw ReQL points should work', function() {
-        let Model = test.thinky.createModel(test.table(0), {
+        let Model = test.thinkagain.createModel(test.table(0), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -376,7 +376,7 @@ describe('documents', function() {
       });
 
       it('Points as objects should be coerced to ReQL points', function() {
-        let Model = test.thinky.createModel(test.table(0), {
+        let Model = test.thinkagain.createModel(test.table(0), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -398,7 +398,7 @@ describe('documents', function() {
       });
 
       it('Points as geojson should be coerced to ReQL points', function() {
-        let Model = test.thinky.createModel(test.table(0), {
+        let Model = test.thinkagain.createModel(test.table(0), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -420,7 +420,7 @@ describe('documents', function() {
       });
 
       // it('Number as string should be coerced to number', function() {
-      //   let Model = test.thinky.createModel(test.table(0), {
+      //   let Model = test.thinkagain.createModel(test.table(0), {
       //     type: 'object',
       //     properties: {
       //       id: { type: 'string' },
@@ -450,7 +450,7 @@ describe('documents', function() {
       });
 
       before(function() {
-        test.Model = test.thinky.createModel(test.table(0), {
+        test.Model = test.thinkagain.createModel(test.table(0), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -459,7 +459,7 @@ describe('documents', function() {
           }
         });
 
-        test.OtherModel = test.thinky.createModel(test.table(1), {
+        test.OtherModel = test.thinkagain.createModel(test.table(1), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -552,7 +552,7 @@ describe('documents', function() {
       afterEach(() => test.cleanTables());
       after(() => { delete test.Model; delete test.OtherModel; });
       before(function() {
-        test.Model = test.thinky.createModel(test.table(0), {
+        test.Model = test.thinkagain.createModel(test.table(0), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -562,7 +562,7 @@ describe('documents', function() {
           }
         });
 
-        test.OtherModel = test.thinky.createModel(test.table(1), {
+        test.OtherModel = test.thinkagain.createModel(test.table(1), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -709,7 +709,7 @@ describe('documents', function() {
       afterEach(() => test.cleanTables());
       after(() => { delete test.Model; delete test.OtherModel; });
       before(() => {
-        test.Model = test.thinky.createModel(test.table(0), {
+        test.Model = test.thinkagain.createModel(test.table(0), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -718,7 +718,7 @@ describe('documents', function() {
           }
         });
 
-        test.OtherModel = test.thinky.createModel(test.table(1), {
+        test.OtherModel = test.thinkagain.createModel(test.table(1), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -806,7 +806,7 @@ describe('documents', function() {
       afterEach(() => test.cleanTables());
       after(() => { delete test.Model; delete test.OtherModel; });
       before(() => {
-        test.Model = test.thinky.createModel(test.table(0), {
+        test.Model = test.thinkagain.createModel(test.table(0), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -815,7 +815,7 @@ describe('documents', function() {
           }
         });
 
-        test.OtherModel = test.thinky.createModel(test.table(1), {
+        test.OtherModel = test.thinkagain.createModel(test.table(1), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -1034,7 +1034,7 @@ describe('documents', function() {
       afterEach(() => test.cleanTables());
       after(() => { delete test.Model; delete test.OtherModel; });
       before(() => {
-        test.Model = test.thinky.createModel(test.table(0), {
+        test.Model = test.thinkagain.createModel(test.table(0), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -1043,7 +1043,7 @@ describe('documents', function() {
           }
         });
 
-        test.OtherModel = test.thinky.createModel(test.table(1), {
+        test.OtherModel = test.thinkagain.createModel(test.table(1), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -1086,7 +1086,7 @@ describe('documents', function() {
       afterEach(() => test.cleanTables());
       after(() => { delete test.Model; delete test.OtherModel; });
       before(() => {
-        test.Model = test.thinky.createModel(test.table(0), {
+        test.Model = test.thinkagain.createModel(test.table(0), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -1095,7 +1095,7 @@ describe('documents', function() {
           }
         });
 
-        test.OtherModel = test.thinky.createModel(test.table(1), {
+        test.OtherModel = test.thinkagain.createModel(test.table(1), {
           type: 'object',
           prperties: {
             id: { type: 'string' },
@@ -1150,7 +1150,7 @@ describe('documents', function() {
       afterEach(() => test.cleanTables());
       after(() => { delete test.Model; delete test.OtherModel; });
       before(() => {
-        test.Model = test.thinky.createModel(test.table(0), {
+        test.Model = test.thinkagain.createModel(test.table(0), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -1160,7 +1160,7 @@ describe('documents', function() {
           }
         });
 
-        test.OtherModel = test.thinky.createModel(test.table(1), {
+        test.OtherModel = test.thinkagain.createModel(test.table(1), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -1204,7 +1204,7 @@ describe('documents', function() {
       afterEach(() => test.cleanTables());
       after(() => { delete test.Model; delete test.OtherModel; });
       before(() => {
-        test.Model = test.thinky.createModel(test.table(0), {
+        test.Model = test.thinkagain.createModel(test.table(0), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -1214,7 +1214,7 @@ describe('documents', function() {
           }
         });
 
-        test.OtherModel = test.thinky.createModel(test.table(1), {
+        test.OtherModel = test.thinkagain.createModel(test.table(1), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -1272,7 +1272,7 @@ describe('documents', function() {
       });
 
       before(() => {
-        test.Model1 = test.thinky.createModel(test.table(0), {
+        test.Model1 = test.thinkagain.createModel(test.table(0), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -1280,7 +1280,7 @@ describe('documents', function() {
           }
         });
 
-        test.Model2 = test.thinky.createModel(test.table(1), {
+        test.Model2 = test.thinkagain.createModel(test.table(1), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -1288,14 +1288,14 @@ describe('documents', function() {
           }
         });
 
-        test.Model3 = test.thinky.createModel(test.table(2), {
+        test.Model3 = test.thinkagain.createModel(test.table(2), {
           type: 'object',
           properties: {
             id: { type: 'string' }
           }
         });
 
-        test.Model4 = test.thinky.createModel(test.table(3), {
+        test.Model4 = test.thinkagain.createModel(test.table(3), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -1303,14 +1303,14 @@ describe('documents', function() {
           }
         });
 
-        test.Model5 = test.thinky.createModel(test.table(4), {
+        test.Model5 = test.thinkagain.createModel(test.table(4), {
           type: 'object',
           properties: {
             id: { type: 'string' }
           }
         });
 
-        test.Model6 = test.thinky.createModel(test.table(5), {
+        test.Model6 = test.thinkagain.createModel(test.table(5), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -1498,7 +1498,7 @@ describe('documents', function() {
       afterEach(() => test.cleanTables());
 
       // it('should validate then build the query - Regression #163', function(done) {
-      //   let Model = test.thinky.createModel(test.table(0), { id: Date });
+      //   let Model = test.thinkagain.createModel(test.table(0), { id: Date });
       //   let doc = new Model({ id: 'notADate' });
       //   return doc.save()
       //     .then(() => done(new Error('Was expecting an error')))
@@ -1509,7 +1509,7 @@ describe('documents', function() {
       // });
 
       // it('should throw a ValidationError', function(done) {
-      //   let Model = test.thinky.createModel(test.table(0), { id: Date });
+      //   let Model = test.thinkagain.createModel(test.table(0), { id: Date });
       //   let doc = new Model({ id: 'notADate '});
 
       //   return doc.save()
@@ -1527,7 +1527,7 @@ describe('documents', function() {
       afterEach(() => test.cleanTables());
       after(() => { delete test.Model; delete test.doc; });
       before(() => {
-        test.Model = test.thinky.createModel(test.table(0), {
+        test.Model = test.thinkagain.createModel(test.table(0), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -1583,7 +1583,7 @@ describe('documents', function() {
       afterEach(() => test.cleanTables());
       after(() => { delete test.Model; delete test.OtherModel; });
       before(() => {
-        test.Model = test.thinky.createModel(test.table(0), {
+        test.Model = test.thinkagain.createModel(test.table(0), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -1592,7 +1592,7 @@ describe('documents', function() {
           }
         });
 
-        test.OtherModel = test.thinky.createModel(test.table(1), {
+        test.OtherModel = test.thinkagain.createModel(test.table(1), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -1712,7 +1712,7 @@ describe('documents', function() {
       afterEach(() => test.cleanTables());
       after(() => { delete test.Model; delete test.OtherModel; });
       before(() => {
-        test.Model = test.thinky.createModel(test.table(0), {
+        test.Model = test.thinkagain.createModel(test.table(0), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -1722,7 +1722,7 @@ describe('documents', function() {
           }
         });
 
-        test.OtherModel = test.thinky.createModel(test.table(1), {
+        test.OtherModel = test.thinkagain.createModel(test.table(1), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -1854,7 +1854,7 @@ describe('documents', function() {
       afterEach(() => test.cleanTables());
       after(() => { delete test.Model; delete test.OtherModel; });
       before(() => {
-        test.Model = test.thinky.createModel(test.table(0), {
+        test.Model = test.thinkagain.createModel(test.table(0), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -1863,7 +1863,7 @@ describe('documents', function() {
           }
         });
 
-        test.OtherModel = test.thinky.createModel(test.table(1), {
+        test.OtherModel = test.thinkagain.createModel(test.table(1), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -2020,7 +2020,7 @@ describe('documents', function() {
       afterEach(() => test.cleanTables());
       after(() => { delete test.Model; delete test.OtherModel; });
       before(() => {
-        test.Model = test.thinky.createModel(test.table(0), {
+        test.Model = test.thinkagain.createModel(test.table(0), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -2029,7 +2029,7 @@ describe('documents', function() {
           }
         });
 
-        test.OtherModel = test.thinky.createModel(test.table(1), {
+        test.OtherModel = test.thinkagain.createModel(test.table(1), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -2198,7 +2198,7 @@ describe('documents', function() {
       });
 
       before(() => {
-        test.Model1 = test.thinky.createModel(test.table(0), {
+        test.Model1 = test.thinkagain.createModel(test.table(0), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -2206,7 +2206,7 @@ describe('documents', function() {
           }
         });
 
-        test.Model2 = test.thinky.createModel(test.table(1), {
+        test.Model2 = test.thinkagain.createModel(test.table(1), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -2214,14 +2214,14 @@ describe('documents', function() {
           }
         });
 
-        test.Model3 = test.thinky.createModel(test.table(2), {
+        test.Model3 = test.thinkagain.createModel(test.table(2), {
           type: 'object',
           properties: {
             id: { type: 'string' }
           }
         });
 
-        test.Model4 = test.thinky.createModel(test.table(3), {
+        test.Model4 = test.thinkagain.createModel(test.table(3), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -2229,14 +2229,14 @@ describe('documents', function() {
           }
         });
 
-        test.Model5 = test.thinky.createModel(test.table(4), {
+        test.Model5 = test.thinkagain.createModel(test.table(4), {
           type: 'object',
           properties: {
             id: { type: 'string' }
           }
         });
 
-        test.Model6 = test.thinky.createModel(test.table(5), {
+        test.Model6 = test.thinkagain.createModel(test.table(5), {
           type: 'object',
           properties: {
             id: { type: 'string' },
@@ -2413,14 +2413,14 @@ describe('documents', function() {
     afterEach(() => test.cleanTables());
 
     it('hasOne -- purge should remove itself + clean the other docs', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' }
         }
       });
 
-      let OtherModel = test.thinky.createModel(test.table(1), {
+      let OtherModel = test.thinkagain.createModel(test.table(1), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -2456,14 +2456,14 @@ describe('documents', function() {
     });
 
     it('should work with a callback', function(done) {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' }
         }
       });
 
-      let OtherModel = test.thinky.createModel(test.table(1), {
+      let OtherModel = test.thinkagain.createModel(test.table(1), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -2503,7 +2503,7 @@ describe('documents', function() {
     });
 
     it('belongsTo -- purge should remove itself', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -2511,7 +2511,7 @@ describe('documents', function() {
         }
       });
 
-      let OtherModel = test.thinky.createModel(test.table(1), {
+      let OtherModel = test.thinkagain.createModel(test.table(1), {
         type: 'object',
         properties: {
           id: { type: 'string' }
@@ -2536,14 +2536,14 @@ describe('documents', function() {
     });
 
     it('belongsTo not called on its own model -- purge should remove itself + clean the other docs', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' }
         }
       });
 
-      let OtherModel = test.thinky.createModel(test.table(1), {
+      let OtherModel = test.thinkagain.createModel(test.table(1), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -2573,14 +2573,14 @@ describe('documents', function() {
     });
 
     it('hasMany -- purge should remove itself', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' }
         }
       });
 
-      let OtherModel = test.thinky.createModel(test.table(1), {
+      let OtherModel = test.thinkagain.createModel(test.table(1), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -2614,14 +2614,14 @@ describe('documents', function() {
     });
 
     it('hasAndBelongsToMany -- pk -- purge should clean the database', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' }
         }
       });
 
-      let OtherModel = test.thinky.createModel(test.table(1), {
+      let OtherModel = test.thinkagain.createModel(test.table(1), {
         type: 'object',
         properties: {
           id: { type: 'string' }
@@ -2652,14 +2652,14 @@ describe('documents', function() {
     });
 
     it('hasAndBelongsToMany not called on this model -- pk -- purge should clean the database', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' }
         }
       });
 
-      let OtherModel = test.thinky.createModel(test.table(1), {
+      let OtherModel = test.thinkagain.createModel(test.table(1), {
         type: 'object',
         properties: {
           id: { type: 'string' }
@@ -2690,7 +2690,7 @@ describe('documents', function() {
     });
 
     it('hasAndBelongsToMany -- not pk -- purge should clean the database', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -2698,7 +2698,7 @@ describe('documents', function() {
         }
       });
 
-      let OtherModel = test.thinky.createModel(test.table(1), {
+      let OtherModel = test.thinkagain.createModel(test.table(1), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -2730,7 +2730,7 @@ describe('documents', function() {
     });
 
     it('hasAndBelongsToMany not called on this model -- not pk -- purge should clean the database', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -2738,7 +2738,7 @@ describe('documents', function() {
         }
       });
 
-      let OtherModel = test.thinky.createModel(test.table(1), {
+      let OtherModel = test.thinkagain.createModel(test.table(1), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -2776,7 +2776,7 @@ describe('documents', function() {
 
     it('should work', function() {
       let r = test.r;
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         id: String,
         date: {_type: Date, default: r.now()}
       });
@@ -2797,7 +2797,7 @@ describe('documents', function() {
     afterEach(() => test.cleanTables());
 
     it('when generated on create', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -2817,7 +2817,7 @@ describe('documents', function() {
     });
 
     it('when generated on save', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -2843,7 +2843,7 @@ describe('documents', function() {
     afterEach(() => test.cleanTables());
 
     it('should work', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -2865,7 +2865,7 @@ describe('documents', function() {
     });
 
     it('should return the object', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -2889,7 +2889,7 @@ describe('documents', function() {
     afterEach(() => test.cleanTables());
 
     it('should work', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -2909,7 +2909,7 @@ describe('documents', function() {
     });
 
     it('should return the object', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -2933,7 +2933,7 @@ describe('documents', function() {
     afterEach(() => test.cleanTables());
 
     it('init pre', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -2952,7 +2952,7 @@ describe('documents', function() {
     });
 
     it('init post sync', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -2969,7 +2969,7 @@ describe('documents', function() {
     });
 
     it('init post sync - error', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -2992,7 +2992,7 @@ describe('documents', function() {
     });
 
     it('init post async', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -3013,7 +3013,7 @@ describe('documents', function() {
     });
 
     it('init post async - error', function(done) {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -3038,7 +3038,7 @@ describe('documents', function() {
     });
 
     it('validate oncreate sync', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -3061,7 +3061,7 @@ describe('documents', function() {
     });
 
     it('validate oncreate + init async', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -3092,7 +3092,7 @@ describe('documents', function() {
     });
 
     it('validate post sync', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -3110,7 +3110,7 @@ describe('documents', function() {
     });
 
     it('validate post sync - error', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -3128,7 +3128,7 @@ describe('documents', function() {
     });
 
     it('init validate async', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -3150,7 +3150,7 @@ describe('documents', function() {
     });
 
     it('init post async - error', function(done) {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -3175,7 +3175,7 @@ describe('documents', function() {
     });
 
     it('init validateAll async', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -3197,7 +3197,7 @@ describe('documents', function() {
     });
 
     it('init validateAll async joins', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -3205,7 +3205,7 @@ describe('documents', function() {
         }
       });
 
-      let OtherModel = test.thinky.createModel(test.table(1), {
+      let OtherModel = test.thinkagain.createModel(test.table(1), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -3232,7 +3232,7 @@ describe('documents', function() {
     });
 
     it('validate on save', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -3257,7 +3257,7 @@ describe('documents', function() {
     });
 
     it('validate on retrieve - error on validate', function(done) {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -3286,7 +3286,7 @@ describe('documents', function() {
     });
 
     it('validate on retrieve - error on hook', function(done) {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -3298,7 +3298,7 @@ describe('documents', function() {
         let self = this;
         setTimeout(function() {
           self.title = self.id;
-          next(new Errors.ThinkyError("I'm Hook, and I'm a vilain"));
+          next(new Errors.ThinkAgainError("I'm Hook, and I'm a vilain"));
         }, 1);
       });
 
@@ -3314,7 +3314,7 @@ describe('documents', function() {
     });
 
     it('save pre', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -3342,7 +3342,7 @@ describe('documents', function() {
     });
 
     it('save pre - with error and callback', function(done) {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -3365,7 +3365,7 @@ describe('documents', function() {
     });
 
     it('save pre - sync', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -3389,7 +3389,7 @@ describe('documents', function() {
     });
 
     it('save post', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -3417,7 +3417,7 @@ describe('documents', function() {
     });
 
     it('save pre join', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -3425,7 +3425,7 @@ describe('documents', function() {
         }
       });
 
-      let OtherModel = test.thinky.createModel(test.table(1), {
+      let OtherModel = test.thinkagain.createModel(test.table(1), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -3452,7 +3452,7 @@ describe('documents', function() {
     });
 
     it('save pre join', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -3460,7 +3460,7 @@ describe('documents', function() {
         }
       });
 
-      let OtherModel = test.thinky.createModel(test.table(1), {
+      let OtherModel = test.thinkagain.createModel(test.table(1), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -3487,7 +3487,7 @@ describe('documents', function() {
     });
 
     it('delete pre', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -3516,7 +3516,7 @@ describe('documents', function() {
     });
 
     it('delete post', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -3545,7 +3545,7 @@ describe('documents', function() {
     });
 
     it('hook for retrieve', function(done) {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -3579,7 +3579,7 @@ describe('documents', function() {
 
     /*
     it('should work for hasOne', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -3588,7 +3588,7 @@ describe('documents', function() {
         }
       });
 
-      let OtherModel = test.thinky.createModel(test.table(1), {
+      let OtherModel = test.thinkagain.createModel(test.table(1), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -3613,7 +3613,7 @@ describe('documents', function() {
     });
 
     it('should work for hasMany', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -3622,7 +3622,7 @@ describe('documents', function() {
         }
       });
 
-      let OtherModel = test.thinky.createModel(test.table(1), {
+      let OtherModel = test.thinkagain.createModel(test.table(1), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -3647,7 +3647,7 @@ describe('documents', function() {
     });
 
     it('should work for belongsTo', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -3657,7 +3657,7 @@ describe('documents', function() {
         }
       });
 
-      let OtherModel = test.thinky.createModel(test.table(1), {
+      let OtherModel = test.thinkagain.createModel(test.table(1), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -3682,7 +3682,7 @@ describe('documents', function() {
     */
 
     it('should work for hasAndBelongsTo', function() {
-      let Model = test.thinky.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -3691,7 +3691,7 @@ describe('documents', function() {
         }
       });
 
-      let OtherModel = test.thinky.createModel(test.table(1), {
+      let OtherModel = test.thinkagain.createModel(test.table(1), {
         type: 'object',
         properties: {
           id: { type: 'string' },

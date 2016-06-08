@@ -12,7 +12,7 @@ describe('feed', function() {
   describe('Feeds', function() {
     after(() => test.cleanTables());
     before(function(done) {
-      test.Model = test.thinky.createModel(test.table(0), {
+      test.Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           id: { type: 'string' },
@@ -186,7 +186,7 @@ describe('feed', function() {
   describe('Atom feeds', function() {
     after(() => test.cleanTables());
     before(function(done) {
-      test.Model = test.thinky.createModel(test.table(1), {
+      test.Model = test.thinkagain.createModel(test.table(1), {
         type: 'object',
         properties: {
           id: { type: 'string' },

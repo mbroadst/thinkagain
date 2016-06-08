@@ -10,7 +10,7 @@ describe('events', function() {
   afterEach(() => test.cleanTables());
 
   it('Add events on doc', function(done) {
-    let Model = test.thinky.createModel(test.table(0), {
+    let Model = test.thinkagain.createModel(test.table(0), {
       type: 'object', properties: { id: { type: 'string' } }
     }, { init: false });
 
@@ -21,7 +21,7 @@ describe('events', function() {
 
   it('Events on model should be forward to documents', function(done) {
     let count = 0;
-    let Model = test.thinky.createModel(test.table(0), {
+    let Model = test.thinkagain.createModel(test.table(0), {
       type: 'object', properties: { id: { type: 'string' } }
     }, { init: false });
 
@@ -36,7 +36,7 @@ describe('events', function() {
   });
 
   it('Doc should emit save when saved', function(done) {
-    let Model = test.thinky.createModel(test.table(0), {
+    let Model = test.thinkagain.createModel(test.table(0), {
       type: 'object', properties: { id: { type: 'string' } }
     });
 
@@ -46,7 +46,7 @@ describe('events', function() {
   });
 
   it('Doc should emit save when saved', function(done) {
-    let Model = test.thinky.createModel(test.table(0), {
+    let Model = test.thinkagain.createModel(test.table(0), {
       type: 'object', properties: { id: { type: 'string' } }
     });
 
@@ -56,7 +56,7 @@ describe('events', function() {
   });
 
   it('Doc should emit save when deleted -- hasAndBelongsToMany', function(done) {
-    let Model = test.thinky.createModel(test.table(0), {
+    let Model = test.thinkagain.createModel(test.table(0), {
       type: 'object', properties: { id: { type: 'string' } }
     });
 
@@ -76,7 +76,7 @@ describe('events', function() {
   });
 
   it('Doc should emit save when deleted -- hasMany', function(done) {
-    let Model = test.thinky.createModel(test.table(0), {
+    let Model = test.thinkagain.createModel(test.table(0), {
       type: 'object', properties: {
         id: { type: 'string' },
         foreignKey: { type: 'string' }
@@ -99,7 +99,7 @@ describe('events', function() {
   });
 
   it('Test saving event', function() {
-    let Model = test.thinky.createModel(test.table(0), {
+    let Model = test.thinkagain.createModel(test.table(0), {
       type: 'object', properties: { id: { type: 'number' } }
     });
 
@@ -114,11 +114,11 @@ describe('events', function() {
   });
 
   it('Test saving event to validate a relation', function(done) {
-    let Model = test.thinky.createModel(test.table(0), {
+    let Model = test.thinkagain.createModel(test.table(0), {
       type: 'object', properties: { id: { type: 'string' } }
     });
 
-    let OtherModel = test.thinky.createModel(test.table(1), {
+    let OtherModel = test.thinkagain.createModel(test.table(1), {
       type: 'object', properties: {
         id: { type: 'string' },
         foreignKey: { type: 'string' }
@@ -143,7 +143,7 @@ describe('events', function() {
   });
 
   it('Test retrieved event', function() {
-    let Model = test.thinky.createModel(test.table(0), {
+    let Model = test.thinkagain.createModel(test.table(0), {
       type: 'object', properties: { id: { type: 'number' } }
     });
 
@@ -158,11 +158,11 @@ describe('events', function() {
   });
 
   it('Test retrieved event for joined documents', function(done) {
-    let Model = test.thinky.createModel(test.table(0), {
+    let Model = test.thinkagain.createModel(test.table(0), {
       type: 'object', properties: { id: { type: 'string' } }
     });
 
-    let OtherModel = test.thinky.createModel(test.table(1), {
+    let OtherModel = test.thinkagain.createModel(test.table(1), {
       type: 'object', properties: {
         id: { type: 'string' },
         foreignKey: { type: 'string' }
