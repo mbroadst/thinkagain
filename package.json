@@ -1,6 +1,6 @@
 {
   "name": "thinkagain",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "RethinkDB ODM for node.js using json-schema",
   "main": "lib/index.js",
   "engines": {
@@ -21,7 +21,7 @@
   "bugs": {
     "url": "https://github.com/mbroadst/thinkagain/issues"
   },
-  "dependencies":{
+  "dependencies": {
     "ajv": "^4.1.0",
     "bluebird": "^3.4.0",
     "rethinkdbdash": "~2.3.0"
