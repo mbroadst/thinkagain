@@ -3577,7 +3577,6 @@ describe('documents', function() {
   describe('removeRelation', function() {
     afterEach(() => test.cleanTables());
 
-    /*
     it('should work for hasOne', function() {
       let Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
@@ -3679,7 +3678,6 @@ describe('documents', function() {
         .then(() => Model.get(doc.id).run())
         .then(result => assert.equal(result.foreignKey, undefined));
     });
-    */
 
     it('should work for hasAndBelongsTo', function() {
       let Model = test.thinkagain.createModel(test.table(0), {
