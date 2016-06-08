@@ -52,6 +52,26 @@ describe('feed', function() {
         });
     });
 
+    it('should set document to unsaved if document is deleted during `each`', function(done) {
+      let data = [{}, {}, {}];
+      test.Model.changes().run()
+        .then(feed => {
+          let count = 0;
+          feed.each((err, doc) => {
+            if (err) return done(err);
+            assert(doc instanceof Document);
+            count++;
+            if (count === (data.length + 1)) {
+              expect(doc.isSaved()).to.be.false;
+              feed.close().then(() => done());
+            }
+          });
+
+          return test.Model.save(data)
+            .then(docs => test.Model.get(docs[2].id).delete());
+        });
+    });
+
     it('should implement next', function(done) {
       let data = [{}, {}, {}];
       test.Model.changes().run()
@@ -75,6 +95,25 @@ describe('feed', function() {
         });
     });
 
+    it('should set document to unsaved if document is deleted during `next`', function(done) {
+      let data = [{}, {}, {}];
+      test.Model.changes().run()
+        .then(feed => {
+          feed.next()
+            .then(doc => feed.next())
+            .then(doc => feed.next())
+            .then(doc => feed.next())
+            .then(doc => {
+              expect(doc.isSaved()).to.be.false;
+              return feed.close();
+            })
+            .then(() => done());
+
+          return test.Model.save(data)
+            .then(docs => test.Model.get(docs[2].id).delete());
+        });
+    });
+
     it('should handle events', function(done) {
       let data = [{}, {}, {}];
       test.Model.changes().run()
@@ -90,6 +129,25 @@ describe('feed', function() {
           });
 
           return test.Model.save(data);
+        });
+    });
+
+    it('should set document to unsaved if document is deleted during each via events', function(done) {
+      let data = [{}, {}, {}];
+      test.Model.changes().run()
+        .then(feed => {
+          let count = 0;
+          feed.on('data', doc => {
+            assert(doc instanceof Document);
+            count++;
+            if (count === (data.length + 1)) {
+              expect(doc.isSaved()).to.be.false;
+              feed.close().then(() => done());
+            }
+          });
+
+          return test.Model.save(data)
+            .then(docs => test.Model.get(docs[2].id).delete());
         });
     });
 

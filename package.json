@@ -21,8 +21,7 @@
   "dependencies":{
     "ajv": "^4.1.0",
     "bluebird": "^3.4.0",
-    "rethinkdbdash": "~2.3.0",
-    "validator": "~3.22.1"
+    "rethinkdbdash": "~2.3.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
