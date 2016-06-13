@@ -1497,28 +1497,16 @@ describe('documents', function() {
     describe('validate', function() {
       afterEach(() => test.cleanTables());
 
-      // it('should validate then build the query - Regression #163', function(done) {
-      //   let Model = test.thinkagain.createModel(test.table(0), { id: Date });
-      //   let doc = new Model({ id: 'notADate' });
-      //   return doc.save()
-      //     .then(() => done(new Error('Was expecting an error')))
-      //     .error(error => {
-      //       assert.equal(error.message, 'Value for [id] must be a date or a valid string or null.');
-      //       done();
-      //     });
-      // });
+      it('should validate then build the query - Regression #163', function() {
+        let Model = test.thinkagain.createModel(test.table(0), {
+          type: 'object',
+          properties: { id: { $ref: 'date' } }
+        });
 
-      // it('should throw a ValidationError', function(done) {
-      //   let Model = test.thinkagain.createModel(test.table(0), { id: Date });
-      //   let doc = new Model({ id: 'notADate '});
-
-      //   return doc.save()
-      //     .then(() => done(new Error('Was expecting an error')))
-      //     .error(error => {
-      //       assert(error instanceof Errors.ValidationError);
-      //       done();
-      //     });
-      // });
+        let doc = new Model({ id: 'notADate' });
+        return expect(doc.save())
+          .to.be.rejectedWith(Errors.ValidationError, 'Validation failed');
+      });
     });
   });
 

@@ -809,128 +809,126 @@ describe('queries', function() {
   describe('addRelation', function() {
     afterEach(() => test.cleanTables());
 
-    // it('hasOne - pk', function() {
-    //   let Model = test.thinkagain.createModel(test.table(0), {
-    //     type: 'object',
-    //     properties: {
-    //       id: { type: 'string' },
-    //       str: { type: 'string' },
-    //       num: { type: 'number' }
-    //     }
-    //   });
+    it('hasOne - pk', function() {
+      let Model = test.thinkagain.createModel(test.table(0), {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          str: { type: 'string' },
+          num: { type: 'number' }
+        }
+      });
 
-    //   let OtherModel = test.thinkagain.createModel(test.table(1), {
-    //     type: 'object',
-    //     properties: {
-    //       id: { type: 'string' },
-    //       str: { type: 'string' },
-    //       num: { type: 'number' },
-    //       foreignKey: { type: 'string' }
-    //     }
-    //   });
+      let OtherModel = test.thinkagain.createModel(test.table(1), {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          str: { type: 'string' },
+          num: { type: 'number' },
+          foreignKey: { type: 'string' }
+        }
+      });
 
-    //   Model.hasOne(OtherModel, 'otherDoc', 'id', 'foreignKey');
+      Model.hasOne(OtherModel, 'otherDoc', 'id', 'foreignKey');
 
-    //   let doc = new Model({str: util.s8(), num: util.random()});
-    //   let otherDoc = new OtherModel({str: util.s8(), num: util.random()});
+      let doc = new Model({str: util.s8(), num: util.random()});
+      let otherDoc = new OtherModel({str: util.s8(), num: util.random()});
 
-    //   // FIXME: shouldn't have to convert to string when coercion is enabled
+      return doc.save()
+        .then(() => otherDoc.save())
+        .then(() => Model.get(doc.id).addRelation('otherDoc', {id: otherDoc.id}))
+        .then(otherDocResult => {
+          assert.equal(otherDocResult.foreignKey, doc.id);
+          return Model.get(doc.id).getJoin({otherDoc: true}).run();
+        })
+        .then(result => {
+          assert.equal(result.otherDoc.foreignKey, result.id);
+          assert.deepEqual(result.otherDoc.id, otherDoc.id);
+          assert.deepEqual(result.otherDoc.str, otherDoc.str);
+          assert.deepEqual(result.otherDoc.name, otherDoc.name);
+        });
+    });
 
-    //   return doc.save()
-    //     .then(() => otherDoc.save())
-    //     .then(() => Model.get(doc.id).addRelation('otherDoc', {id: otherDoc.id}))
-    //     .then(otherDocResult => {
-    //       assert.equal(otherDocResult.foreignKey, doc.id);
-    //       return Model.get(doc.id).getJoin({otherDoc: true}).run();
-    //     })
-    //     .then(result => {
-    //       assert.equal(result.otherDoc.foreignKey, result.id);
-    //       assert.deepEqual(result.otherDoc.id, otherDoc.id);
-    //       assert.deepEqual(result.otherDoc.str, otherDoc.str);
-    //       assert.deepEqual(result.otherDoc.name, otherDoc.name);
-    //     });
-    // });
+    it('hasMany - pk', function() {
+      let Model = test.thinkagain.createModel(test.table(0), {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          str: { type: 'string' },
+          num: { type: 'number' }
+        }
+      });
 
-    // it('hasMany - pk', function() {
-    //   let Model = test.thinkagain.createModel(test.table(0), {
-    //     type: 'object',
-    //     properties: {
-    //       id: { type: 'string' },
-    //       str: { type: 'string' },
-    //       num: { type: 'number' }
-    //     }
-    //   });
+      let OtherModel = test.thinkagain.createModel(test.table(1), {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          str: { type: 'string' },
+          num: { type: 'number' },
+          foreignKey: { type: 'string' }
+        }
+      });
 
-    //   let OtherModel = test.thinkagain.createModel(test.table(1), {
-    //     type: 'object',
-    //     properties: {
-    //       id: { type: 'string' },
-    //       str: { type: 'string' },
-    //       num: { type: 'number' },
-    //       foreignKey: { type: 'string' }
-    //     }
-    //   });
+      Model.hasMany(OtherModel, 'otherDocs', 'id', 'foreignKey');
 
-    //   Model.hasMany(OtherModel, 'otherDocs', 'id', 'foreignKey');
+      let doc = new Model({str: util.s8(), num: util.random()});
+      let otherDoc = new OtherModel({str: util.s8(), num: util.random()});
 
-    //   let doc = new Model({str: util.s8(), num: util.random()});
-    //   let otherDoc = new OtherModel({str: util.s8(), num: util.random()});
+      return doc.save()
+        .then(() => otherDoc.save())
+        .then(() => Model.get(doc.id).addRelation('otherDocs', {id: otherDoc.id}))
+        .then(otherDocResult => {
+          assert.equal(otherDocResult.foreignKey, doc.id);
+          return Model.get(doc.id).getJoin({otherDocs: true}).run();
+        })
+        .then(result => {
+          assert.equal(result.otherDocs.length, 1);
+          assert.equal(result.otherDocs[0].foreignKey, result.id);
+          assert.deepEqual(result.otherDocs[0].id, otherDoc.id);
+          assert.deepEqual(result.otherDocs[0].str, otherDoc.str);
+          assert.deepEqual(result.otherDocs[0].name, otherDoc.name);
+        });
+    });
 
-    //   return doc.save()
-    //     .then(() => otherDoc.save())
-    //     .then(() => Model.get(doc.id).addRelation('otherDocs', {id: otherDoc.id}))
-    //     .then(otherDocResult => {
-    //       assert.equal(otherDocResult.foreignKey, doc.id);
-    //       return Model.get(doc.id).getJoin({otherDocs: true}).run();
-    //     })
-    //     .then(result => {
-    //       assert.equal(result.otherDocs.length, 1);
-    //       assert.equal(result.otherDocs[0].foreignKey, result.id);
-    //       assert.deepEqual(result.otherDocs[0].id, otherDoc.id);
-    //       assert.deepEqual(result.otherDocs[0].str, otherDoc.str);
-    //       assert.deepEqual(result.otherDocs[0].name, otherDoc.name);
-    //     });
-    // });
+    it('belongsTo - pk', function() {
+      let Model = test.thinkagain.createModel(test.table(0), {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          str: { type: 'string' },
+          num: { type: 'number' },
+          foreignKey: { type: 'string' }
+        }
+      });
 
-    // it('belongsTo - pk', function() {
-    //   let Model = test.thinkagain.createModel(test.table(0), {
-    //     type: 'object',
-    //     properties: {
-    //       id: { type: 'string' },
-    //       str: { type: 'string' },
-    //       num: { type: 'number' },
-    //       foreignKey: { type: 'string' }
-    //     }
-    //   });
+      let OtherModel = test.thinkagain.createModel(test.table(1), {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          str: { type: 'string' },
+          num: { type: 'number' }
+        }
+      });
 
-    //   let OtherModel = test.thinkagain.createModel(test.table(1), {
-    //     type: 'object',
-    //     properties: {
-    //       id: { type: 'string' },
-    //       str: { type: 'string' },
-    //       num: { type: 'number' }
-    //     }
-    //   });
+      Model.belongsTo(OtherModel, 'otherDoc', 'foreignKey', 'str');
 
-    //   Model.belongsTo(OtherModel, 'otherDoc', 'foreignKey', 'str');
+      let doc = new Model({str: util.s8(), num: util.random()});
+      let otherDoc = new OtherModel({str: util.s8(), num: util.random()});
 
-    //   let doc = new Model({str: util.s8(), num: util.random()});
-    //   let otherDoc = new OtherModel({str: util.s8(), num: util.random()});
-
-    //   return doc.save()
-    //     .then(() => otherDoc.save())
-    //     .then(() => Model.get(doc.id).addRelation('otherDoc', {id: otherDoc.id}))
-    //     .then(result => {
-    //       assert.equal(result.foreignKey, otherDoc.str);
-    //       return Model.get(result.id).getJoin({otherDoc: true}).run();
-    //     })
-    //     .then(result => {
-    //       assert.equal(result.foreignKey, result.otherDoc.str);
-    //       assert.deepEqual(result.otherDoc.id, otherDoc.id);
-    //       assert.deepEqual(result.otherDoc.str, otherDoc.str);
-    //       assert.deepEqual(result.otherDoc.name, otherDoc.name);
-    //     });
-    // });
+      return doc.save()
+        .then(() => otherDoc.save())
+        .then(() => Model.get(doc.id).addRelation('otherDoc', {id: otherDoc.id}))
+        .then(result => {
+          assert.equal(result.foreignKey, otherDoc.str);
+          return Model.get(result.id).getJoin({otherDoc: true}).run();
+        })
+        .then(result => {
+          assert.equal(result.foreignKey, result.otherDoc.str);
+          assert.deepEqual(result.otherDoc.id, otherDoc.id);
+          assert.deepEqual(result.otherDoc.str, otherDoc.str);
+          assert.deepEqual(result.otherDoc.name, otherDoc.name);
+        });
+    });
 
     it('belongsTo - field', function() {
       let Model = test.thinkagain.createModel(test.table(0), {
@@ -1778,7 +1776,7 @@ describe('queries', function() {
         .then(() => test.Model.get(doc.id).update({num: r.expr('foo')}).run())
         .error(error => {
           assert(error instanceof Errors.ThinkAgainError);
-          assert(error.message.match('The partial value is not valid, so the write was not executed.'));
+          assert(error.message.match('The write failed, and the changes were reverted'));
           return test.Model.get(doc.id).run();
         })
         .then(result => {
@@ -1801,7 +1799,7 @@ describe('queries', function() {
       return doc.save()
         .then(() => Model.get(doc.id).update({num: r.expr('foo')}).run())
         .error(error => {
-          assert(error.message.match('The partial value is not valid, so the write was not executed.'));
+          assert(error.message.match('The write failed, and the changes were reverted'));
           return Model.get(doc.id).run();
         })
         .then(result => {
@@ -1844,7 +1842,7 @@ describe('queries', function() {
       return test.Model.save(docs)
         .then(() => test.Model.update({num: r.expr('foo')}).run())
         .error(error => {
-          assert(error.message.match('The partial value is not valid, so the write was not executed.'));
+          assert(error.message.match('The write failed, and the changes were reverted'));
           return test.Model.run();
         })
         .then(result => {

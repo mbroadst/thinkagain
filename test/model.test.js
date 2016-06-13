@@ -694,20 +694,27 @@ describe('models', () => {
         .then(result => assert.equal(result.length, 1));
     });
 
-    // it('should accept ensureIndex(name, opts)', function() {
-    //   let Model = test.thinkagain.createModel(test.table(0), { id: { type: 'string' }, location: type.point() });
-    //   Model.ensureIndex('location', { geo: true });
-    //   let doc = new Model({location: [ 1, 2 ]});
+    it('should accept ensureIndex(name, opts)', function() {
+      let Model = test.thinkagain.createModel(test.table(0), {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          location: { $ref: 'point' }
+        }
+      });
 
-    //   let r = test.r;
-    //   return doc.save()
-    //     .then(result => Model.getIntersecting(r.circle([1, 2], 1), { index: 'location' }).run())
-    //     .then(result => {
-    //       assert.equal(result.length, 1);
-    //       return Model.getIntersecting(r.circle([3, 2], 1), { index: 'location' }).run();
-    //     })
-    //     .then(result => assert.equal(result.length, 0));
-    // });
+      Model.ensureIndex('location', { geo: true });
+      let doc = new Model({ location: [ 1, 2 ] });
+
+      let r = test.r;
+      return doc.save()
+        .then(result => Model.getIntersecting(r.circle([1, 2], 1), { index: 'location' }).run())
+        .then(result => {
+          assert.equal(result.length, 1);
+          return Model.getIntersecting(r.circle([3, 2], 1), { index: 'location' }).run();
+        })
+        .then(result => assert.equal(result.length, 0));
+    });
   });
 
   /*** ISSUES
