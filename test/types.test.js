@@ -231,6 +231,66 @@ describe('types', function() {
     });
   }); // Point
 
+  describe('Binary', function() {
+    after(() => { delete test.Model; });
+    before(() => {
+      test.Model = test.thinkagain.createModel(test.table(0), {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          buf: { $ref: 'binary' }
+        }
+      });
+    });
+
+    it('should support raw binary types', function() {
+      let t = new test.Model({
+        id: util.s8(),
+        buf: {
+          $reql_type$: 'BINARY',
+          data: (new Buffer('hello')).toString('base64')
+        }
+      });
+
+      return t.save()
+        .then(result => {
+          assert(t.buf instanceof Buffer);
+          return test.Model.get(t.id).execute({ binaryFormat: 'raw' });
+        })
+        .then(result => {
+          assert.equal(Object.prototype.toString.call(result.buf), '[object Object]');
+          assert.equal(result.buf.$reql_type$, 'BINARY');
+        });
+    });
+
+    it('should coerce strings to r.binary', function() {
+      let t = new test.Model({ id: util.s8(), buf: (new Buffer('hello')).toString('base64') });
+      return t.save()
+        .then(result => {
+          assert(t.buf instanceof Buffer);
+          return test.Model.get(t.id).execute({ binaryFormat: 'raw' });
+        })
+        .then(result => {
+          assert.equal(Object.prototype.toString.call(result.buf), '[object Object]');
+          assert.equal(result.buf.$reql_type$, 'BINARY');
+        });
+    });
+
+    it('should coerce Buffers to r.binary', function() {
+      let t = new test.Model({ id: util.s8(), buf: new Buffer([1, 2, 3]) });
+      return t.save()
+        .then(result => {
+          assert(t.buf instanceof Buffer);
+          return test.Model.get(t.id).execute({ binaryFormat: 'raw' });
+        })
+        .then(result => {
+          assert.equal(Object.prototype.toString.call(result.buf), '[object Object]');
+          assert.equal(result.buf.$reql_type$, 'BINARY');
+        });
+    });
+  });
+
+
   // it('Number as string should be coerced to number', function() {
   //   let Model = test.thinkagain.createModel(test.table(0), {
   //     type: 'object',

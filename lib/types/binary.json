@@ -1,0 +1,17 @@
+{
+  "id": "binary",
+  "oneOf": [
+    { "instanceOf": "Buffer", "coerceTo": "Binary" },
+    { "type": "string", "coerceTo": "Binary" },
+    {
+      "type": "object",
+      "description": "raw ReQL binary format",
+      "properties": {
+        "$reql_type$": { "constant": "BINARY" },
+        "data": { "type": "string" }
+      },
+      "additionalProperties": false,
+      "required": [ "$reql_type$", "data" ]
+    }
+  ]
+}
