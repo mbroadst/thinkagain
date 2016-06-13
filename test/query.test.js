@@ -1655,7 +1655,6 @@ describe('queries', function() {
     });
   });
 
-  /*** ISSUES
   describe('optimizer', function() {
     afterEach(() => test.cleanTables());
 
@@ -1745,12 +1744,11 @@ describe('queries', function() {
       assert(query.match(/index: "name1"/) === null);
     });
   });
-  */
 
   describe('In place writes', function() {
     after(() => { delete test.Model; });
     afterEach(() => test.cleanTables());
-    before(() => {
+    beforeEach(() => {
       test.Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
@@ -1812,21 +1810,21 @@ describe('queries', function() {
         });
     });
 
-    // it('Range write - valid', function() {
-    //   let docs = [{id: util.s8(), num: 0}, {id: util.s8(), num: 0}];
-    //   return test.Model.save(docs)
-    //     .then(() => test.Model.update({num: 1}).run())
-    //     .then(result => {
-    //       assert(result);
-    //       docs.sort(function(a, b) { return (a.id > b.id) ? 1 : -1; });
-    //       result.sort(function(a, b) { return (a.id > b.id) ? 1 : -1; });
+    it('Range write - valid', function() {
+      let docs = [{id: util.s8(), num: 0}, {id: util.s8(), num: 0}];
+      return test.Model.save(docs)
+        .then(() => test.Model.update({num: 1}).run())
+        .then(result => {
+          assert(result);
+          docs.sort(function(a, b) { return (a.id > b.id) ? 1 : -1; });
+          result.sort(function(a, b) { return (a.id > b.id) ? 1 : -1; });
 
-    //       assert.equal(result[0].id, docs[0].id);
-    //       assert.equal(result[1].id, docs[1].id);
-    //       assert.equal(result[0].num, 1);
-    //       assert.equal(result[1].num, 1);
-    //     });
-    // });
+          assert.equal(result[0].id, docs[0].id);
+          assert.equal(result[1].id, docs[1].id);
+          assert.equal(result[0].num, 1);
+          assert.equal(result[1].num, 1);
+        });
+    });
 
     it('Range write with one doc - valid', function() {
       let docs = [{id: util.s8(), num: 0}, {id: util.s8(), num: 0}];
@@ -1839,23 +1837,23 @@ describe('queries', function() {
         });
     });
 
-    // it('Range write - post non valid - primary key is a string', function(done) {
-    //   let r = test.r;
-    //   let docs = [{id: util.s8(), num: 0}, {id: util.s8(), num: 1}];
+    it('Range write - post non valid - primary key is a string', function(done) {
+      let r = test.r;
+      let docs = [{id: util.s8(), num: 0}, {id: util.s8(), num: 1}];
 
-    //   return test.Model.save(docs)
-    //     .then(() => test.Model.update({num: r.expr('foo')}).run())
-    //     .error(error => {
-    //       assert(error.message.match('The partial value is not valid, so the write was not executed.'));
-    //       return test.Model.run();
-    //     })
-    //     .then(result => {
-    //       result.sort(function(a, b) { return (a.num > b.num) ? 1 : -1; });
-    //       assert.equal(result[0].num, 0);
-    //       assert.equal(result[1].num, 1);
-    //       done();
-    //     });
-    // });
+      return test.Model.save(docs)
+        .then(() => test.Model.update({num: r.expr('foo')}).run())
+        .error(error => {
+          assert(error.message.match('The partial value is not valid, so the write was not executed.'));
+          return test.Model.run();
+        })
+        .then(result => {
+          result.sort(function(a, b) { return (a.num > b.num) ? 1 : -1; });
+          assert.equal(result[0].num, 0);
+          assert.equal(result[1].num, 1);
+          done();
+        });
+    });
 
     // it('Range write - post non valid - primary key is not a string', function(done) {
     //   let r = test.r;
@@ -1899,7 +1897,7 @@ describe('queries', function() {
 
     it('should spread filter and count queries', function() {
       //let User = test.thinkagain.createModel(test.table(0), {id: String}, {init: false});
-      let Model = test.thinkagain.createModel(test.table(0), {
+      let Model = test.thinkagain.createModel(test.table(1), {
         type: 'object',
         properties: { id: { type: 'string' } }
       });
@@ -1919,8 +1917,9 @@ describe('queries', function() {
 
     describe('Query.prototype.bindRun()', function() {
       after(() => { delete test.Model; });
+      afterEach(() => test.cleanTables());
       before(() => {
-        test.Model = test.thinkagain.createModel(test.table(0), {
+        test.Model = test.thinkagain.createModel(test.table(1), {
           type: 'object', properties: { id: { type: 'string' } }
         });
       });
@@ -1954,8 +1953,9 @@ describe('queries', function() {
 
     describe('Query.prototype.bindExecute()', function() {
       after(() => { delete test.Model; });
+      afterEach(() => test.cleanTables());
       before(() => {
-        test.Model = test.thinkagain.createModel(test.table(0), {
+        test.Model = test.thinkagain.createModel(test.table(1), {
           type: 'object',
           properties: { id: { type: 'string' } }
         });

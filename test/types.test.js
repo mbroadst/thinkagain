@@ -119,6 +119,29 @@ describe('types', function() {
           assert.equal(result.date.$reql_type$, 'TIME');
         });
     });
+
+    it('should accept r.now()', function() {
+      let Model = test.thinkagain.createModel(test.table(0), {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          date: { $ref: 'date' }
+        }
+      });
+
+      let r = test.r;
+      let t = new Model({ id: util.s8(), date: r.now() });
+      return t.save()
+        .then(result => {
+          assert(t.date instanceof Date);
+          assert.equal(t.date.getYear(), new Date().getYear());
+          return Model.get(t.id).execute({ timeFormat: 'raw' });
+        })
+        .then(result => {
+          assert.equal(Object.prototype.toString.call(result.date), '[object Object]');
+          assert.equal(result.date.$reql_type$, 'TIME');
+        });
+    });
   }); // Date
 
   describe('Point', function() {
