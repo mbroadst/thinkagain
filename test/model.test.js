@@ -118,13 +118,22 @@ describe('models', () => {
 
   describe('Model', function() {
     after(() => test.cleanTables()
-      .then(() => { delete test.Model; }));
+      .then(() => { delete test.Model; delete test.ModelWithRequire; }));
     before(() => {
       test.Model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: {
           str: { type: 'string' }
         }
+      });
+
+      test.ModelWithRequire = test.thinkagain.createModel(test.table(1), {
+        type: 'object',
+        properties: {
+          str: { type: 'string' },
+          num: { type: 'number' }
+        },
+        required: [ 'num' ]
       });
     });
 
@@ -186,10 +195,10 @@ describe('models', () => {
       assert.equal(doc1.getModel(), doc2.getModel());
     });
 
-    it('Docs from different models should not interfer', function() {
+    it('Docs from different models should not interfere', function() {
       let str = util.s8();
       let doc = new test.Model({ str: str });
-      let OtherModel = test.thinkagain.createModel(test.table(1), { str: String });
+      let OtherModel = test.thinkagain.createModel(test.table(2), { str: String });
 
       let otherStr = util.s8();
       let otherDoc = new OtherModel({ str: otherStr });
@@ -199,7 +208,19 @@ describe('models', () => {
 
       assert.notEqual(otherDoc.getModel(), doc.getModel());
       assert.equal(doc.getModel().getTableName(), test.table(0));
-      assert.equal(otherDoc.getModel().getTableName(), test.table(1));
+      assert.equal(otherDoc.getModel().getTableName(), test.table(2));
+    });
+
+    it('should return a validation error when isntances cannot be converted', function(done) {
+      let r = test.r;
+      return r.table(test.table(1)).insert({ str: 'correct' })
+        .then(() => test.ModelWithRequire.run())
+        .error(err => {
+          expect(err).to.be.instanceOf(Errors.ValidationError);
+          expect(err.errors).to.not.be.empty;
+          expect(err.errors[0].params.missingProperty).to.equal('num');
+          done();
+        });
     });
   });
 
