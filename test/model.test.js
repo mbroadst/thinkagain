@@ -78,7 +78,7 @@ describe('models', () => {
         }
       }, { init: false });
 
-      return model.get(1).run()
+      model.get(1).run()
         .then(() => done(new Error('Expecting error')))
         .error(e => {
           assert(e.message.match(/^Table `.*` does not exist in/));
@@ -213,7 +213,7 @@ describe('models', () => {
 
     it('should return a validation error when isntances cannot be converted', function(done) {
       let r = test.r;
-      return r.table(test.table(1)).insert({ str: 'correct' })
+      r.table(test.table(1)).insert({ str: 'correct' })
         .then(() => test.ModelWithRequire.run())
         .error(err => {
           expect(err).to.be.instanceOf(Errors.ValidationError);
@@ -264,7 +264,7 @@ describe('models', () => {
     });
 
     it('Batch insert should properly error is __one__ insert fails', function(done) {
-      return test.Model.save([ { id: '4' } ])
+      test.Model.save([ { id: '4' } ])
         .then(result => {
           assert.equal(result[0].id, 4);
           let docs = [];

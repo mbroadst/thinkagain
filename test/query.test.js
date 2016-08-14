@@ -78,7 +78,7 @@ describe('queries', function() {
     });
 
     it('Model.add(1).run() should be able to error', function(done) {
-      return test.Model.add(1).run()
+      test.Model.add(1).run()
         .error(error => {
           assert(error.message.match(/^Expected type DATUM but found TABLE/));
           done();
@@ -86,7 +86,7 @@ describe('queries', function() {
     });
 
     it('Model.map(1).run should error', function(done) {
-      return test.Model.map(() => 1).run()
+      test.Model.map(() => 1).run()
         .error(error => {
           assert.equal(error.message, 'The results could not be converted to instances of `' + test.Model.getTableName() + '`\nDetailed error: Cannot build a new instance of `' + test.Model.getTableName() + '` without an object');
           done();
@@ -104,7 +104,7 @@ describe('queries', function() {
     });
 
     it('Model.get().merge(..) should throw before calling merge', function(done) {
-      return test.Model.get('NonExistingKey').merge({ foo: 'bar' }).run()
+      test.Model.get('NonExistingKey').merge({ foo: 'bar' }).run()
         .error(error => {
           assert(error.message.match(Errors.DOCUMENT_NOT_FOUND_REGEX));
           done();
@@ -206,7 +206,7 @@ describe('queries', function() {
     });
 
     it('Model.add(1).execute() should be able to error', function(done) {
-      return test.Model.add(1).execute()
+      test.Model.add(1).execute()
         .error(error => {
           assert(error.message.match(/^Expected type DATUM but found TABLE/));
           done();
@@ -1434,7 +1434,7 @@ describe('queries', function() {
     });
 
     it('Query.run() should return a DocumentNotFound error if no document is found - 1', function(done) {
-      return test.Model.get(0).run()
+      test.Model.get(0).run()
         .catch(Errors.DocumentNotFound, err => {
           assert(err.message.match(Errors.DOCUMENT_NOT_FOUND_REGEX));
           done();
@@ -1442,7 +1442,7 @@ describe('queries', function() {
     });
 
     it('Query.run() should return a DocumentNotFound error if no document is found - 2', function(done) {
-      return test.Model.get(0).run()
+      test.Model.get(0).run()
         .error(err => {
           assert(err instanceof Errors.DocumentNotFound);
           assert(err.message.match(Errors.DOCUMENT_NOT_FOUND_REGEX));
@@ -1479,7 +1479,7 @@ describe('queries', function() {
     });
 
     it('Query.group("num").count().run() should not work', function(done) {
-      return test.Model.group('num').count().run()
+      test.Model.group('num').count().run()
         .error(function(err) { done(); });
     });
 
@@ -1562,6 +1562,7 @@ describe('queries', function() {
         type: 'object',
         properties: { id: { type: 'string' } }
       }, {init: false});
+
       User.filter(r.error('test'))
         .error(() => done());
     });
@@ -1571,7 +1572,8 @@ describe('queries', function() {
       let User = test.thinkagain.createModel(test.table(0), {
         type: 'object',
         properties: { id: { type: 'string' } }
-      }, {init: false});
+      }, { init: false });
+
       let promise = User.filter(r.error('test')).error(() => {});
       assert(promise instanceof Promise, 'not a promise');
       promise.finally(() => done());
@@ -1660,7 +1662,7 @@ describe('queries', function() {
     before(function(done) {
       let r = test.r;
       let name = util.s8();
-      return r.tableCreate(name).run()
+      r.tableCreate(name).run()
         .then(result => r.table(name).indexCreate('name1').run())
         .then(() => {
           test.Model = test.thinkagain.createModel(test.table(0), {
@@ -1772,7 +1774,7 @@ describe('queries', function() {
     it('Point write - post non valid - primary key is a string', function(done) {
       let r = test.r;
       let doc = new test.Model({id: util.s8(), num: 0});
-      return doc.save()
+      doc.save()
         .then(() => test.Model.get(doc.id).update({num: r.expr('foo')}).run())
         .error(error => {
           assert(error instanceof Errors.ThinkAgainError);
@@ -1796,7 +1798,7 @@ describe('queries', function() {
 
       let r = test.r;
       let doc = new Model({id: 1, num: 0});
-      return doc.save()
+      doc.save()
         .then(() => Model.get(doc.id).update({num: r.expr('foo')}).run())
         .error(error => {
           assert(error.message.match('The write failed, and the changes were reverted'));
@@ -1839,7 +1841,7 @@ describe('queries', function() {
       let r = test.r;
       let docs = [{id: util.s8(), num: 0}, {id: util.s8(), num: 1}];
 
-      return test.Model.save(docs)
+      test.Model.save(docs)
         .then(() => test.Model.update({num: r.expr('foo')}).run())
         .error(error => {
           assert(error.message.match('The write failed, and the changes were reverted'));
@@ -1873,7 +1875,7 @@ describe('queries', function() {
 
     it('Point write - pre non valid', function(done) {
       let doc = new test.Model({id: util.s8(), num: 0});
-      return doc.save()
+      doc.save()
         .then(() => test.Model.get(doc.id).update({num: 'foo'}).run())
         .error(error => {
           assert(error.message.match('The partial value is not valid, so the write was not executed.'));
@@ -1886,7 +1888,7 @@ describe('queries', function() {
     });
 
     it('Point write on non existing doc', function(done) {
-      return test.Model.get('nonExistingId').update({foo: 'bar'}).run()
+      test.Model.get('nonExistingId').update({foo: 'bar'}).run()
         .error(error => {
           assert(Errors.DOCUMENT_NOT_FOUND_REGEX.test(error.message));
           done();
@@ -1937,7 +1939,7 @@ describe('queries', function() {
         let doc = new test.Model({id: util.s8(), num: 0});
         let bound = test.Model.get(doc.id).bindRun();
 
-        return doc.save()
+        doc.save()
           .then(() => {
             test.Model.get(doc.id).run(function(err, instance1) {
               bound(function(e, instance2) {

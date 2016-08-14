@@ -209,7 +209,7 @@ describe('feed', function() {
 
     it('change events should be emitted - insert', function(done) {
       let data = { id: 'foo', str: 'bar', num: 3 };
-      return test.Model.get(data.id).changes({ includeInitial: true }).run()
+      test.Model.get(data.id).changes({ includeInitial: true }).run()
         .then(doc => {
           assert(doc);
           assert.deepEqual(doc, {});
@@ -225,7 +225,7 @@ describe('feed', function() {
 
     it('change events should be emitted - update', function(done) {
       let data = { id: 'buzz', str: 'bar', num: 3 };
-      return test.Model.save(data)
+      test.Model.save(data)
         .then(() => test.Model.get(data.id).changes({ includeInitial: true }).run())
         .then(doc => {
           assert.deepEqual(doc, data);
@@ -241,7 +241,7 @@ describe('feed', function() {
 
     it('change events should be emitted - delete', function(done) {
       let data = { id: 'bar', str: 'bar', num: 3 };
-      return test.Model.save(data)
+      test.Model.save(data)
         .then(() => test.Model.get(data.id).changes({ includeInitial: true }).run())
         .then(doc => {
           assert.deepEqual(doc, data);
@@ -258,7 +258,7 @@ describe('feed', function() {
 
     it('change events should be emitted - all', function(done) {
       let data = { id: 'last', str: 'bar', num: 3 };
-      return test.Model.get(data.id).changes({ includeInitial: true }).run()
+      test.Model.get(data.id).changes({ includeInitial: true }).run()
         .then(doc => {
           assert(doc);
           assert.deepEqual(doc, {});

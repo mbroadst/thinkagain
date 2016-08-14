@@ -43,7 +43,7 @@ describe('documents', function() {
         });
 
         assert.equal(doc.isSaved(), false);
-        return doc.save()
+        doc.save()
           .error(error => done());
       });
 
@@ -54,7 +54,7 @@ describe('documents', function() {
         });
 
         assert.equal(doc.isSaved(), false);
-        return doc.save((err, result) => {
+        doc.save((err, result) => {
           assert.equal(err, null);
           assert.equal(doc.isSaved(), true);
           done();
@@ -66,7 +66,7 @@ describe('documents', function() {
         let doc = new test.Model({ id: str });
         let doc2 = new test.Model({ id: str });
 
-        return doc.save()
+        doc.save()
           .then(result => doc2.save())
           .then(result => done(new Error('Expecting error')))
           .error(err => {
@@ -170,7 +170,7 @@ describe('documents', function() {
           num: num
         });
 
-        return doc.save()
+        doc.save()
           .then(result => {
             assert.strictEqual(doc, result);
             doc.str = 2;
@@ -1118,7 +1118,7 @@ describe('documents', function() {
         ];
 
         doc.otherDocs = otherDocs;
-        return doc.saveAll()
+        doc.saveAll()
           .then(() => {
             assert(doc.isSaved());
             for (let i = 0; i < doc.otherDocs.length; i++) {
@@ -1547,7 +1547,7 @@ describe('documents', function() {
       });
 
       it('should work with a callback', function(done) {
-        return test.doc.delete(() => {
+        test.doc.delete(() => {
           test.Model.run((err, result) => {
             assert.equal(result.length, 0);
             done();
@@ -1625,7 +1625,7 @@ describe('documents', function() {
         let doc = new test.Model(docValues);
         let otherDoc = new test.OtherModel(otherDocValues);
         doc.otherDoc = otherDoc;
-        return doc.saveAll()
+        doc.saveAll()
           .then(result => {
             assert.equal(result.isSaved(), true);
             return result.deleteAll();
@@ -1653,7 +1653,7 @@ describe('documents', function() {
         let doc = new test.Model(docValues);
         let otherDoc = new test.OtherModel(otherDocValues);
         doc.otherDoc = otherDoc;
-        return doc.saveAll()
+        doc.saveAll()
           .then(result => {
             assert.equal(result.isSaved(), true);
             return result.deleteAll({ otherDoc: true });
@@ -1732,7 +1732,7 @@ describe('documents', function() {
         doc.otherDoc = otherDoc;
 
         let otherDocCopy;
-        return doc.saveAll()
+        doc.saveAll()
           .then(result => {
             assert.equal(result.isSaved(), true);
             otherDocCopy = util.deepCopy(result.otherDoc);
@@ -1758,7 +1758,7 @@ describe('documents', function() {
         let otherDoc = new test.OtherModel(otherDocValues);
         doc.otherDoc = otherDoc;
 
-        return doc.saveAll()
+        doc.saveAll()
           .then(result => {
             assert.equal(result.isSaved(), true);
             return result.deleteAll();
@@ -1789,7 +1789,7 @@ describe('documents', function() {
         let otherDoc = new test.OtherModel(otherDocValues);
         doc.otherDoc = otherDoc;
 
-        return doc.saveAll()
+        doc.saveAll()
           .then(result => {
             assert.equal(result.isSaved(), true);
             return result.deleteAll({ otherDoc: true });
@@ -1819,7 +1819,7 @@ describe('documents', function() {
         doc.otherDoc = otherDoc;
 
         let otherDocCopy;
-        return doc.saveAll()
+        doc.saveAll()
           .then(result => {
             assert.equal(doc.isSaved(), true);
             otherDocCopy = util.deepCopy(doc.otherDoc);
@@ -1874,7 +1874,7 @@ describe('documents', function() {
         ];
 
         doc.otherDocs = otherDocs;
-        return doc.saveAll()
+        doc.saveAll()
           .then(result => {
             assert.equal(result.isSaved(), true);
             return result.delete();
@@ -1907,7 +1907,7 @@ describe('documents', function() {
         ];
         doc.otherDocs = otherDocs;
 
-        return doc.saveAll()
+        doc.saveAll()
           .then(result => {
             assert.equal(result.isSaved(), true);
             return result.deleteAll({ foo: true });
@@ -1941,7 +1941,7 @@ describe('documents', function() {
         ];
         doc.otherDocs = otherDocs;
 
-        return doc.saveAll()
+        doc.saveAll()
           .then(result => {
             assert.equal(result.isSaved(), true);
             return result.deleteAll();
@@ -1977,7 +1977,7 @@ describe('documents', function() {
         ];
         doc.otherDocs = otherDocs;
 
-        return doc.saveAll()
+        doc.saveAll()
           .then(result => {
             assert.equal(result.isSaved(), true);
             return result.deleteAll({ otherDocs: true });
@@ -2041,7 +2041,7 @@ describe('documents', function() {
         doc.otherDocs = otherDocs;
 
         let r = test.r;
-        return doc.saveAll()
+        doc.saveAll()
           .then(result => result.delete())
           .then(result => {
             assert.strictEqual(doc, result);
@@ -2078,7 +2078,7 @@ describe('documents', function() {
         doc.otherDocs = otherDocs;
 
         let r = test.r;
-        return doc.saveAll()
+        doc.saveAll()
           .then(result => result.deleteAll({ foo: true }))
           .then(() => {
             assert.equal(doc.isSaved(), false);
@@ -2114,7 +2114,7 @@ describe('documents', function() {
         doc.otherDocs = otherDocs;
 
         let r = test.r;
-        return doc.saveAll()
+        doc.saveAll()
           .then(result => result.deleteAll())
           .then(() => {
             assert.equal(doc.isSaved(), false);
@@ -2149,7 +2149,7 @@ describe('documents', function() {
         doc.otherDocs = otherDocs;
 
         let r = test.r;
-        return doc.saveAll()
+        doc.saveAll()
           .then(result => result.deleteAll({ otherDocs: true }))
           .then(() => {
             assert.equal(doc.isSaved(), false);
@@ -2467,7 +2467,7 @@ describe('documents', function() {
 
       doc1.has = otherDoc1;
 
-      return doc1.saveAll()
+      doc1.saveAll()
         .then(doc => {
           // Create an extra hasOne link -- which is invalid
           otherDoc2.foreignKey = otherDoc1.foreignKey;
@@ -3018,7 +3018,7 @@ describe('documents', function() {
       });
 
       let doc = new Model({id: 'foobar'});
-      return doc
+      doc
         .catch(err => {
           assert.equal(err.message, 'Async error thrown by a hook');
           done();
@@ -3155,7 +3155,7 @@ describe('documents', function() {
       });
 
       let doc = new Model({id: 'foobar'});
-      return doc.validate()
+      doc.validate()
         .catch(err => {
           assert.equal(err.message, 'Async error thrown by a hook');
           done();

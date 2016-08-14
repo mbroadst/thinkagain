@@ -708,7 +708,7 @@ describe('Advanced cases', function() {
       doc.has = otherDoc;
       otherDoc.belongsTo = doc;
 
-      return doc.saveAll()
+      doc.saveAll()
         .then(result => {
           assert.equal(typeof result.id, 'string');
           assert.equal(typeof result.has.id, 'string');
@@ -742,7 +742,7 @@ describe('Advanced cases', function() {
       doc.has = otherDoc;
       otherDoc.belongsTo = doc;
 
-      return doc.saveAll()
+      doc.saveAll()
         .then(result => {
           assert.equal(typeof result.id, 'string');
           assert.equal(typeof result.has.id, 'string');
@@ -811,7 +811,7 @@ describe('Advanced cases', function() {
       doc.has = otherDoc;
       otherDoc.belongsTo = doc;
 
-      return doc.saveAll()
+      doc.saveAll()
         .then(result => {
           assert.equal(typeof result.id, 'string');
           assert.equal(typeof result.has.id, 'string');
@@ -846,7 +846,7 @@ describe('Advanced cases', function() {
       otherDoc.belongsTo = doc;
       doc.has = otherDoc;
 
-      return otherDoc.saveAll()
+      otherDoc.saveAll()
         .then(result => {
           assert.equal(typeof result.id, 'string');
           assert.equal(typeof result.belongsTo.id, 'string');
@@ -880,7 +880,7 @@ describe('Advanced cases', function() {
       otherDoc.belongsTo = doc;
       doc.has = otherDoc;
 
-      return otherDoc.saveAll()
+      otherDoc.saveAll()
         .then(result => {
           assert.equal(typeof result.id, 'string');
           assert.equal(typeof result.belongsTo.id, 'string');
@@ -915,7 +915,7 @@ describe('Advanced cases', function() {
       otherDoc.belongsTo = doc;
       doc.has = otherDoc;
 
-      return otherDoc.saveAll()
+      otherDoc.saveAll()
         .then(result => {
           assert.equal(typeof result.id, 'string');
           assert.equal(typeof result.belongsTo.id, 'string');
@@ -954,7 +954,7 @@ describe('Advanced cases', function() {
       otherDocs[1].belongsTo = doc;
       otherDocs[2].belongsTo = doc;
 
-      return doc.saveAll()
+      doc.saveAll()
         .then(result => {
           assert.equal(typeof result.id, 'string');
           assert.equal(result.has.length, 3);
@@ -1008,7 +1008,7 @@ describe('Advanced cases', function() {
       otherDocs[1].belongsTo = doc;
       otherDocs[2].belongsTo = doc;
 
-      return doc.saveAll()
+      doc.saveAll()
         .then(result => {
           assert.equal(typeof result.id, 'string');
           assert.equal(result.has.length, 3);
@@ -1057,7 +1057,7 @@ describe('Advanced cases', function() {
       otherDocs[1].belongsTo = doc;
       otherDocs[2].belongsTo = doc;
 
-      return doc.saveAll()
+      doc.saveAll()
         .then(result => {
           assert.equal(typeof result.id, 'string');
           assert.equal(result.has.length, 3);
@@ -1107,7 +1107,7 @@ describe('Advanced cases', function() {
       otherDocs[1].belongsTo = doc;
       otherDocs[2].belongsTo = doc;
 
-      return doc.saveAll()
+      doc.saveAll()
         .then(result => {
           assert.equal(typeof result.id, 'string');
           assert.equal(result.has.length, 3);
