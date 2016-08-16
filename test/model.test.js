@@ -52,7 +52,7 @@ describe('models', () => {
         id: test.table(0),
         type: 'object',
         properties: {
-          id: { type: 'string' },
+          id: { type: 'string', format: 'uuid' },
           name: { type: 'string' }
         }
       });

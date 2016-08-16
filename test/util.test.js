@@ -10,7 +10,7 @@ describe('util', function() {
       expect(result).to.eql({
         type: 'object',
         properties: {
-          id: { type: 'string' },
+          id: { type: 'string', format: 'uuid' },
           name: { type: 'string' }
         }
       });
