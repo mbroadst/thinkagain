@@ -26,6 +26,50 @@ describe('models', () => {
       return model.tableReady();
     });
 
+    it('should save a copy of the raw schema', function() {
+      let schema = {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          name: { type: 'string' }
+        }
+      };
+
+      let model = test.thinkagain.createModel(test.table(0), schema);
+      expect(model._schema).to.eql(Object.assign({}, { id: test.table(0) }, schema));
+    });
+
+    it('should save a copy of the raw schema with injected primary key', function() {
+      let schema = {
+        type: 'object',
+        properties: {
+          name: { type: 'string' }
+        }
+      };
+
+      let model = test.thinkagain.createModel(test.table(0), schema);
+      expect(model._schema).to.eql({
+        id: test.table(0),
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          name: { type: 'string' }
+        }
+      });
+    });
+
+    it('should not inject a primary key if its defined', function() {
+      let schema = {
+        type: 'object',
+        properties: {
+          name: { type: 'string' }
+        }
+      };
+
+      let model = test.thinkagain.createModel(test.table(0), schema, { pk: 'name' });
+      expect(model._schema).to.eql(Object.assign({}, { id: test.table(0) }, schema));
+    });
+
     it('Check if the table was created', function(done) {
       let model = test.thinkagain.createModel(test.table(0), {
         type: 'object',
