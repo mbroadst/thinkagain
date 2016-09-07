@@ -1,6 +1,6 @@
 {
   "name": "thinkagain",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "A Node.js ODM for RethinkDB featuring first-class support for JSON schema",
   "main": "lib/index.js",
   "engines": {
