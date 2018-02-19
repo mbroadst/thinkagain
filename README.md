@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.org/mbroadst/thinkagain.svg?branch=master)](https://travis-ci.org/mbroadst/thinkagain)
 [![Test Coverage](https://codeclimate.com/github/mbroadst/thinkagain/badges/coverage.svg)](https://codeclimate.com/github/mbroadst/thinkagain/coverage)
 
-ThinkAgain is a fork of [thinky](http://thinky.io/) with first-class support for [json-schema](json-schema.org) using [ajv](https://github.com/epoberezkin/ajv) for validation.
+ThinkAgain is a fork of [thinky](http://justonepixel.com/thinky/) with first-class support for [json-schema](json-schema.org) using [ajv](https://github.com/epoberezkin/ajv) for validation.
 
 ## Install
 ```
@@ -72,7 +72,7 @@ output:
 
 ## Notes
 
-Presently this is, for the most part, a drop-in replacement for [thinky](http://thinky.io/), with a few notable changes:
+Presently this is, for the most part, a drop-in replacement for [thinky](http://justonepixel.com/thinky/), with a few notable changes:
 * Table schemas explicitly use [json-schema](http://json-schema.org/) instead of thinky's home brewed schemas
 * Virtual fields are not (yet) implemented
 * All validation is asynchronous
@@ -81,6 +81,6 @@ Presently this is, for the most part, a drop-in replacement for [thinky](http://
 
 ## Credits
 
-* Many thanks to [neumino](https://github.com/neumino) for his great work on [thinky](http://think.io), without which this module would not be possible.
+* Many thanks to [neumino](https://github.com/neumino) for his great work on [thinky](http://justonepixel.com/thinky/), without which this module would not be possible.
 * Additional thanks to [epoberezkin](https://github.com/epoberezkin) for his fantastic work on [ajv](https://github.com/epoberezkin/ajv).
 
